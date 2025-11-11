@@ -46,9 +46,6 @@
       "name": "Vidinfra/Video Multipart Upload"
     },
     {
-      "name": "Vidinfra/Internals"
-    },
-    {
       "name": "Vidinfra/Webhook"
     },
     {
@@ -140,7 +137,7 @@
                           "type": "string"
                         },
                         "updated_by": {
-                          "type": "null"
+                          "type": "string"
                         },
                         "distribution": {
                           "type": "object",
@@ -535,7 +532,7 @@
                             "type": "string"
                           },
                           "updated_by": {
-                            "type": "null"
+                            "type": "string"
                           },
                           "name": {
                             "type": "string"
@@ -862,7 +859,7 @@
                           "type": "string"
                         },
                         "updated_by": {
-                          "type": "null"
+                          "type": "string"
                         },
                         "name": {
                           "type": "string"
@@ -3326,7 +3323,7 @@
       }
     },
     "/v1/libraries/{libraryId}/folders/bulk": {
-      "delete": {
+      "post": {
         "summary": "Bulk Delete Folder",
         "deprecated": false,
         "description": "Deletes multiple folders from a specific library in a single request.\nThis operation permanently removes the selected folders and all their nested subfolders and files (if any).",
@@ -3686,7 +3683,7 @@
                           ]
                         },
                         "folder_id": {
-                          "type": "null"
+                          "type": "string"
                         },
                         "format": {
                           "type": "string"
@@ -3707,7 +3704,7 @@
                           }
                         },
                         "tags": {
-                          "type": "null"
+                          "type": "string"
                         },
                         "metadata": {
                           "type": "array",
@@ -4381,10 +4378,10 @@
                           "type": "string"
                         },
                         "tags": {
-                          "type": "null"
+                          "type": "string"
                         },
                         "resolutions": {
-                          "type": "null"
+                          "type": "string"
                         },
                         "size_bytes": {
                           "type": "integer"
@@ -4786,7 +4783,7 @@
                           ]
                         },
                         "folder_id": {
-                          "type": "null"
+                          "type": "string"
                         },
                         "format": {
                           "type": "string"
@@ -6088,7 +6085,7 @@
                           ]
                         },
                         "folder_id": {
-                          "type": "null"
+                          "type": "string"
                         },
                         "format": {
                           "type": "string"
@@ -6722,7 +6719,7 @@
                       "type": "string"
                     },
                     "deleted_at": {
-                      "type": "null"
+                      "type": "string"
                     }
                   },
                   "required": [
@@ -7034,7 +7031,7 @@
                             "type": "string"
                           },
                           "updated_by": {
-                            "type": "null"
+                            "type": "string"
                           },
                           "name": {
                             "type": "string"
@@ -7381,7 +7378,7 @@
                           "type": "string"
                         },
                         "updated_by": {
-                          "type": "null"
+                          "type": "string"
                         },
                         "name": {
                           "type": "string"
@@ -7661,7 +7658,7 @@
                       "type": "string"
                     },
                     "deleted_at": {
-                      "type": "null"
+                      "type": "string"
                     }
                   },
                   "required": [
@@ -8049,11 +8046,11 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/videos/{videoId}/thumbnails/set": {
-      "patch": {
-        "summary": "Set Thumbnail",
+    "/v1/libraries/{libraryId}/videos/{videoId}/thumbnails": {
+      "post": {
+        "summary": "Upload Thumbnail",
         "deprecated": false,
-        "description": "Set a specific image as the active or default thumbnail for a video.",
+        "description": "Upload a new thumbnail image for a specific video.",
         "tags": [
           "Vidinfra/Video Thumbnails"
         ],
@@ -8063,7 +8060,7 @@
             "in": "path",
             "description": "Unique identifier of the library.",
             "required": true,
-            "example": "7a75c216-3abc-42cc-9505-f9af944534e5",
+            "example": "314221a1-3cbf-4d3c-846e-f6c22bc43064",
             "schema": {
               "type": "string"
             }
@@ -8073,7 +8070,7 @@
             "in": "path",
             "description": "Unique identifier of the targeted video resource.",
             "required": true,
-            "example": "f6633a3e-94f1-43f5-aacc-36848950a662",
+            "example": "a7f590b4-3fd7-42a4-82bb-a7cfa6aa9d04",
             "schema": {
               "type": "string"
             }
@@ -8081,27 +8078,27 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "thumbnail_url": {
+                  "file": {
+                    "format": "binary",
                     "type": "string",
-                    "description": "Thumbnail URL which will be selected as defualt in video player preview."
+                    "description": "The thumbnail file to upload, allowed formats are \".jpg\", \".jpeg\", \".png\", \".gif\"",
+                    "example": "file:///Users/sohelmia/Downloads/App_Icon.png"
                   }
                 },
                 "required": [
-                  "thumbnail_url"
+                  "file"
                 ]
               },
-              "example": {
-                "thumbnail_url": "https://example.com/e597d73e-cca8-4b62-858f-aa655e31df64/thumbnail.jpg"
-              }
+              "examples": {}
             }
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "",
             "content": {
               "application/json": {
@@ -8121,7 +8118,7 @@
                   ]
                 },
                 "example": {
-                  "message": "Video Thumbnail Updated Successfully",
+                  "message": "Video Thumbnail Created Successfully",
                   "success": true
                 }
               }
@@ -8502,11 +8499,11 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/videos/{videoId}/thumbnails": {
-      "post": {
-        "summary": "Upload Thumbnail",
+    "/v1/libraries/{libraryId}/videos/{videoId}/thumbnails/set": {
+      "patch": {
+        "summary": "Set Thumbnail",
         "deprecated": false,
-        "description": "Upload a new thumbnail image for a specific video.",
+        "description": "Set a specific image as the active or default thumbnail for a video.",
         "tags": [
           "Vidinfra/Video Thumbnails"
         ],
@@ -8516,7 +8513,7 @@
             "in": "path",
             "description": "Unique identifier of the library.",
             "required": true,
-            "example": "314221a1-3cbf-4d3c-846e-f6c22bc43064",
+            "example": "7a75c216-3abc-42cc-9505-f9af944534e5",
             "schema": {
               "type": "string"
             }
@@ -8526,7 +8523,7 @@
             "in": "path",
             "description": "Unique identifier of the targeted video resource.",
             "required": true,
-            "example": "a7f590b4-3fd7-42a4-82bb-a7cfa6aa9d04",
+            "example": "f6633a3e-94f1-43f5-aacc-36848950a662",
             "schema": {
               "type": "string"
             }
@@ -8534,27 +8531,27 @@
         ],
         "requestBody": {
           "content": {
-            "multipart/form-data": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "file": {
-                    "format": "binary",
+                  "thumbnail_url": {
                     "type": "string",
-                    "description": "The thumbnail file to upload, allowed formats are \".jpg\", \".jpeg\", \".png\", \".gif\"",
-                    "example": "file:///Users/sohelmia/Downloads/App_Icon.png"
+                    "description": "Thumbnail URL which will be selected as defualt in video player preview."
                   }
                 },
                 "required": [
-                  "file"
+                  "thumbnail_url"
                 ]
               },
-              "examples": {}
+              "example": {
+                "thumbnail_url": "https://example.com/e597d73e-cca8-4b62-858f-aa655e31df64/thumbnail.jpg"
+              }
             }
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "",
             "content": {
               "application/json": {
@@ -8574,7 +8571,7 @@
                   ]
                 },
                 "example": {
-                  "message": "Video Thumbnail Created Successfully",
+                  "message": "Video Thumbnail Updated Successfully",
                   "success": true
                 }
               }
@@ -9032,10 +9029,10 @@
                           "type": "string"
                         },
                         "updated_by": {
-                          "type": "null"
+                          "type": "string"
                         },
                         "deleted_at": {
-                          "type": "null"
+                          "type": "string"
                         },
                         "name": {
                           "type": "string"
@@ -9571,10 +9568,10 @@
                             "type": "string"
                           },
                           "updated_by": {
-                            "type": "null"
+                            "type": "string"
                           },
                           "deleted_at": {
-                            "type": "null"
+                            "type": "string"
                           },
                           "transcoding": {
                             "type": "object",
@@ -9643,7 +9640,7 @@
                                     "type": "string"
                                   },
                                   "subtitle_language": {
-                                    "type": "null"
+                                    "type": "string"
                                   }
                                 },
                                 "required": [
@@ -9677,10 +9674,10 @@
                                     "type": "boolean"
                                   },
                                   "providers": {
-                                    "type": "null"
+                                    "type": "string"
                                   },
                                   "license_servers": {
-                                    "type": "null"
+                                    "type": "string"
                                   }
                                 },
                                 "required": [
@@ -10038,10 +10035,10 @@
                           "type": "string"
                         },
                         "updated_by": {
-                          "type": "null"
+                          "type": "string"
                         },
                         "deleted_at": {
-                          "type": "null"
+                          "type": "string"
                         },
                         "transcoding": {
                           "type": "object",
@@ -10110,7 +10107,7 @@
                                   "type": "string"
                                 },
                                 "subtitle_language": {
-                                  "type": "null"
+                                  "type": "string"
                                 }
                               },
                               "required": [
@@ -10144,10 +10141,10 @@
                                   "type": "boolean"
                                 },
                                 "providers": {
-                                  "type": "null"
+                                  "type": "string"
                                 },
                                 "license_servers": {
-                                  "type": "null"
+                                  "type": "string"
                                 }
                               },
                               "required": [
@@ -11751,11 +11748,11 @@
                     "type": "object",
                     "properties": {
                       "facebook_pixel_id": {
-                        "type": "null",
+                        "type": "string",
                         "description": "Facebook Pixel ID for audience tracking and analytics."
                       },
                       "google_analytics_id": {
-                        "type": "null",
+                        "type": "string",
                         "description": "Google Analytics ID for tracking player events."
                       }
                     },
@@ -11785,11 +11782,11 @@
                         "description": "Font size for caption text."
                       },
                       "logo": {
-                        "type": "null",
+                        "type": "string",
                         "description": "URL of the logo displayed in the player (optional)."
                       },
                       "logo_destination_url": {
-                        "type": "null",
+                        "type": "string",
                         "description": "URL to open when the logo is clicked."
                       }
                     },
@@ -14899,13 +14896,13 @@
                           "type": "string"
                         },
                         "updated_by": {
-                          "type": "null"
+                          "type": "string"
                         },
                         "created_by": {
                           "type": "string"
                         },
                         "headers": {
-                          "type": "null"
+                          "type": "string"
                         },
                         "name": {
                           "type": "string"
@@ -15226,13 +15223,13 @@
                             "type": "string"
                           },
                           "updated_by": {
-                            "type": "null"
+                            "type": "string"
                           },
                           "created_by": {
                             "type": "string"
                           },
                           "headers": {
-                            "type": "null"
+                            "type": "string"
                           },
                           "name": {
                             "type": "string"
@@ -15535,13 +15532,13 @@
                           "type": "string"
                         },
                         "updated_by": {
-                          "type": "null"
+                          "type": "string"
                         },
                         "created_by": {
                           "type": "string"
                         },
                         "headers": {
-                          "type": "null"
+                          "type": "string"
                         },
                         "name": {
                           "type": "string"
@@ -15838,7 +15835,7 @@
                           "type": "string"
                         },
                         "headers": {
-                          "type": "null"
+                          "type": "string"
                         },
                         "name": {
                           "type": "string"
@@ -16758,19 +16755,19 @@
                                 "type": "string"
                               },
                               "retry_policy": {
-                                "type": "null"
+                                "type": "string"
                               },
                               "library_id": {
                                 "type": "string"
                               },
                               "updated_by": {
-                                "type": "null"
+                                "type": "string"
                               },
                               "created_by": {
                                 "type": "string"
                               },
                               "headers": {
-                                "type": "null"
+                                "type": "string"
                               },
                               "name": {
                                 "type": "string"
@@ -19753,488 +19750,6 @@
         ]
       }
     },
-    "/v1/internals/libraries/{libraryId}": {
-      "get": {
-        "summary": "Get Library by ID",
-        "deprecated": false,
-        "description": "",
-        "tags": [
-          "Vidinfra/Internals"
-        ],
-        "parameters": [
-          {
-            "name": "libraryId",
-            "in": "path",
-            "description": "Unique identifier of the library.",
-            "required": true,
-            "example": "314221a1-3cbf-4d3c-846e-f6c22bc43064",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {}
-                }
-              }
-            },
-            "headers": {}
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    },
-                    "success": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "message",
-                    "success"
-                  ]
-                },
-                "example": {
-                  "message": "Invalid Request",
-                  "success": false
-                }
-              }
-            },
-            "headers": {}
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "success": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "code",
-                    "message",
-                    "success"
-                  ]
-                },
-                "example": {
-                  "code": "auth_type_not_found",
-                  "message": "Could not determine authentication type from request. Please provide a valid Authorization header or X-API-Key header.",
-                  "success": false
-                }
-              }
-            },
-            "headers": {}
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    },
-                    "success": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "message",
-                    "success"
-                  ]
-                },
-                "example": {
-                  "message": "Resource not found",
-                  "success": false
-                }
-              }
-            },
-            "headers": {}
-          },
-          "500": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    },
-                    "success": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "message",
-                    "success"
-                  ]
-                },
-                "example": {
-                  "message": "Internal server error",
-                  "success": false
-                }
-              }
-            },
-            "headers": {}
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
-      }
-    },
-    "/v1/internals/libraries/{libraryId}/players/{playerId}": {
-      "get": {
-        "summary": "Get Player Details",
-        "deprecated": false,
-        "description": "",
-        "tags": [
-          "Vidinfra/Internals"
-        ],
-        "parameters": [
-          {
-            "name": "libraryId",
-            "in": "path",
-            "description": "Unique identifier of the library.",
-            "required": true,
-            "example": "314221a1-3cbf-4d3c-846e-f6c22bc43064",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "playerId",
-            "in": "path",
-            "description": "Unique identifier of the targeted player resource.",
-            "required": true,
-            "example": "a7f590b4-3fd7-42a4-82bb-a7cfa6aa9d04",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {}
-                }
-              }
-            },
-            "headers": {}
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    },
-                    "success": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "message",
-                    "success"
-                  ]
-                },
-                "example": {
-                  "message": "Invalid Request",
-                  "success": false
-                }
-              }
-            },
-            "headers": {}
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "success": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "code",
-                    "message",
-                    "success"
-                  ]
-                },
-                "example": {
-                  "code": "auth_type_not_found",
-                  "message": "Could not determine authentication type from request. Please provide a valid Authorization header or X-API-Key header.",
-                  "success": false
-                }
-              }
-            },
-            "headers": {}
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    },
-                    "success": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "message",
-                    "success"
-                  ]
-                },
-                "example": {
-                  "message": "Resource not found",
-                  "success": false
-                }
-              }
-            },
-            "headers": {}
-          },
-          "500": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    },
-                    "success": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "message",
-                    "success"
-                  ]
-                },
-                "example": {
-                  "message": "Internal server error",
-                  "success": false
-                }
-              }
-            },
-            "headers": {}
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
-      }
-    },
-    "/v1/internals/libraries/{libraryId}/videos/{videoId}": {
-      "get": {
-        "summary": "Video detais",
-        "deprecated": false,
-        "description": "",
-        "tags": [
-          "Vidinfra/Internals"
-        ],
-        "parameters": [
-          {
-            "name": "libraryId",
-            "in": "path",
-            "description": "Unique identifier of the library.",
-            "required": true,
-            "example": "314221a1-3cbf-4d3c-846e-f6c22bc43064",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "videoId",
-            "in": "path",
-            "description": "Unique identifier of the targeted video resource.",
-            "required": true,
-            "example": "a7f590b4-3fd7-42a4-82bb-a7cfa6aa9d04",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {}
-                }
-              }
-            },
-            "headers": {}
-          },
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    },
-                    "success": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "message",
-                    "success"
-                  ]
-                },
-                "example": {
-                  "message": "Invalid Request",
-                  "success": false
-                }
-              }
-            },
-            "headers": {}
-          },
-          "401": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "success": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "code",
-                    "message",
-                    "success"
-                  ]
-                },
-                "example": {
-                  "code": "auth_type_not_found",
-                  "message": "Could not determine authentication type from request. Please provide a valid Authorization header or X-API-Key header.",
-                  "success": false
-                }
-              }
-            },
-            "headers": {}
-          },
-          "404": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    },
-                    "success": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "message",
-                    "success"
-                  ]
-                },
-                "example": {
-                  "message": "Resource not found",
-                  "success": false
-                }
-              }
-            },
-            "headers": {}
-          },
-          "500": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    },
-                    "success": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "message",
-                    "success"
-                  ]
-                },
-                "example": {
-                  "message": "Internal server error",
-                  "success": false
-                }
-              }
-            },
-            "headers": {}
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
-      }
-    },
     "/webhooks/transcoding/vidinfra": {
       "post": {
         "summary": "Transcoding Webhook",
@@ -21023,12 +20538,7 @@
       }
     }
   },
-  "servers": [
-    {
-      "url": "https://api-staging.tenbyte.io/v1",
-      "description": "Vidinfra API Copy"
-    }
-  ],
+  "servers": [],
   "security": [
     {
       "bearer": []
