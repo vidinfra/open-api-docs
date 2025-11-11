@@ -7,49 +7,46 @@
   },
   "tags": [
     {
-      "name": "Vidinfra"
+      "name": "Library"
     },
     {
-      "name": "Vidinfra/Library"
+      "name": "Folder"
     },
     {
-      "name": "Vidinfra/Folder"
+      "name": "Video"
     },
     {
-      "name": "Vidinfra/Video"
+      "name": "Subtitle"
     },
     {
-      "name": "Vidinfra/Subtitle"
+      "name": "Video Thumbnails"
     },
     {
-      "name": "Vidinfra/Video Thumbnails"
+      "name": "Transcoding Profiles"
     },
     {
-      "name": "Vidinfra/Transcoding Profiles"
+      "name": "Player Themes"
     },
     {
-      "name": "Vidinfra/Player Themes"
+      "name": "Video Chapter"
     },
     {
-      "name": "Vidinfra/Video Chapter"
+      "name": "Webhook Endpoints"
     },
     {
-      "name": "Vidinfra/Webhook Endpoints"
+      "name": "Webhook Deliveries"
     },
     {
-      "name": "Vidinfra/Webhook Deliveries"
+      "name": "Security"
     },
     {
-      "name": "Vidinfra/Security"
+      "name": "Video Multipart Upload"
     },
     {
-      "name": "Vidinfra/Video Multipart Upload"
+      "name": "Webhook"
     },
     {
-      "name": "Vidinfra/Webhook"
-    },
-    {
-      "name": "Vidinfra/Migration Jobs"
+      "name": "Migration Jobs"
     }
   ],
   "paths": {
@@ -59,7 +56,7 @@
         "deprecated": false,
         "description": "Create a new video library within your Tenbyte account.\nLibraries are used to organize video assets, folders, and related webhooks.",
         "tags": [
-          "Vidinfra/Library"
+          "Library"
         ],
         "parameters": [],
         "requestBody": {
@@ -445,7 +442,7 @@
         "deprecated": false,
         "description": "Retrieve a paginated list of all libraries associated with your account.\nYou can filter by visibility or creation date.",
         "tags": [
-          "Vidinfra/Library"
+          "Library"
         ],
         "parameters": [
           {
@@ -824,7 +821,7 @@
         "deprecated": false,
         "description": "Retrieve detailed information about a specific library, including its metadata, visibility, and storage usage.",
         "tags": [
-          "Vidinfra/Library"
+          "Library"
         ],
         "parameters": [
           {
@@ -1066,7 +1063,7 @@
         "deprecated": false,
         "description": "Modify an existing library’s information such as name, description, or visibility.\nUse PATCH for partial updates.",
         "tags": [
-          "Vidinfra/Library"
+          "Library"
         ],
         "parameters": [
           {
@@ -1426,7 +1423,7 @@
         "deprecated": false,
         "description": "Delete an existing video library from your Tenbyte account.\nThis action permanently removes the library along with all associated folders, videos, and webhooks.",
         "tags": [
-          "Vidinfra/Library"
+          "Library"
         ],
         "parameters": [
           {
@@ -1595,7 +1592,7 @@
         "deprecated": false,
         "description": "Fetch usage and performance metrics for a specific library.\nReturns total video count, total storage used (in bytes), and combined video duration in seconds.",
         "tags": [
-          "Vidinfra/Library"
+          "Library"
         ],
         "parameters": [
           {
@@ -1749,7 +1746,7 @@
         "deprecated": false,
         "description": "Create a new folder in this library.\nFolders are used to organize video assets.",
         "tags": [
-          "Vidinfra/Folder"
+          "Folder"
         ],
         "parameters": [
           {
@@ -2029,7 +2026,7 @@
         "deprecated": false,
         "description": "Retrieves a list of all folders within a specified library.",
         "tags": [
-          "Vidinfra/Folder"
+          "Folder"
         ],
         "parameters": [
           {
@@ -2218,7 +2215,7 @@
         "deprecated": false,
         "description": "Retrieve detailed information about a specific folder.",
         "tags": [
-          "Vidinfra/Folder"
+          "Folder"
         ],
         "parameters": [
           {
@@ -2430,7 +2427,7 @@
         "deprecated": false,
         "description": "Modify an existing folder’s information such as name.",
         "tags": [
-          "Vidinfra/Folder"
+          "Folder"
         ],
         "parameters": [
           {
@@ -2666,7 +2663,7 @@
         "deprecated": false,
         "description": "Deletes a specific folder from a given library. This action permanently removes the folder.",
         "tags": [
-          "Vidinfra/Folder"
+          "Folder"
         ],
         "parameters": [
           {
@@ -2830,7 +2827,7 @@
         "deprecated": false,
         "description": "Moves a folder to a new parent location within the same library.",
         "tags": [
-          "Vidinfra/Folder"
+          "Folder"
         ],
         "parameters": [
           {
@@ -3084,7 +3081,7 @@
         "deprecated": false,
         "description": "Moves multiple folders to a new parent folder within the same library in a single operation.\nThis endpoint is useful for reorganizing folder structures efficiently without making multiple API calls.",
         "tags": [
-          "Vidinfra/Folder"
+          "Folder"
         ],
         "parameters": [
           {
@@ -3328,7 +3325,7 @@
         "deprecated": false,
         "description": "Deletes multiple folders from a specific library in a single request.\nThis operation permanently removes the selected folders and all their nested subfolders and files (if any).",
         "tags": [
-          "Vidinfra/Folder"
+          "Folder"
         ],
         "parameters": [
           {
@@ -3515,7 +3512,7 @@
         "deprecated": false,
         "description": "Uploads video directly under a library.",
         "tags": [
-          "Vidinfra/Video"
+          "Video"
         ],
         "parameters": [
           {
@@ -4020,7 +4017,7 @@
         "deprecated": false,
         "description": "Retrieves a list of all videos within a specific library.\nSupports filtering, pagination, and sorting to allow efficient browsing of video content.",
         "tags": [
-          "Vidinfra/Video"
+          "Video"
         ],
         "parameters": [
           {
@@ -4249,7 +4246,7 @@
         "deprecated": false,
         "description": "Retrieves detailed information about a specific video within a given library.\nThis includes its metadata, processing status, playback URLs, and associations (e.g., folder, tags, visibility).",
         "tags": [
-          "Vidinfra/Video"
+          "Video"
         ],
         "parameters": [
           {
@@ -4617,7 +4614,7 @@
         "deprecated": false,
         "description": "Updates metadata or visibility settings for a specific video within a library.\nThis endpoint allows partial updates, meaning only the provided fields will be modified.",
         "tags": [
-          "Vidinfra/Video"
+          "Video"
         ],
         "parameters": [
           {
@@ -5118,7 +5115,7 @@
         "deprecated": false,
         "description": "Deletes a specific video from a library. This action permanently removes the video and its associated data (e.g., files, thumbnails, metadata).",
         "tags": [
-          "Vidinfra/Video"
+          "Video"
         ],
         "parameters": [
           {
@@ -5286,7 +5283,7 @@
         "deprecated": false,
         "description": "Retrieves a list of videos within a library filtered by a custom field.\nThis endpoint is useful when videos are associated with external systems or identifiers (e.g., project ID, user ID, category tag).",
         "tags": [
-          "Vidinfra/Video"
+          "Video"
         ],
         "parameters": [
           {
@@ -5478,7 +5475,7 @@
         "deprecated": false,
         "description": "Performs a search for videos within a library based on keywords, metadata, tags, or other searchable fields.",
         "tags": [
-          "Vidinfra/Video"
+          "Video"
         ],
         "parameters": [
           {
@@ -5663,7 +5660,7 @@
         "deprecated": false,
         "description": "Moves multiple videos to a new folder or location within the same library in a single operation.",
         "tags": [
-          "Vidinfra/Video"
+          "Video"
         ],
         "parameters": [
           {
@@ -5917,7 +5914,7 @@
         "deprecated": false,
         "description": "Uploads video directly under a library.",
         "tags": [
-          "Vidinfra/Video"
+          "Video"
         ],
         "parameters": [
           {
@@ -6422,7 +6419,7 @@
         "deprecated": false,
         "description": "Retrieve the timeline of events for a specific video.\nReturns a chronological list of processing stages (such as queued, processing, transcoding, completed) with titles, descriptions, and timestamps for each event.",
         "tags": [
-          "Vidinfra/Video"
+          "Video"
         ],
         "parameters": [
           {
@@ -6632,7 +6629,7 @@
         "deprecated": false,
         "description": "Upload a new subtitle file for a specific video.",
         "tags": [
-          "Vidinfra/Subtitle"
+          "Subtitle"
         ],
         "parameters": [
           {
@@ -6924,7 +6921,7 @@
         "deprecated": false,
         "description": "Retrieve all subtitles associated with a specific video.",
         "tags": [
-          "Vidinfra/Subtitle"
+          "Subtitle"
         ],
         "parameters": [
           {
@@ -7323,7 +7320,7 @@
         "deprecated": false,
         "description": "Retrieve details of a specific subtitle, including language, title, and file path.",
         "tags": [
-          "Vidinfra/Subtitle"
+          "Subtitle"
         ],
         "parameters": [
           {
@@ -7566,7 +7563,7 @@
         "deprecated": false,
         "description": "Update subtitle information such as title, language, or file path.",
         "tags": [
-          "Vidinfra/Subtitle"
+          "Subtitle"
         ],
         "parameters": [
           {
@@ -7863,7 +7860,7 @@
         "deprecated": false,
         "description": "Remove a subtitle file from a specific video.",
         "tags": [
-          "Vidinfra/Subtitle"
+          "Subtitle"
         ],
         "parameters": [
           {
@@ -8052,7 +8049,7 @@
         "deprecated": false,
         "description": "Upload a new thumbnail image for a specific video.",
         "tags": [
-          "Vidinfra/Video Thumbnails"
+          "Video Thumbnails"
         ],
         "parameters": [
           {
@@ -8304,7 +8301,7 @@
         "deprecated": false,
         "description": "Remove an existing thumbnail from a video.",
         "tags": [
-          "Vidinfra/Video Thumbnails"
+          "Video Thumbnails"
         ],
         "parameters": [
           {
@@ -8505,7 +8502,7 @@
         "deprecated": false,
         "description": "Set a specific image as the active or default thumbnail for a video.",
         "tags": [
-          "Vidinfra/Video Thumbnails"
+          "Video Thumbnails"
         ],
         "parameters": [
           {
@@ -8757,7 +8754,7 @@
         "deprecated": false,
         "description": "Create a new transcoding profile with video, audio, and AI settings",
         "tags": [
-          "Vidinfra/Transcoding Profiles"
+          "Transcoding Profiles"
         ],
         "parameters": [
           {
@@ -9531,7 +9528,7 @@
         "deprecated": false,
         "description": "List all transcoding profiles for a library",
         "tags": [
-          "Vidinfra/Transcoding Profiles"
+          "Transcoding Profiles"
         ],
         "parameters": [
           {
@@ -9990,7 +9987,7 @@
         "deprecated": false,
         "description": "Retrieve detailed configuration of a profile",
         "tags": [
-          "Vidinfra/Transcoding Profiles"
+          "Transcoding Profiles"
         ],
         "parameters": [
           {
@@ -10400,7 +10397,7 @@
         "deprecated": false,
         "description": "Retrieve detailed configuration of a profile",
         "tags": [
-          "Vidinfra/Transcoding Profiles"
+          "Transcoding Profiles"
         ],
         "parameters": [
           {
@@ -11242,7 +11239,7 @@
         "deprecated": false,
         "description": "Delete a transcoding profile.\n",
         "tags": [
-          "Vidinfra/Transcoding Profiles"
+          "Transcoding Profiles"
         ],
         "parameters": [
           {
@@ -11421,7 +11418,7 @@
         "deprecated": false,
         "description": "Set a specific transcoding profile as the default for the library, making it the primary profile used for future video processing.",
         "tags": [
-          "Vidinfra/Transcoding Profiles"
+          "Transcoding Profiles"
         ],
         "parameters": [
           {
@@ -11652,7 +11649,7 @@
         "deprecated": false,
         "description": "Create a player for your video, and customise it.",
         "tags": [
-          "Vidinfra/Player Themes"
+          "Player Themes"
         ],
         "parameters": [
           {
@@ -12367,7 +12364,7 @@
         "deprecated": false,
         "description": "Retrieves a list of all video players within a specific library. Supports pagination, filtering, and sorting to efficiently manage and browse multiple players.",
         "tags": [
-          "Vidinfra/Player Themes"
+          "Player Themes"
         ],
         "parameters": [
           {
@@ -12811,7 +12808,7 @@
         "deprecated": false,
         "description": "Retrieves detailed information about a specific video player within a library.\nThis includes player configuration, associated videos, playback settings, and any customization options.",
         "tags": [
-          "Vidinfra/Player Themes"
+          "Player Themes"
         ],
         "parameters": [
           {
@@ -12973,7 +12970,7 @@
         "deprecated": false,
         "description": "Updates the configuration or metadata of a specific video player within a library.\nThis endpoint allows partial updates, so only the fields provided in the request are modified.",
         "tags": [
-          "Vidinfra/Player Themes"
+          "Player Themes"
         ],
         "parameters": [
           {
@@ -13648,7 +13645,7 @@
         "deprecated": false,
         "description": "Deletes a specific video player from a library. This operation permanently removes the player and its configuration.",
         "tags": [
-          "Vidinfra/Player Themes"
+          "Player Themes"
         ],
         "parameters": [
           {
@@ -13812,7 +13809,7 @@
         "deprecated": false,
         "description": "Marks a specific video player as the default player for a library.\nThe default player will be automatically used when embedding or displaying videos from this library if no specific player is selected.",
         "tags": [
-          "Vidinfra/Player Themes"
+          "Player Themes"
         ],
         "parameters": [
           {
@@ -14043,7 +14040,7 @@
         "deprecated": false,
         "description": "Create or update a chapter within a video.\nIf the chapter exists, it will be updated; otherwise, a new one will be created.",
         "tags": [
-          "Vidinfra/Video Chapter"
+          "Video Chapter"
         ],
         "parameters": [
           {
@@ -14399,7 +14396,7 @@
         "deprecated": false,
         "description": "Retrieve all chapters associated with a specific video, including their titles, timestamps, and descriptions.",
         "tags": [
-          "Vidinfra/Video Chapter"
+          "Video Chapter"
         ],
         "parameters": [
           {
@@ -14817,7 +14814,7 @@
         "deprecated": false,
         "description": "Register a new webhook endpoint to receive event notifications from this library.\nEach endpoint can subscribe to one or more event types.",
         "tags": [
-          "Vidinfra/Webhook Endpoints"
+          "Webhook Endpoints"
         ],
         "parameters": [
           {
@@ -15156,7 +15153,7 @@
         "deprecated": false,
         "description": "Retrieve a list of all webhook endpoints configured for a given library.\nSupports pagination and optional filtering (e.g., by status or event type).",
         "tags": [
-          "Vidinfra/Webhook Endpoints"
+          "Webhook Endpoints"
         ],
         "parameters": [
           {
@@ -15487,7 +15484,7 @@
         "deprecated": false,
         "description": "Retrieve detailed information about a specific webhook endpoint, including its URL, subscribed events, status, and last delivery timestamps.",
         "tags": [
-          "Vidinfra/Webhook Endpoints"
+          "Webhook Endpoints"
         ],
         "parameters": [
           {
@@ -15740,7 +15737,7 @@
         "deprecated": false,
         "description": "Update an existing webhook endpoint.\nYou can modify its description, event subscriptions, or status (active, paused, disabled).",
         "tags": [
-          "Vidinfra/Webhook Endpoints"
+          "Webhook Endpoints"
         ],
         "parameters": [
           {
@@ -16089,7 +16086,7 @@
         "deprecated": false,
         "description": "Permanently delete or deactivate a webhook endpoint.\nAfter deletion, Vidinfra will stop sending events to this endpoint.",
         "tags": [
-          "Vidinfra/Webhook Endpoints"
+          "Webhook Endpoints"
         ],
         "parameters": [
           {
@@ -16268,7 +16265,7 @@
         "deprecated": false,
         "description": "Retrieve detailed information about a specific webhook delivery attempt, including the request body, response payload, timestamps, and retry count.",
         "tags": [
-          "Vidinfra/Webhook Deliveries"
+          "Webhook Deliveries"
         ],
         "parameters": [
           {
@@ -16440,7 +16437,7 @@
         "deprecated": false,
         "description": "Trigger a replay of a webhook delivery event.\nTenbyte re-sends the original payload to the same or a custom target URL.\nUseful for testing fixed integrations or manually resending failed events.",
         "tags": [
-          "Vidinfra/Webhook Deliveries"
+          "Webhook Deliveries"
         ],
         "parameters": [
           {
@@ -16666,7 +16663,7 @@
         "deprecated": false,
         "description": "Retrieve the webhook delivery history for a specific endpoint.\nUseful for debugging delivery failures for a particular integration.",
         "tags": [
-          "Vidinfra/Webhook Deliveries"
+          "Webhook Deliveries"
         ],
         "parameters": [
           {
@@ -18134,7 +18131,7 @@
         "deprecated": false,
         "description": "Retrieve the current security settings for a specific library, including access controls and privacy configurations.",
         "tags": [
-          "Vidinfra/Security"
+          "Security"
         ],
         "parameters": [
           {
@@ -18377,7 +18374,7 @@
         "deprecated": false,
         "description": "Update a library’s security configurations such as access level, allowed domains, or token-based restrictions.",
         "tags": [
-          "Vidinfra/Security"
+          "Security"
         ],
         "parameters": [
           {
@@ -18766,7 +18763,7 @@
         "deprecated": false,
         "description": "Start a multipart upload session for a large video.\nVidinfra validates the file type and returns an uploadId for the client to upload chunks directly to S3.",
         "tags": [
-          "Vidinfra/Video Multipart Upload"
+          "Video Multipart Upload"
         ],
         "parameters": [
           {
@@ -19040,7 +19037,7 @@
         "deprecated": false,
         "description": "Generate pre-signed URL for uploading a specific part",
         "tags": [
-          "Vidinfra/Video Multipart Upload"
+          "Video Multipart Upload"
         ],
         "parameters": [
           {
@@ -19214,7 +19211,7 @@
         "deprecated": false,
         "description": "List all parts uploaded so far.",
         "tags": [
-          "Vidinfra/Video Multipart Upload"
+          "Video Multipart Upload"
         ],
         "parameters": [
           {
@@ -19376,7 +19373,7 @@
         "deprecated": false,
         "description": "Abort an in-progress multipart upload and delete partial data.",
         "tags": [
-          "Vidinfra/Video Multipart Upload"
+          "Video Multipart Upload"
         ],
         "parameters": [
           {
@@ -19540,7 +19537,7 @@
         "deprecated": false,
         "description": "Finalize the upload and merge parts.",
         "tags": [
-          "Vidinfra/Video Multipart Upload"
+          "Video Multipart Upload"
         ],
         "parameters": [
           {
@@ -19756,7 +19753,7 @@
         "deprecated": false,
         "description": "Triggered automatically during the video transcoding process to notify your system about status updates.\nSends video details such as ID, processing status, duration, and file sizes for real-time tracking or post-processing actions.",
         "tags": [
-          "Vidinfra/Webhook"
+          "Webhook"
         ],
         "parameters": [],
         "requestBody": {
@@ -20004,7 +20001,7 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "Vidinfra/Migration Jobs"
+          "Migration Jobs"
         ],
         "parameters": [
           {
@@ -20263,7 +20260,7 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "Vidinfra/Migration Jobs"
+          "Migration Jobs"
         ],
         "parameters": [
           {
