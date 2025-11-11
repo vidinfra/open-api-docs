@@ -1,0 +1,2642 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Default module",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8085",
+      "description": "Develop Env"
+    }
+  ],
+  "security": [
+    {
+      "bearer": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Distributions"
+    },
+    {
+      "name": "SSL Certificate Manage"
+    },
+    {
+      "name": "Origins/Upstreams Manage"
+    },
+    {
+      "name": "Purge"
+    },
+    {
+      "name": "Prefetch"
+    },
+    {
+      "name": "Cache Rules"
+    },
+    {
+      "name": "Access Rules"
+    },
+    {
+      "name": "Analytics"
+    },
+    {
+      "name": "Https Headers"
+    },
+    {
+      "name": "Verifications"
+    },
+    {
+      "name": "cdn"
+    }
+  ],
+  "paths": {
+    "/distributions/{id}": {
+      "get": {
+        "tags": [
+          "Distributions"
+        ],
+        "summary": "Get A Distribution Details",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "d774626e-7ca9-4807-86b9-9c7632113d35"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Distributions"
+        ],
+        "summary": "Delete Distribution",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "c781940b-72f5-45ee-94e2-2c9f1a461d51"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Distributions"
+        ],
+        "summary": "Patch Distribution",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "2f509a1c-fa60-4038-84b1-224ea0177ba7"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "status": "disabled"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/distributions": {
+      "get": {
+        "tags": [
+          "Distributions",
+          "cdn"
+        ],
+        "summary": "Get  Distribution List",
+        "description": "# 📦 Distributions API Documentation\n\n## Endpoint\n\n    GET /v1/distributions\n\n------------------------------------------------------------------------\n\n## Query Parameters\n\n### 📑 Pagination\n\n  ----------------------------------------------------------------------------\n  Parameter   Type     Description\n  ----------- -------- -------------------------------------------------------\n  `page`      number   Page number (default: 1)\n\n  `limit`     number   Number of items per page (default: 15, min: 1, max: 50)\n  ----------------------------------------------------------------------------\n\n------------------------------------------------------------------------\n\n### 🔍 Filtering\n\nYou can filter by the following fields:\n\n-   `id`\n-   `name`\n-   `cname`\n-   `domain`\n-   `status`\n-   `domain_type`\n-   `cache_strategy`\n-   `organization_id`\n-   `certificate_id`\n-   `enable_ssl`\n-   `is_redirect_http_to_https`\n-   `is_http2`\n-   `is_http3`\n-   `is_cname_valid`\n-   `is_acme_challenge_valid`\n-   `le_issue`\n-   `created_at`\n-   `updated_at`\n\n#### Operators\n\n  Operator        Description\n  --------------- ------------------------------------------\n  `eq`            Equals\n  `ne`            Not equals\n  `like`          Contains (case insensitive)\n  `not-like`      Does not contain\n  `starts-with`   Starts with\n  `ends-with`     Ends with\n  `gt`            Greater than\n  `gte`           Greater than or equal\n  `lt`            Less than\n  `lte`           Less than or equal\n  `in`            In list (comma-separated)\n  `not-in`        Not in list\n  `null`          Is null\n  `not-null`      Is not null\n  `between`       Between two values (comma-separated)\n  `not-between`   Not between two values (comma-separated)\n\n#### Example Filters\n\n    filter[name][starts-with]=cdn-\n    filter[status][in]=active,disabled\n    filter[enable_ssl][eq]=true\n    filter[created_at][between]=2025-01-01,2025-08-01\n\n------------------------------------------------------------------------\n\n### ↕ Sorting\n\n  ---------------------------------------------------------------------------\n  Parameter   Description\n  ----------- ---------------------------------------------------------------\n  `sort`      Sort fields. Prefix with `-` for descending. Allowed:\n              `created_at`, `updated_at`, `name`, `status`, `domain_type`,\n              `cache_strategy`, `domain`, `cname`\n\n  ---------------------------------------------------------------------------\n\n#### Example Sorts\n\n    sort=-created_at\n    sort=name\n    sort=-created_at,name\n\n------------------------------------------------------------------------\n\n## 📌 Example Requests\n\n### 1. Prefix search + newest first\n\n    GET /v1/distributions?filter[name][starts-with]=cdn-&sort=-created_at\n\n### 2. Status + type + alphabetical\n\n    GET /v1/distributions?filter[status][in]=active,disabled&filter[domain_type][eq]=system&sort=name\n\n### 3. Created date range\n\n    GET /v1/distributions?filter[created_at][between]=2025-01-01,2025-08-01&sort=-created_at\n\n### 4. SSL-only\n\n    GET /v1/distributions?filter[enable_ssl][eq]=true\n\n------------------------------------------------------------------------\n\n## ✅ Success Response\n\n    Status: 200 OK\n    {\n      \"success\": true,\n      \"count\": 2,\n      \"data\": [\n        {\n          \"id\": \"uuid\",\n          \"name\": \"cdn-example\",\n          \"status\": \"active\",\n          \"domain_type\": \"system\",\n          \"enable_ssl\": true,\n          \"created_at\": \"2025-02-01T12:00:00Z\",\n          \"updated_at\": \"2025-02-10T12:00:00Z\"\n        }\n      ]\n    }\n\n------------------------------------------------------------------------\n\n## ❌ Error Response\n\n    Status: 400 Bad Request\n    {\n      \"success\": false,\n      \"message\": \"Invalid filter query\",\n      \"errors\": {\n        \"filter\": \"Unsupported field or operator\"\n      }\n    }\n",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "10"
+          },
+          {
+            "name": "filter[cname][eq]",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "cdn88313.example.com"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjb25zb2xlLnZpZGluZnJhLmNvbSIsImV4cCI6MTc1NjE2MTgxMiwiaWF0IjoxNzU2MTE4NjEyLCJqdGkiOiI2MjI4MDQxZi0yZTFhLTQzMzQtYjdlNy0yOGE4MjJkZmQ3NDEiLCJlbWFpbCI6Im9zbWFubWFzdW0uY3NAZ21haWwuY29tIiwidXNlcm5hbWUiOiJNYXN1bSBPc21hbiIsInJvbGUiOiJvd25lciIsInVzZXJfaWQiOiJkYzMwNDVkOS03MGJiLTRkNGYtYTY1MC0yMmMxMzRkYzhmMjEiLCJzZXNzaW9uX2lkIjoiNjI4NmFlM2QtODM0Mi00NDBlLWJmM2UtNWQzOGJkZjUwNTk2Iiwib3JnYW5pemF0aW9uX2lkIjoiYzNhNzU5NjAtM2ZiYS00NGUwLTgyZjctZTU0ZWUyZDVhN2Y3In0.svWoA7S0Y1STKn2lFPnf13gpaHWLwmJQdAqmEuR8RaY5iUZM6IMaMNW3_ZylT5oylRb6cCMb_2KiSmqJHeFh5uWGSiDAyc-GD3BNLoBbDqqf6DoCF9f5xH2LRrj0SMLs4eoGsQOtRMBkz8XUaMnK1ezjGqJc8T0oNtYYAKktHE_q-jS-8N5bGOdeqekOj7M9wElPSeuTv_AYh6HWoWVaPRLfLDQna7XKuEO_cyWA5d9ngCXBkje0-ycruZ-b9NBcrS2fLUDaKeAYJ3MP7-__Yz8Ej1NmUQOFRdz1W1uZ_eCkatcoGYk5zxC3CtoZcBaYa9ZKub2WvIoB9rciW2rI9pmCNYe0WC4LRGSHs47mDUD4I9FbyWCrtuwKFqeKnN8JGHhpx2JDdAI4GcqkwVMJJIRswio9Xq8vqYN7MPnjifs8R5EDFy7yRAuuu4s2hIjKFTntfJuBk08tgRg-q4sxAGB9QAaYYgqmmHYDDioheHpZtjZORjkCNHBfAp0D2mEnuboYHJS06d2pKKg-_3R1qH_NjqPYW8_v5cEpRlZ2yGRx1g7mLFFRKB7CQIEyCIGsM88PkCS_84DqTu5_XcXif2MgfhNBux74ZBU6jv0YvDSTr3veUm_d3XdBMZY34OfGugJBrsIIjSZRmiqHDmk7Ci9dftK3aev6yOAs2Jfpvk4"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "created_at": "2025-08-18T06:04:15Z",
+                      "description": "Seeded distribution 94399",
+                      "updated_at": "2025-08-18T06:04:45Z",
+                      "domain_type": "managed",
+                      "name": "Distribution #94399",
+                      "cname": "smartroute.tenbytecdn.com",
+                      "domain": "tb-uhlpi0becq.tenbytecdn.com",
+                      "status": "active",
+                      "cache_strategy": "dynamic",
+                      "organization_id": "dd48af2e-7eb5-46c6-b12d-82001e35a574",
+                      "id": "000075b4-36ef-47da-9443-7d5742bc7a95",
+                      "is_acme_challenge_valid": true,
+                      "enable_ssl": true,
+                      "le_issue": true,
+                      "is_redirect_http_to_https": true,
+                      "is_http2": true,
+                      "is_cname_valid": false,
+                      "is_http3": true
+                    },
+                    {
+                      "created_at": "2025-08-18T06:04:15Z",
+                      "description": "Seeded distribution 8999",
+                      "updated_at": "2025-08-18T06:04:18Z",
+                      "domain_type": "managed",
+                      "name": "Distribution #8999",
+                      "cname": "smartroute.tenbytecdn.com",
+                      "domain": "tb-dkmbyy0d8d.tenbytecdn.com",
+                      "status": "provisioning",
+                      "cache_strategy": "custom",
+                      "organization_id": "7cbdca03-5950-458b-9a97-005691cd64b4",
+                      "id": "00011542-0b0e-4bf9-a369-8c1baeba8e32",
+                      "is_acme_challenge_valid": false,
+                      "enable_ssl": true,
+                      "le_issue": true,
+                      "is_redirect_http_to_https": true,
+                      "is_http2": true,
+                      "is_cname_valid": true,
+                      "is_http3": true
+                    },
+                    {
+                      "created_at": "2025-08-18T06:04:15Z",
+                      "description": "Seeded distribution 9849",
+                      "updated_at": "2025-08-18T06:04:18Z",
+                      "domain_type": "custom",
+                      "name": "Distribution #9849",
+                      "cname": "smartroute.tenbytecdn.com",
+                      "domain": "tb-hwdcfpsz3m.tenbytecdn.com",
+                      "status": "disabled",
+                      "cache_strategy": "live",
+                      "organization_id": "66dfacfe-e0c7-4c62-b0d0-a853341df6ee",
+                      "id": "0001559a-6255-4731-81f2-90e386026824",
+                      "is_acme_challenge_valid": true,
+                      "enable_ssl": true,
+                      "le_issue": true,
+                      "is_redirect_http_to_https": true,
+                      "is_http2": true,
+                      "is_cname_valid": true,
+                      "is_http3": true
+                    },
+                    {
+                      "created_at": "2025-08-18T06:04:15Z",
+                      "description": "Seeded distribution 81829",
+                      "updated_at": "2025-08-18T06:04:41Z",
+                      "domain_type": "managed",
+                      "name": "Distribution #81829",
+                      "cname": "smartroute.tenbytecdn.com",
+                      "domain": "tb-pm38xm08f8.tenbytecdn.com",
+                      "status": "active",
+                      "cache_strategy": "custom",
+                      "organization_id": "18498b73-a1db-481c-8c23-262166b3a96d",
+                      "id": "00016131-549e-4235-b325-d17a0e11f0c4",
+                      "is_acme_challenge_valid": true,
+                      "enable_ssl": true,
+                      "le_issue": false,
+                      "is_redirect_http_to_https": true,
+                      "is_http2": true,
+                      "is_cname_valid": false,
+                      "is_http3": false
+                    },
+                    {
+                      "created_at": "2025-08-18T06:04:15Z",
+                      "description": "Seeded distribution 21994",
+                      "updated_at": "2025-08-18T06:04:21Z",
+                      "domain_type": "system",
+                      "name": "Distribution #21994",
+                      "cname": "smartroute.tenbytecdn.com",
+                      "domain": "tb-oclcrivsom.tenbytecdn.com",
+                      "status": "active",
+                      "cache_strategy": "live",
+                      "organization_id": "68fa2c9d-0e97-4a92-b773-6f6faf4bdb9f",
+                      "id": "00021e15-95eb-4065-bec3-a8aef676fdde",
+                      "is_acme_challenge_valid": false,
+                      "enable_ssl": true,
+                      "le_issue": true,
+                      "is_redirect_http_to_https": true,
+                      "is_http2": true,
+                      "is_cname_valid": true,
+                      "is_http3": true
+                    }
+                  ],
+                  "meta": {
+                    "links": {
+                      "self": "/distributions?limit=5&page=1",
+                      "first": "/distributions?limit=5&page=1",
+                      "next": "/distributions?limit=5&page=2",
+                      "last": "/distributions?limit=5&page=20000"
+                    },
+                    "pagination": {
+                      "page": 1,
+                      "page_size": 5,
+                      "total": 100000,
+                      "total_pages": 20000
+                    }
+                  },
+                  "message": "Request processed successfully.",
+                  "success": true
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Distributions",
+          "cdn"
+        ],
+        "summary": "CDN Distribution API – Create Distribution",
+        "description": "Creates a new CDN distribution for a customer. This API allows configuration of caching behavior, domain mapping, and origin server settings.",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjb25zb2xlLnZpZGluZnJhLmNvbSIsImV4cCI6MTc1NjE2MTgxMiwiaWF0IjoxNzU2MTE4NjEyLCJqdGkiOiI2MjI4MDQxZi0yZTFhLTQzMzQtYjdlNy0yOGE4MjJkZmQ3NDEiLCJlbWFpbCI6Im9zbWFubWFzdW0uY3NAZ21haWwuY29tIiwidXNlcm5hbWUiOiJNYXN1bSBPc21hbiIsInJvbGUiOiJvd25lciIsInVzZXJfaWQiOiJkYzMwNDVkOS03MGJiLTRkNGYtYTY1MC0yMmMxMzRkYzhmMjEiLCJzZXNzaW9uX2lkIjoiNjI4NmFlM2QtODM0Mi00NDBlLWJmM2UtNWQzOGJkZjUwNTk2Iiwib3JnYW5pemF0aW9uX2lkIjoiYzNhNzU5NjAtM2ZiYS00NGUwLTgyZjctZTU0ZWUyZDVhN2Y3In0.svWoA7S0Y1STKn2lFPnf13gpaHWLwmJQdAqmEuR8RaY5iUZM6IMaMNW3_ZylT5oylRb6cCMb_2KiSmqJHeFh5uWGSiDAyc-GD3BNLoBbDqqf6DoCF9f5xH2LRrj0SMLs4eoGsQOtRMBkz8XUaMnK1ezjGqJc8T0oNtYYAKktHE_q-jS-8N5bGOdeqekOj7M9wElPSeuTv_AYh6HWoWVaPRLfLDQna7XKuEO_cyWA5d9ngCXBkje0-ycruZ-b9NBcrS2fLUDaKeAYJ3MP7-__Yz8Ej1NmUQOFRdz1W1uZ_eCkatcoGYk5zxC3CtoZcBaYa9ZKub2WvIoB9rciW2rI9pmCNYe0WC4LRGSHs47mDUD4I9FbyWCrtuwKFqeKnN8JGHhpx2JDdAI4GcqkwVMJJIRswio9Xq8vqYN7MPnjifs8R5EDFy7yRAuuu4s2hIjKFTntfJuBk08tgRg-q4sxAGB9QAaYYgqmmHYDDioheHpZtjZORjkCNHBfAp0D2mEnuboYHJS06d2pKKg-_3R1qH_NjqPYW8_v5cEpRlZ2yGRx1g7mLFFRKB7CQIEyCIGsM88PkCS_84DqTu5_XcXif2MgfhNBux74ZBU6jv0YvDSTr3veUm_d3XdBMZY34OfGugJBrsIIjSZRmiqHDmk7Ci9dftK3aev6yOAs2Jfpvk4"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/distributions_body"
+              },
+              "example": "{\n    \"name\": \"chaldal new\",\n    \"type\":\"custom\",\n    \"domain_type\": \"custom\",\n    \"domain\": \"openresty.sohel.pro\",\n    \"description\": \"test\",\n    \"cache_strategy\": \"vod\",\n    \"host_header\": \"cdn233.tenbyte.com.my\",\n    \"origin\": {\n        \"name\": \"chaldal\",\n        \"type\": \"custom\",\n        \"endpoint\": \"https://chaldal.com\" // Fully qualified domain\n        // \"bucket\": \"tenbyte-vod-files\",\n        // \"region\": \"tenbyte-origin-416-1\",\n        // \"access_key\": \"tenbyte-origin-416-1\",\n        // \"secret_key\": \"tenbyte-origin-416-1\",\n    }\n}"
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/distributions/{distributionID}": {
+      "put": {
+        "tags": [
+          "Distributions"
+        ],
+        "summary": "Update A Distribution",
+        "description": "",
+        "parameters": [
+          {
+            "name": "distributionID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0d986c01-7499-4b6a-99ee-94612564cf41"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjb25zb2xlLnZpZGluZnJhLmNvbSIsImV4cCI6MTc1NjA2NjE2NiwiaWF0IjoxNzU2MDIyOTY2LCJqdGkiOiI0OGViN2FjOC0yMGY5LTQ4Y2UtYTY5MC04ZTE2ODE0MTc0YTgiLCJlbWFpbCI6Im9zbWFubWFzdW0uY3NAZ21haWwuY29tIiwidXNlcm5hbWUiOiJNYXN1bSBPc21hbiIsInJvbGUiOiIiLCJ1c2VyX2lkIjoiZGMzMDQ1ZDktNzBiYi00ZDRmLWE2NTAtMjJjMTM0ZGM4ZjIxIiwic2Vzc2lvbl9pZCI6IjNkY2U4MDFmLWQ5MzMtNDVkMS05NjQzLTAxOWVkZDEwZTM5OSIsIm9yZ2FuaXphdGlvbl9pZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCJ9.Bseo5UTm8L7YKABgzSgyxI9UwlvAgFXlQOhRAr36jK52xlzHAi4ASY4l7Y-jEHBRhmD8ZnGnTMbXFIKtU-D1EnAlfsjUJsHkvZFlyLXLYTPnIM8drSog0ayvtXSpVBV8nyrdnNBmQa7MXs-x9t1MkCtGf5H5rRmumhKH7ElJcJ2KUHO6jV9xZ9_eErhxQBu7YFoF7gpNxK4amGPNQ3cBsULaegdrSqq5pJCw5YMBdglZhkTHOA86T8OWjR41KV-izKaSLLgVFuko_UgpxVZH0oRUlcrTPgGvZu9YUSg9Vqs7wYV_jxf9PTCCW9i-M0pmQLHauNicLq7gU8EOOtYqcOuS91EcyA0XzhVpwXxTlkeoMWs_OMiYWW_ifF-L5nv_5HnFDi0lN6aGYHSWOvslevvJqhOD4Ay8OWu5kMbmHVSCw71O1CUxwoOeK1_7AsfisFTNwUYQDCWbtd2datG6YVTciZ338DA7-nZ5By5HAQHtezVbbFZ5ohfOaSRPviV1oQsAxpdAjWPQpjvu8vEDWBJIS7ZvrTj_ebV_vakjJRS9RxXsMkuUCywsN0K6X_EZuQgsCzNSt6l2wvPXpN8C9cPqSM5fkUEH2FUmreUgputMM9LSnzSynUAIG-AxsGzcp_-IaaxXjdgFVM2HCQ_yrRDZVGogV9Z514nE3xEa898"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/distributions_distributionID_body"
+              },
+              "example": "{\n    \"name\": \"Tenbyte CDN\",\n    \"description\": \"\",\n    \"host_header\": \"cdn.tenbyte.com.my\",\n    \"is_http2\": true,\n    \"is_http3\": false,\n    \"sni\": \"cdn.tenbyte.com.my\",\n    // \"certificate_id\": \"162ce667-fea3-49ae-8c0b-18bd7b1fe141\",\n    \"enable_webp\": true,\n    \"is_redirect_http_to_https\": false\n}"
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/distributions/count": {
+      "get": {
+        "tags": [
+          "Distributions",
+          "cdn"
+        ],
+        "summary": "Get  Distribution Count",
+        "description": "# 📦 Distributions API Documentation\n\n## Endpoint\n\n    GET /v1/distributions\n\n------------------------------------------------------------------------\n\n## Query Parameters\n\n### 📑 Pagination\n\n  ----------------------------------------------------------------------------\n  Parameter   Type     Description\n  ----------- -------- -------------------------------------------------------\n  `page`      number   Page number (default: 1)\n\n  `limit`     number   Number of items per page (default: 15, min: 1, max: 50)\n  ----------------------------------------------------------------------------\n\n------------------------------------------------------------------------\n\n### 🔍 Filtering\n\nYou can filter by the following fields:\n\n-   `id`\n-   `name`\n-   `cname`\n-   `domain`\n-   `status`\n-   `domain_type`\n-   `cache_strategy`\n-   `organization_id`\n-   `certificate_id`\n-   `enable_ssl`\n-   `is_redirect_http_to_https`\n-   `is_http2`\n-   `is_http3`\n-   `is_cname_valid`\n-   `is_acme_challenge_valid`\n-   `le_issue`\n-   `created_at`\n-   `updated_at`\n\n#### Operators\n\n  Operator        Description\n  --------------- ------------------------------------------\n  `eq`            Equals\n  `ne`            Not equals\n  `like`          Contains (case insensitive)\n  `not-like`      Does not contain\n  `starts-with`   Starts with\n  `ends-with`     Ends with\n  `gt`            Greater than\n  `gte`           Greater than or equal\n  `lt`            Less than\n  `lte`           Less than or equal\n  `in`            In list (comma-separated)\n  `not-in`        Not in list\n  `null`          Is null\n  `not-null`      Is not null\n  `between`       Between two values (comma-separated)\n  `not-between`   Not between two values (comma-separated)\n\n#### Example Filters\n\n    filter[name][starts-with]=cdn-\n    filter[status][in]=active,disabled\n    filter[enable_ssl][eq]=true\n    filter[created_at][between]=2025-01-01,2025-08-01\n\n------------------------------------------------------------------------\n\n### ↕ Sorting\n\n  ---------------------------------------------------------------------------\n  Parameter   Description\n  ----------- ---------------------------------------------------------------\n  `sort`      Sort fields. Prefix with `-` for descending. Allowed:\n              `created_at`, `updated_at`, `name`, `status`, `domain_type`,\n              `cache_strategy`, `domain`, `cname`\n\n  ---------------------------------------------------------------------------\n\n#### Example Sorts\n\n    sort=-created_at\n    sort=name\n    sort=-created_at,name\n\n------------------------------------------------------------------------\n\n## 📌 Example Requests\n\n### 1. Prefix search + newest first\n\n    GET /v1/distributions?filter[name][starts-with]=cdn-&sort=-created_at\n\n### 2. Status + type + alphabetical\n\n    GET /v1/distributions?filter[status][in]=active,disabled&filter[domain_type][eq]=system&sort=name\n\n### 3. Created date range\n\n    GET /v1/distributions?filter[created_at][between]=2025-01-01,2025-08-01&sort=-created_at\n\n### 4. SSL-only\n\n    GET /v1/distributions?filter[enable_ssl][eq]=true\n\n------------------------------------------------------------------------\n\n## ✅ Success Response\n\n    Status: 200 OK\n    {\n      \"success\": true,\n      \"count\": 2,\n      \"data\": [\n        {\n          \"id\": \"uuid\",\n          \"name\": \"cdn-example\",\n          \"status\": \"active\",\n          \"domain_type\": \"system\",\n          \"enable_ssl\": true,\n          \"created_at\": \"2025-02-01T12:00:00Z\",\n          \"updated_at\": \"2025-02-10T12:00:00Z\"\n        }\n      ]\n    }\n\n------------------------------------------------------------------------\n\n## ❌ Error Response\n\n    Status: 400 Bad Request\n    {\n      \"success\": false,\n      \"message\": \"Invalid filter query\",\n      \"errors\": {\n        \"filter\": \"Unsupported field or operator\"\n      }\n    }\n",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "10"
+          },
+          {
+            "name": "filter[cname][eq]",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "cdn88313.example.com"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjb25zb2xlLnZpZGluZnJhLmNvbSIsImV4cCI6MTc1NjE2MTgxMiwiaWF0IjoxNzU2MTE4NjEyLCJqdGkiOiI2MjI4MDQxZi0yZTFhLTQzMzQtYjdlNy0yOGE4MjJkZmQ3NDEiLCJlbWFpbCI6Im9zbWFubWFzdW0uY3NAZ21haWwuY29tIiwidXNlcm5hbWUiOiJNYXN1bSBPc21hbiIsInJvbGUiOiJvd25lciIsInVzZXJfaWQiOiJkYzMwNDVkOS03MGJiLTRkNGYtYTY1MC0yMmMxMzRkYzhmMjEiLCJzZXNzaW9uX2lkIjoiNjI4NmFlM2QtODM0Mi00NDBlLWJmM2UtNWQzOGJkZjUwNTk2Iiwib3JnYW5pemF0aW9uX2lkIjoiYzNhNzU5NjAtM2ZiYS00NGUwLTgyZjctZTU0ZWUyZDVhN2Y3In0.svWoA7S0Y1STKn2lFPnf13gpaHWLwmJQdAqmEuR8RaY5iUZM6IMaMNW3_ZylT5oylRb6cCMb_2KiSmqJHeFh5uWGSiDAyc-GD3BNLoBbDqqf6DoCF9f5xH2LRrj0SMLs4eoGsQOtRMBkz8XUaMnK1ezjGqJc8T0oNtYYAKktHE_q-jS-8N5bGOdeqekOj7M9wElPSeuTv_AYh6HWoWVaPRLfLDQna7XKuEO_cyWA5d9ngCXBkje0-ycruZ-b9NBcrS2fLUDaKeAYJ3MP7-__Yz8Ej1NmUQOFRdz1W1uZ_eCkatcoGYk5zxC3CtoZcBaYa9ZKub2WvIoB9rciW2rI9pmCNYe0WC4LRGSHs47mDUD4I9FbyWCrtuwKFqeKnN8JGHhpx2JDdAI4GcqkwVMJJIRswio9Xq8vqYN7MPnjifs8R5EDFy7yRAuuu4s2hIjKFTntfJuBk08tgRg-q4sxAGB9QAaYYgqmmHYDDioheHpZtjZORjkCNHBfAp0D2mEnuboYHJS06d2pKKg-_3R1qH_NjqPYW8_v5cEpRlZ2yGRx1g7mLFFRKB7CQIEyCIGsM88PkCS_84DqTu5_XcXif2MgfhNBux74ZBU6jv0YvDSTr3veUm_d3XdBMZY34OfGugJBrsIIjSZRmiqHDmk7Ci9dftK3aev6yOAs2Jfpvk4"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200"
+                },
+                "example": {
+                  "data": {
+                    "count": 3
+                  },
+                  "message": "Request processed successfully.",
+                  "success": true
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/distributions/stats": {
+      "get": {
+        "tags": [
+          "Distributions",
+          "cdn"
+        ],
+        "summary": "Get Distribution Stats",
+        "description": "# 📦 Distributions API Documentation\n\n## Endpoint\n\n    GET /v1/distributions\n\n------------------------------------------------------------------------\n\n## Query Parameters\n\n### 📑 Pagination\n\n  ----------------------------------------------------------------------------\n  Parameter   Type     Description\n  ----------- -------- -------------------------------------------------------\n  `page`      number   Page number (default: 1)\n\n  `limit`     number   Number of items per page (default: 15, min: 1, max: 50)\n  ----------------------------------------------------------------------------\n\n------------------------------------------------------------------------\n\n### 🔍 Filtering\n\nYou can filter by the following fields:\n\n-   `id`\n-   `name`\n-   `cname`\n-   `domain`\n-   `status`\n-   `domain_type`\n-   `cache_strategy`\n-   `organization_id`\n-   `certificate_id`\n-   `enable_ssl`\n-   `is_redirect_http_to_https`\n-   `is_http2`\n-   `is_http3`\n-   `is_cname_valid`\n-   `is_acme_challenge_valid`\n-   `le_issue`\n-   `created_at`\n-   `updated_at`\n\n#### Operators\n\n  Operator        Description\n  --------------- ------------------------------------------\n  `eq`            Equals\n  `ne`            Not equals\n  `like`          Contains (case insensitive)\n  `not-like`      Does not contain\n  `starts-with`   Starts with\n  `ends-with`     Ends with\n  `gt`            Greater than\n  `gte`           Greater than or equal\n  `lt`            Less than\n  `lte`           Less than or equal\n  `in`            In list (comma-separated)\n  `not-in`        Not in list\n  `null`          Is null\n  `not-null`      Is not null\n  `between`       Between two values (comma-separated)\n  `not-between`   Not between two values (comma-separated)\n\n#### Example Filters\n\n    filter[name][starts-with]=cdn-\n    filter[status][in]=active,disabled\n    filter[enable_ssl][eq]=true\n    filter[created_at][between]=2025-01-01,2025-08-01\n\n------------------------------------------------------------------------\n\n### ↕ Sorting\n\n  ---------------------------------------------------------------------------\n  Parameter   Description\n  ----------- ---------------------------------------------------------------\n  `sort`      Sort fields. Prefix with `-` for descending. Allowed:\n              `created_at`, `updated_at`, `name`, `status`, `domain_type`,\n              `cache_strategy`, `domain`, `cname`\n\n  ---------------------------------------------------------------------------\n\n#### Example Sorts\n\n    sort=-created_at\n    sort=name\n    sort=-created_at,name\n\n------------------------------------------------------------------------\n\n## 📌 Example Requests\n\n### 1. Prefix search + newest first\n\n    GET /v1/distributions?filter[name][starts-with]=cdn-&sort=-created_at\n\n### 2. Status + type + alphabetical\n\n    GET /v1/distributions?filter[status][in]=active,disabled&filter[domain_type][eq]=system&sort=name\n\n### 3. Created date range\n\n    GET /v1/distributions?filter[created_at][between]=2025-01-01,2025-08-01&sort=-created_at\n\n### 4. SSL-only\n\n    GET /v1/distributions?filter[enable_ssl][eq]=true\n\n------------------------------------------------------------------------\n\n## ✅ Success Response\n\n    Status: 200 OK\n    {\n      \"success\": true,\n      \"count\": 2,\n      \"data\": [\n        {\n          \"id\": \"uuid\",\n          \"name\": \"cdn-example\",\n          \"status\": \"active\",\n          \"domain_type\": \"system\",\n          \"enable_ssl\": true,\n          \"created_at\": \"2025-02-01T12:00:00Z\",\n          \"updated_at\": \"2025-02-10T12:00:00Z\"\n        }\n      ]\n    }\n\n------------------------------------------------------------------------\n\n## ❌ Error Response\n\n    Status: 400 Bad Request\n    {\n      \"success\": false,\n      \"message\": \"Invalid filter query\",\n      \"errors\": {\n        \"filter\": \"Unsupported field or operator\"\n      }\n    }\n",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_1"
+                },
+                "example": {
+                  "data": {
+                    "count": 3
+                  },
+                  "message": "Request processed successfully.",
+                  "success": true
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/distributions/{id}/revoke-ssl": {
+      "patch": {
+        "tags": [
+          "Distributions"
+        ],
+        "summary": "revoke-ssl",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "78228953-decf-42e2-87df-d6edf87e5950"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": ""
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/distributions/41eb1e4d-b991-46f4-ae7b-86b5f746963b/toggle-webp": {
+      "patch": {
+        "tags": [
+          "Distributions",
+          "cdn"
+        ],
+        "summary": "Toggle WebP",
+        "description": "This API is to toggle WebP Configuration.\n\nAPI consumer must send `enable_webp`: `true` or `false`",
+        "parameters": [
+          {
+            "name": "distribution_id",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "41eb1e4d-b991-46f4-ae7b-86b5f746963b"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "enable_webp": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/distributions/{id}/certificates/{certificateID}": {
+      "put": {
+        "tags": [
+          "Distributions"
+        ],
+        "summary": "Assign Certificate To Distribution",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "78228953-decf-42e2-87df-d6edf87e5950"
+          },
+          {
+            "name": "certificateID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "eab7d481-59da-4952-b10c-23e33aeff9aa"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": ""
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/v1/certificates/21ce3e9a-7966-4c68-845e-fbfa253ab15a": {
+      "get": {
+        "tags": [
+          "SSL Certificate Manage"
+        ],
+        "summary": "Get Certificate",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/certificates/stats": {
+      "get": {
+        "tags": [
+          "SSL Certificate Manage",
+          "cdn"
+        ],
+        "summary": "Get Certificate Stats",
+        "description": "# 📦 Distributions API Documentation\n\n## Endpoint\n\n    GET /v1/distributions\n\n------------------------------------------------------------------------\n\n## Query Parameters\n\n### 📑 Pagination\n\n  ----------------------------------------------------------------------------\n  Parameter   Type     Description\n  ----------- -------- -------------------------------------------------------\n  `page`      number   Page number (default: 1)\n\n  `limit`     number   Number of items per page (default: 15, min: 1, max: 50)\n  ----------------------------------------------------------------------------\n\n------------------------------------------------------------------------\n\n### 🔍 Filtering\n\nYou can filter by the following fields:\n\n-   `id`\n-   `name`\n-   `cname`\n-   `domain`\n-   `status`\n-   `domain_type`\n-   `cache_strategy`\n-   `organization_id`\n-   `certificate_id`\n-   `enable_ssl`\n-   `is_redirect_http_to_https`\n-   `is_http2`\n-   `is_http3`\n-   `is_cname_valid`\n-   `is_acme_challenge_valid`\n-   `le_issue`\n-   `created_at`\n-   `updated_at`\n\n#### Operators\n\n  Operator        Description\n  --------------- ------------------------------------------\n  `eq`            Equals\n  `ne`            Not equals\n  `like`          Contains (case insensitive)\n  `not-like`      Does not contain\n  `starts-with`   Starts with\n  `ends-with`     Ends with\n  `gt`            Greater than\n  `gte`           Greater than or equal\n  `lt`            Less than\n  `lte`           Less than or equal\n  `in`            In list (comma-separated)\n  `not-in`        Not in list\n  `null`          Is null\n  `not-null`      Is not null\n  `between`       Between two values (comma-separated)\n  `not-between`   Not between two values (comma-separated)\n\n#### Example Filters\n\n    filter[name][starts-with]=cdn-\n    filter[status][in]=active,disabled\n    filter[enable_ssl][eq]=true\n    filter[created_at][between]=2025-01-01,2025-08-01\n\n------------------------------------------------------------------------\n\n### ↕ Sorting\n\n  ---------------------------------------------------------------------------\n  Parameter   Description\n  ----------- ---------------------------------------------------------------\n  `sort`      Sort fields. Prefix with `-` for descending. Allowed:\n              `created_at`, `updated_at`, `name`, `status`, `domain_type`,\n              `cache_strategy`, `domain`, `cname`\n\n  ---------------------------------------------------------------------------\n\n#### Example Sorts\n\n    sort=-created_at\n    sort=name\n    sort=-created_at,name\n\n------------------------------------------------------------------------\n\n## 📌 Example Requests\n\n### 1. Prefix search + newest first\n\n    GET /v1/distributions?filter[name][starts-with]=cdn-&sort=-created_at\n\n### 2. Status + type + alphabetical\n\n    GET /v1/distributions?filter[status][in]=active,disabled&filter[domain_type][eq]=system&sort=name\n\n### 3. Created date range\n\n    GET /v1/distributions?filter[created_at][between]=2025-01-01,2025-08-01&sort=-created_at\n\n### 4. SSL-only\n\n    GET /v1/distributions?filter[enable_ssl][eq]=true\n\n------------------------------------------------------------------------\n\n## ✅ Success Response\n\n    Status: 200 OK\n    {\n      \"success\": true,\n      \"count\": 2,\n      \"data\": [\n        {\n          \"id\": \"uuid\",\n          \"name\": \"cdn-example\",\n          \"status\": \"active\",\n          \"domain_type\": \"system\",\n          \"enable_ssl\": true,\n          \"created_at\": \"2025-02-01T12:00:00Z\",\n          \"updated_at\": \"2025-02-10T12:00:00Z\"\n        }\n      ]\n    }\n\n------------------------------------------------------------------------\n\n## ❌ Error Response\n\n    Status: 400 Bad Request\n    {\n      \"success\": false,\n      \"message\": \"Invalid filter query\",\n      \"errors\": {\n        \"filter\": \"Unsupported field or operator\"\n      }\n    }\n",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_1"
+                },
+                "example": {
+                  "data": {
+                    "active": 1,
+                    "provisioning": 1,
+                    "suspended": 1
+                  },
+                  "message": "Certificate stats fetched successfully.",
+                  "success": true
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/certificates/{id}": {
+      "delete": {
+        "tags": [
+          "SSL Certificate Manage"
+        ],
+        "summary": "Delete Certificate",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "7cef9314-1ad4-4497-b4ff-5c44c168029a"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/distributions/{distributionID}/request-ssl": {
+      "post": {
+        "tags": [
+          "SSL Certificate Manage"
+        ],
+        "summary": "Request For Let's Encrypt SSL",
+        "description": "",
+        "parameters": [
+          {
+            "name": "distributionID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/certificates": {
+      "get": {
+        "tags": [
+          "SSL Certificate Manage"
+        ],
+        "summary": "Get List Certificates",
+        "description": "",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "2"
+          },
+          {
+            "name": "filter[name][eq]",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "sslcert"
+          },
+          {
+            "name": "filter[created_at][eq]",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "2028-02-01 23:59:59"
+          },
+          {
+            "name": "filter[common_name]",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "*.gpcdn.net"
+          },
+          {
+            "name": "filter[valid_to]",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "2028-02-01 23:59:59"
+          },
+          {
+            "name": "filter[status]",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "active"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "SSL Certificate Manage"
+        ],
+        "summary": "Create New SSL",
+        "description": "",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "name": "Test",
+                "certificate": "-----BEGIN CERTIFICATE-----\nMIIGKzCCBROgAwIBAgIQCEeCp7vaX/ZGLSxtuxKPEDANBgkqhkiG9w0BAQsFADCB\njzELMAkGA1UEBhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4G\nA1UEBxMHU2FsZm9yZDEYMBYGA1UEChMPU2VjdGlnbyBMaW1pdGVkMTcwNQYDVQQD\nEy5TZWN0aWdvIFJTQSBEb21haW4gVmFsaWRhdGlvbiBTZWN1cmUgU2VydmVyIENB\nMB4XDTI1MDExODAwMDAwMFoXDTI2MDIwMTIzNTk1OVowFjEUMBIGA1UEAwwLKi5n\ncGNkbi5uZXQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDqmHu/n6nV\nEyIFTXUQmiJpo2OepDQsaD1v6nCOvOkNvryqBBqikkOrMqEcK2xufWV8MjMErtN7\n1zbia6Gp47DKwY+WGPUVcFHpSgwa7EM1TczSv1pEN9y1r/hhD4I7Zc1fOtmVdKex\ntfVrkTE1ekA32BQBZ8RbHU70wzw8H3TK54umgPbYVcRsWCOUDMoHycTUO3qjwH3u\ns0G1HFNBP7FlGs21L23y8wQMIjnLJViIUDW2Vyz5h/Qq30/V9hnzR+8cNWdbrnfV\nPVpNi+yFjKJtwhlrjLWnYPK8NPD07GGzPUpA7bW2g2VJZMeCD8EvQvnVFAmmewnf\nZxQBa23AzAkdAgMBAAGjggL5MIIC9TAfBgNVHSMEGDAWgBSNjF7EVK2K4Xfpm/mb\nBeG4AY1h4TAdBgNVHQ4EFgQUTjfKHDlbrqkZ96rPHfZIe/qyJZMwDgYDVR0PAQH/\nBAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUF\nBwMCMEkGA1UdIARCMEAwNAYLKwYBBAGyMQECAgcwJTAjBggrBgEFBQcCARYXaHR0\ncHM6Ly9zZWN0aWdvLmNvbS9DUFMwCAYGZ4EMAQIBMIGEBggrBgEFBQcBAQR4MHYw\nTwYIKwYBBQUHMAKGQ2h0dHA6Ly9jcnQuc2VjdGlnby5jb20vU2VjdGlnb1JTQURv\nbWFpblZhbGlkYXRpb25TZWN1cmVTZXJ2ZXJDQS5jcnQwIwYIKwYBBQUHMAGGF2h0\ndHA6Ly9vY3NwLnNlY3RpZ28uY29tMCEGA1UdEQQaMBiCCyouZ3BjZG4ubmV0ggln\ncGNkbi5uZXQwggF/BgorBgEEAdZ5AgQCBIIBbwSCAWsBaQB3AJaXZL9VWJet90OH\naDcIQnfp8DrV9qTzNm5GpD8PyqnGAAABlHipLuEAAAQDAEgwRgIhAJPUT+rU6x2m\naUOsHeRPPV0jrU0+bxa0o1VRs9sSpTotAiEA0TY9kXVIBx/KXgM2qbe1eB83aVkw\n5q1g8pnptv2AqOEAdgAZhtTHKKpv/roDb3gqTQGRqs4tcjEPrs5dcEEtJUzH1AAA\nAZR4qS7AAAAEAwBHMEUCIQDz00gtpU27OWiCJo3rXex57K9zswwk/kLe03CVCeUC\nBgIgOm8uijrznKnOAB+0NG8jev/n5gT+sdOI41l5XV7NlMsAdgDLOPcViXyEoURf\nW8Hd+8lu8ppZzUcKaQWFsMsUwxRY5wAAAZR4qS7rAAAEAwBHMEUCIQDIrn2NiBTj\ne0xROMNRvP5y+csJ8IpCQldmYYSpq/QkYgIgYIU/UjfZBJJQcbKWnokL3amA/wXe\nEVID3ueLuByIL/UwDQYJKoZIhvcNAQELBQADggEBAAZg3daRR9Om7r63OsREW2rX\ncQSXaGxWjVc2EGAXnAdQM6wGWaJDelfzUqV49DFKF8GVmY1F75PvJs74Y6gCI1Qj\nlCB+O22jD1rQnEyPjWH8YcudYYjYXWiaB1K3phPRYV+07yWcp7Vu8CHmyrS+Xsni\nJfhwiPLHqcrlqsEPb3+qpA8WC1SueqjNsS+P2QZ+/AAgqgTmvevnHH/cYr6u3pAq\nH8bPU4BFibuJX+Pb6RmtnTC5sqm9/G7ZUxArxGNuk0KwAR6SB4IFOHh/lM18d9ZA\nudGIL5dlh02R+IrB3rKDMpE7MeZF+r4++jtcRIGh45bf6ukF/ek74DArimha8rY=\n-----END CERTIFICATE-----",
+                "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDqmHu/n6nVEyIF\nTXUQmiJpo2OepDQsaD1v6nCOvOkNvryqBBqikkOrMqEcK2xufWV8MjMErtN71zbi\na6Gp47DKwY+WGPUVcFHpSgwa7EM1TczSv1pEN9y1r/hhD4I7Zc1fOtmVdKextfVr\nkTE1ekA32BQBZ8RbHU70wzw8H3TK54umgPbYVcRsWCOUDMoHycTUO3qjwH3us0G1\nHFNBP7FlGs21L23y8wQMIjnLJViIUDW2Vyz5h/Qq30/V9hnzR+8cNWdbrnfVPVpN\ni+yFjKJtwhlrjLWnYPK8NPD07GGzPUpA7bW2g2VJZMeCD8EvQvnVFAmmewnfZxQB\na23AzAkdAgMBAAECggEAZXA9wiQV2Y6GXWiav+0GCEugHc6+yJziQ+xJc074LvtU\ntOdFZRp9rB8eTwHvxu7t3QAP02yNAbWTg+AqbT2JCoMbxTlRcE26/XcJOPMENJ5J\nfK9FJs5I3z8R1VZRZ8GjRhQ6VUe14z/cuQB1GLyd3AfQzrLB0uwfYfKxrwWjCMC2\nO69kssRZhqOtUATycG6M8B7yuV5eX7DQYHlfmpiBNUYrLdFbGKaHp19H7Ac3bM0Q\nbKi+UZlgaxtv18vZFRyPlz3oC5wOVyCc61wbxILT3JTHtVReJjqSwNQ52j25ihHr\nV2gUm5TBI08JIg9Zxj4229A1d5pnUCriFmC+Gh7JuQKBgQD8CCNDtC70KZVNWfxO\nLlUXJzZrwG9nUbJQwdZy7Pxq1ai/iTWUIMuNJaLiOtWyofiZjRtl0uYkL3+tVVAD\nDCltdFQtzP6xx6kTN4Wr+gUfl/th/ni/pMtsWeGNR0S9GWwhzpPn+8KOdhX+Hx0A\ncacP3f0jAKu0wQaExW23MjvtfwKBgQDuShDfcQm0Nf6WO+xKS6uXclZRkplOkXKf\nPKXVKeSs5bS4g2sbxIQ4iChxdfnwsxR6Tgt00E7KpcnhvwC+q4RwBgjfIiKvIfNr\n2pc8CmUNgmNur1TK0rdpMTWJF5bOUiEvTObgG3mXkfSkswmgw8CLiyl2gPQAYFu7\nr/WmjytPYwKBgD0eaBbiGkTh1LAmc1YuTDpKKxtkVl/S4xBMgYnrSKdL2xlf19tt\nPI+lIeQE6o/gUZ5DJvLBe0gpMKhDOR0UFPPTMxrMTLOmPK1JWKRFBHsN60tvX67x\n8tb60QTm1JebE6r7IskuN5c+scSnnOvfo+joJ5wWbI1wBfmquxmjF/9XAoGAT4Sr\n6MSiBl9WW/AXRBvIYTuojoQrYMqsw3LLrDzUsNXe3wwL/DIyJWNai7Jg++/mz4Gn\n1Q2GnZ2BpzHEH9zAz1lUMJIFnQfpYX6KpWCapE10vQUJeL2ksxfW067phmRl6pDx\nIqxIgUoVp7iPZ/SrFmYUKhWSV2XQduubQD/aph0CgYEA3cjIsb6kunDcsbRZEVyz\nnw2YQNnmFyDJ2oumRPQazU3mmutDdmf5A0cwNeBg4uvcwAoOhYoOjiwXNHepJhvJ\nGVb5V1WVM/fFGDZf/o9SXv6EWzNBQNRa1O4fUE5rqxQaaeHie8xYJRvyfC+8Cs8F\nx1YASLRbtfB3TMV/njcEJZk=\n-----END PRIVATE KEY-----",
+                "chain": "-----BEGIN CERTIFICATE-----\nMIIGEzCCA/ugAwIBAgIQfVtRJrR2uhHbdBYLvFMNpzANBgkqhkiG9w0BAQwFADCB\niDELMAkGA1UEBhMCVVMxEzARBgNVBAgTCk5ldyBKZXJzZXkxFDASBgNVBAcTC0pl\ncnNleSBDaXR5MR4wHAYDVQQKExVUaGUgVVNFUlRSVVNUIE5ldHdvcmsxLjAsBgNV\nBAMTJVVTRVJUcnVzdCBSU0EgQ2VydGlmaWNhdGlvbiBBdXRob3JpdHkwHhcNMTgx\nMTAyMDAwMDAwWhcNMzAxMjMxMjM1OTU5WjCBjzELMAkGA1UEBhMCR0IxGzAZBgNV\nBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYGA1UE\nChMPU2VjdGlnbyBMaW1pdGVkMTcwNQYDVQQDEy5TZWN0aWdvIFJTQSBEb21haW4g\nVmFsaWRhdGlvbiBTZWN1cmUgU2VydmVyIENBMIIBIjANBgkqhkiG9w0BAQEFAAOC\nAQ8AMIIBCgKCAQEA1nMz1tc8INAA0hdFuNY+B6I/x0HuMjDJsGz99J/LEpgPLT+N\nTQEMgg8Xf2Iu6bhIefsWg06t1zIlk7cHv7lQP6lMw0Aq6Tn/2YHKHxYyQdqAJrkj\neocgHuP/IJo8lURvh3UGkEC0MpMWCRAIIz7S3YcPb11RFGoKacVPAXJpz9OTTG0E\noKMbgn6xmrntxZ7FN3ifmgg0+1YuWMQJDgZkW7w33PGfKGioVrCSo1yfu4iYCBsk\nHaswha6vsC6eep3BwEIc4gLw6uBK0u+QDrTBQBbwb4VCSmT3pDCg/r8uoydajotY\nuK3DGReEY+1vVv2Dy2A0xHS+5p3b4eTlygxfFQIDAQABo4IBbjCCAWowHwYDVR0j\nBBgwFoAUU3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFI2MXsRUrYrhd+mb\n+ZsF4bgBjWHhMA4GA1UdDwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0G\nA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAbBgNVHSAEFDASMAYGBFUdIAAw\nCAYGZ4EMAQIBMFAGA1UdHwRJMEcwRaBDoEGGP2h0dHA6Ly9jcmwudXNlcnRydXN0\nLmNvbS9VU0VSVHJ1c3RSU0FDZXJ0aWZpY2F0aW9uQXV0aG9yaXR5LmNybDB2Bggr\nBgEFBQcBAQRqMGgwPwYIKwYBBQUHMAKGM2h0dHA6Ly9jcnQudXNlcnRydXN0LmNv\nbS9VU0VSVHJ1c3RSU0FBZGRUcnVzdENBLmNydDAlBggrBgEFBQcwAYYZaHR0cDov\nL29jc3AudXNlcnRydXN0LmNvbTANBgkqhkiG9w0BAQwFAAOCAgEAMr9hvQ5Iw0/H\nukdN+Jx4GQHcEx2Ab/zDcLRSmjEzmldS+zGea6TvVKqJjUAXaPgREHzSyrHxVYbH\n7rM2kYb2OVG/Rr8PoLq0935JxCo2F57kaDl6r5ROVm+yezu/Coa9zcV3HAO4OLGi\nH19+24rcRki2aArPsrW04jTkZ6k4Zgle0rj8nSg6F0AnwnJOKf0hPHzPE/uWLMUx\nRP0T7dWbqWlod3zu4f+k+TY4CFM5ooQ0nBnzvg6s1SQ36yOoeNDT5++SR2RiOSLv\nxvcRviKFxmZEJCaOEDKNyJOuB56DPi/Z+fVGjmO+wea03KbNIaiGCpXZLoUmGv38\nsbZXQm2V0TP2ORQGgkE49Y9Y3IBbpNV9lXj9p5v//cWoaasm56ekBYdbqbe4oyAL\nl6lFhd2zi+WJN44pDfwGF/Y4QA5C5BIG+3vzxhFoYt/jmPQT2BVPi7Fp2RBgvGQq\n6jG35LWjOhSbJuMLe/0CjraZwTiXWTb2qHSihrZe68Zk6s+go/lunrotEbaGmAhY\nLcmsJWTyXnW0OMGuf1pGg+pRyrbxmRE1a6Vqe8YAsOf4vmSyrcjC8azjUeqkk+B5\nyOGBQMkKW+ESPMFgKuOXwIlCypTPRpgSabuY0MLTDXJLR27lk8QyKGOHQ+SwMj4K\n00u/I5sUKUErmgQfky3xxzlIPK1aEn8=\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIFgTCCBGmgAwIBAgIQOXJEOvkit1HX02wQ3TE1lTANBgkqhkiG9w0BAQwFADB7\nMQswCQYDVQQGEwJHQjEbMBkGA1UECAwSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD\nVQQHDAdTYWxmb3JkMRowGAYDVQQKDBFDb21vZG8gQ0EgTGltaXRlZDEhMB8GA1UE\nAwwYQUFBIENlcnRpZmljYXRlIFNlcnZpY2VzMB4XDTE5MDMxMjAwMDAwMFoXDTI4\nMTIzMTIzNTk1OVowgYgxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpOZXcgSmVyc2V5\nMRQwEgYDVQQHEwtKZXJzZXkgQ2l0eTEeMBwGA1UEChMVVGhlIFVTRVJUUlVTVCBO\nZXR3b3JrMS4wLAYDVQQDEyVVU0VSVHJ1c3QgUlNBIENlcnRpZmljYXRpb24gQXV0\naG9yaXR5MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAgBJlFzYOw9sI\ns9CsVw127c0n00ytUINh4qogTQktZAnczomfzD2p7PbPwdzx07HWezcoEStH2jnG\nvDoZtF+mvX2do2NCtnbyqTsrkfjib9DsFiCQCT7i6HTJGLSR1GJk23+jBvGIGGqQ\nIjy8/hPwhxR79uQfjtTkUcYRZ0YIUcuGFFQ/vDP+fmyc/xadGL1RjjWmp2bIcmfb\nIWax1Jt4A8BQOujM8Ny8nkz+rwWWNR9XWrf/zvk9tyy29lTdyOcSOk2uTIq3XJq0\ntyA9yn8iNK5+O2hmAUTnAU5GU5szYPeUvlM3kHND8zLDU+/bqv50TmnHa4xgk97E\nxwzf4TKuzJM7UXiVZ4vuPVb+DNBpDxsP8yUmazNt925H+nND5X4OpWaxKXwyhGNV\nicQNwZNUMBkTrNN9N6frXTpsNVzbQdcS2qlJC9/YgIoJk2KOtWbPJYjNhLixP6Q5\nD9kCnusSTJV882sFqV4Wg8y4Z+LoE53MW4LTTLPtW//e5XOsIzstAL81VXQJSdhJ\nWBp/kjbmUZIO8yZ9HE0XvMnsQybQv0FfQKlERPSZ51eHnlAfV1SoPv10Yy+xUGUJ\n5lhCLkMaTLTwJUdZ+gQek9QmRkpQgbLevni3/GcV4clXhB4PY9bpYrrWX1Uu6lzG\nKAgEJTm4Diup8kyXHAc/DVL17e8vgg8CAwEAAaOB8jCB7zAfBgNVHSMEGDAWgBSg\nEQojPpbxB+zirynvgqV/0DCktDAdBgNVHQ4EFgQUU3m/WqorSs9UgOHYm8Cd8rID\nZsswDgYDVR0PAQH/BAQDAgGGMA8GA1UdEwEB/wQFMAMBAf8wEQYDVR0gBAowCDAG\nBgRVHSAAMEMGA1UdHwQ8MDowOKA2oDSGMmh0dHA6Ly9jcmwuY29tb2RvY2EuY29t\nL0FBQUNlcnRpZmljYXRlU2VydmljZXMuY3JsMDQGCCsGAQUFBwEBBCgwJjAkBggr\nBgEFBQcwAYYYaHR0cDovL29jc3AuY29tb2RvY2EuY29tMA0GCSqGSIb3DQEBDAUA\nA4IBAQAYh1HcdCE9nIrgJ7cz0C7M7PDmy14R3iJvm3WOnnL+5Nb+qh+cli3vA0p+\nrvSNb3I8QzvAP+u431yqqcau8vzY7qN7Q/aGNnwU4M309z/+3ri0ivCRlv79Q2R+\n/czSAaF9ffgZGclCKxO/WIu6pKJmBHaIkU4MiRTOok3JMrO66BQavHHxW/BBC5gA\nCiIDEOUMsfnNkjcZ7Tvx5Dq2+UUTJnWvu6rvP3t3O9LEApE9GQDTF1w52z97GA1F\nzZOFli9d31kWTz9RvdVFGD/tSo7oBmF0Ixa1DVBzJ0RHfxBdiSprhTEUxOipakyA\nvGp4z7h/jnZymQyd/teRCBaho1+V\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIEMjCCAxqgAwIBAgIBATANBgkqhkiG9w0BAQUFADB7MQswCQYDVQQGEwJHQjEb\nMBkGA1UECAwSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHDAdTYWxmb3JkMRow\nGAYDVQQKDBFDb21vZG8gQ0EgTGltaXRlZDEhMB8GA1UEAwwYQUFBIENlcnRpZmlj\nYXRlIFNlcnZpY2VzMB4XDTA0MDEwMTAwMDAwMFoXDTI4MTIzMTIzNTk1OVowezEL\nMAkGA1UEBhMCR0IxGzAZBgNVBAgMEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UE\nBwwHU2FsZm9yZDEaMBgGA1UECgwRQ29tb2RvIENBIExpbWl0ZWQxITAfBgNVBAMM\nGEFBQSBDZXJ0aWZpY2F0ZSBTZXJ2aWNlczCCASIwDQYJKoZIhvcNAQEBBQADggEP\nADCCAQoCggEBAL5AnfRu4ep2hxxNRUSOvkbIgwadwSr+GB+O5AL686tdUIoWMQua\nBtDFcCLNSS1UY8y2bmhGC1Pqy0wkwLxyTurxFa70VJoSCsN6sjNg4tqJVfMiWPPe\n3M/vg4aijJRPn2jymJBGhCfHdr/jzDUsi14HZGWCwEiwqJH5YZ92IFCokcdmtet4\nYgNW8IoaE+oxox6gmf049vYnMlhvB/VruPsUK6+3qszWY19zjNoFmag4qMsXeDZR\nrOme9Hg6jc8P2ULimAyrL58OAd7vn5lJ8S3frHRNG5i1R8XlKdH5kBjHYpy+g8cm\nez6KJcfA3Z3mNWgQIJ2P2N7Sw4ScDV7oL8kCAwEAAaOBwDCBvTAdBgNVHQ4EFgQU\noBEKIz6W8Qfs4q8p74Klf9AwpLQwDgYDVR0PAQH/BAQDAgEGMA8GA1UdEwEB/wQF\nMAMBAf8wewYDVR0fBHQwcjA4oDagNIYyaHR0cDovL2NybC5jb21vZG9jYS5jb20v\nQUFBQ2VydGlmaWNhdGVTZXJ2aWNlcy5jcmwwNqA0oDKGMGh0dHA6Ly9jcmwuY29t\nb2RvLm5ldC9BQUFDZXJ0aWZpY2F0ZVNlcnZpY2VzLmNybDANBgkqhkiG9w0BAQUF\nAAOCAQEACFb8AvCb6P+k+tZ7xkSAzk/ExfYAWMymtrwUSWgEdujm7l3sAg9g1o1Q\nGE8mTgHj5rCl7r+8dFRBv/38ErjHT1r0iWAFf2C3BUrz9vHCv8S5dIa2LX1rzNLz\nRt0vxuBqw8M0Ayx9lt1awg6nCpnBBYurDC/zXDrPbDdVCYfeU0BsWO/8tqtlbgT2\nG9w84FoVxp7Z8VlIMCFlA2zs6SFz7JsDoeA3raAVGI/6ugLOpyypEBMs1OUIJqsi\nl2D4kF501KKaU73yqWjgom7C12yxow+ev+to51byrvLjKzg6CYG1a4XXvi3tPxq3\nsmPi9WIsgtRqAEFQ8TmDn5XpNpaYbg==\n-----END CERTIFICATE-----"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/distributions/{distributionID}/origins": {
+      "get": {
+        "tags": [
+          "Origins/Upstreams Manage"
+        ],
+        "summary": "Get Origins LIst",
+        "description": "",
+        "parameters": [
+          {
+            "name": "distributionID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "6c4589db-6723-4c3d-9e70-abf31c12fa88"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjb25zb2xlLnZpZGluZnJhLmNvbSIsImV4cCI6MTc1NjE2MTgxMiwiaWF0IjoxNzU2MTE4NjEyLCJqdGkiOiI2MjI4MDQxZi0yZTFhLTQzMzQtYjdlNy0yOGE4MjJkZmQ3NDEiLCJlbWFpbCI6Im9zbWFubWFzdW0uY3NAZ21haWwuY29tIiwidXNlcm5hbWUiOiJNYXN1bSBPc21hbiIsInJvbGUiOiJvd25lciIsInVzZXJfaWQiOiJkYzMwNDVkOS03MGJiLTRkNGYtYTY1MC0yMmMxMzRkYzhmMjEiLCJzZXNzaW9uX2lkIjoiNjI4NmFlM2QtODM0Mi00NDBlLWJmM2UtNWQzOGJkZjUwNTk2Iiwib3JnYW5pemF0aW9uX2lkIjoiYzNhNzU5NjAtM2ZiYS00NGUwLTgyZjctZTU0ZWUyZDVhN2Y3In0.svWoA7S0Y1STKn2lFPnf13gpaHWLwmJQdAqmEuR8RaY5iUZM6IMaMNW3_ZylT5oylRb6cCMb_2KiSmqJHeFh5uWGSiDAyc-GD3BNLoBbDqqf6DoCF9f5xH2LRrj0SMLs4eoGsQOtRMBkz8XUaMnK1ezjGqJc8T0oNtYYAKktHE_q-jS-8N5bGOdeqekOj7M9wElPSeuTv_AYh6HWoWVaPRLfLDQna7XKuEO_cyWA5d9ngCXBkje0-ycruZ-b9NBcrS2fLUDaKeAYJ3MP7-__Yz8Ej1NmUQOFRdz1W1uZ_eCkatcoGYk5zxC3CtoZcBaYa9ZKub2WvIoB9rciW2rI9pmCNYe0WC4LRGSHs47mDUD4I9FbyWCrtuwKFqeKnN8JGHhpx2JDdAI4GcqkwVMJJIRswio9Xq8vqYN7MPnjifs8R5EDFy7yRAuuu4s2hIjKFTntfJuBk08tgRg-q4sxAGB9QAaYYgqmmHYDDioheHpZtjZORjkCNHBfAp0D2mEnuboYHJS06d2pKKg-_3R1qH_NjqPYW8_v5cEpRlZ2yGRx1g7mLFFRKB7CQIEyCIGsM88PkCS_84DqTu5_XcXif2MgfhNBux74ZBU6jv0YvDSTr3veUm_d3XdBMZY34OfGugJBrsIIjSZRmiqHDmk7Ci9dftK3aev6yOAs2Jfpvk4"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Origins/Upstreams Manage"
+        ],
+        "summary": "Create Origins",
+        "description": "",
+        "parameters": [
+          {
+            "name": "distributionID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "348bb09d-0eca-482c-a9a4-74741afa9d01"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjb25zb2xlLnZpZGluZnJhLmNvbSIsImV4cCI6MTc1NjE2MTgxMiwiaWF0IjoxNzU2MTE4NjEyLCJqdGkiOiI2MjI4MDQxZi0yZTFhLTQzMzQtYjdlNy0yOGE4MjJkZmQ3NDEiLCJlbWFpbCI6Im9zbWFubWFzdW0uY3NAZ21haWwuY29tIiwidXNlcm5hbWUiOiJNYXN1bSBPc21hbiIsInJvbGUiOiJvd25lciIsInVzZXJfaWQiOiJkYzMwNDVkOS03MGJiLTRkNGYtYTY1MC0yMmMxMzRkYzhmMjEiLCJzZXNzaW9uX2lkIjoiNjI4NmFlM2QtODM0Mi00NDBlLWJmM2UtNWQzOGJkZjUwNTk2Iiwib3JnYW5pemF0aW9uX2lkIjoiYzNhNzU5NjAtM2ZiYS00NGUwLTgyZjctZTU0ZWUyZDVhN2Y3In0.svWoA7S0Y1STKn2lFPnf13gpaHWLwmJQdAqmEuR8RaY5iUZM6IMaMNW3_ZylT5oylRb6cCMb_2KiSmqJHeFh5uWGSiDAyc-GD3BNLoBbDqqf6DoCF9f5xH2LRrj0SMLs4eoGsQOtRMBkz8XUaMnK1ezjGqJc8T0oNtYYAKktHE_q-jS-8N5bGOdeqekOj7M9wElPSeuTv_AYh6HWoWVaPRLfLDQna7XKuEO_cyWA5d9ngCXBkje0-ycruZ-b9NBcrS2fLUDaKeAYJ3MP7-__Yz8Ej1NmUQOFRdz1W1uZ_eCkatcoGYk5zxC3CtoZcBaYa9ZKub2WvIoB9rciW2rI9pmCNYe0WC4LRGSHs47mDUD4I9FbyWCrtuwKFqeKnN8JGHhpx2JDdAI4GcqkwVMJJIRswio9Xq8vqYN7MPnjifs8R5EDFy7yRAuuu4s2hIjKFTntfJuBk08tgRg-q4sxAGB9QAaYYgqmmHYDDioheHpZtjZORjkCNHBfAp0D2mEnuboYHJS06d2pKKg-_3R1qH_NjqPYW8_v5cEpRlZ2yGRx1g7mLFFRKB7CQIEyCIGsM88PkCS_84DqTu5_XcXif2MgfhNBux74ZBU6jv0YvDSTr3veUm_d3XdBMZY34OfGugJBrsIIjSZRmiqHDmk7Ci9dftK3aev6yOAs2Jfpvk4"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": "[\n    // {\n    //     \"bucket\": \"tenbyte-vod-filkkkk\",\n    //     \"region\": \"ap-southeast-1ww\",\n    //     \"access_key\": \"AKIA*********^&^&\",\n    //     \"secret_key\": \"***************\",\n    //     \"name\": \"tenbyte-origin-10\",\n    //     \"type\": \"custom\",\n    //     \"endpoint\": \"https://s3.ap66-southeast-1.amazonaws.re\",\n    //     \"id\": \"4923cdaa-5c38-46d1-b525-e2aad01d231d\"\n    // }\n    // {\n    //     \"bucket\": \"tenbyte-vod-filkkkk\",\n    //     \"region\": \"ap-southeast-1ww\",\n    //     \"access_key\": \"AKIA*********^&^&\",\n    //     \"secret_key\": \"***************\",\n    //     \"name\": \"tenbyte-origin-10\",\n    //     \"type\": \"custom\",\n    //     \"endpoint\": \"https://s3.ap66-southeast-1.amazonaws.comsss\"\n    // },\n    {\n        \"bucket\": \"tenbyte-vod-files\",\n        \"region\": \"tenbyte-origin-416-1\",\n        \"access_key\": \"AKIA************99\",\n        \"secret_key\": \"***************\",\n        \"name\": \"tenbyte-origin-416-1\",\n        \"type\": \"custom\",\n        \"endpoint\": \"https://domain.com\"\n    }\n]"
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/distributions/{distributionID}/purges": {
+      "post": {
+        "tags": [
+          "Purge"
+        ],
+        "summary": "Create Purge",
+        "description": "",
+        "parameters": [
+          {
+            "name": "distributionID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0d986c01-7499-4b6a-99ee-94612564cf41"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "paths": [
+                  "/img/city.jpg",
+                  "/img/*",
+                  "/path/*",
+                  "/static/*"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/distributions/{distributionID}/prefetches": {
+      "post": {
+        "tags": [
+          "Prefetch"
+        ],
+        "summary": "Create Prefetch",
+        "description": "",
+        "parameters": [
+          {
+            "name": "distributionID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0d986c01-7499-4b6a-99ee-94612564cf41"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "paths": [
+                  "/img/city.jpg",
+                  "/img/*",
+                  "/path/*",
+                  "/static/*"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_201"
+                },
+                "example": {
+                  "data": {
+                    "paths": [
+                      "/img/city.jpg",
+                      "/img/*",
+                      "/path/*",
+                      "/static/*"
+                    ],
+                    "id": "a4113eb9-8b17-455e-b984-a75b430c66e3"
+                  },
+                  "message": "Resource created successfully.",
+                  "success": true
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/distributions/{distributionID}/cache-rules": {
+      "get": {
+        "tags": [
+          "Cache Rules"
+        ],
+        "summary": "Cache Rules List",
+        "description": "",
+        "parameters": [
+          {
+            "name": "distributionID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "da4caf0f-bdea-4e9e-bfee-54763e674e6d"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Cache Rules"
+        ],
+        "summary": "Create Cache Rules",
+        "description": "",
+        "parameters": [
+          {
+            "name": "distributionID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "da4caf0f-bdea-4e9e-bfee-54763e674e6d"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/distributionID_cacherules_body"
+              },
+              "example": "{\n    \"name\": \"Cache, No Cache\",\n    \"pattern\": \"./*\",\n    \"ttl_seconds\": 3600,\n    \"type\": \"regex\", // prefix\n    \"config\": {\n        \"ignore_origin_no_cache\": false,\n        \"ignore_client_no_cache\": true,\n        \"never_cache\": false,\n        \"ignore_query_string_in_cache_key\": true,\n        \"gzip_compression\": true\n    }\n}"
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/distributions/{distributionID}/cache-rules/{cacheRuleID}": {
+      "get": {
+        "tags": [
+          "Cache Rules"
+        ],
+        "summary": "Cache Rules Details",
+        "description": "",
+        "parameters": [
+          {
+            "name": "distributionID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "da4caf0f-bdea-4e9e-bfee-54763e674e6d"
+          },
+          {
+            "name": "cacheRuleID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "3e094410-5df3-40d6-971d-324c43db67ff"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Cache Rules"
+        ],
+        "summary": "Cache Rules update",
+        "description": "",
+        "parameters": [
+          {
+            "name": "distributionID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "da4caf0f-bdea-4e9e-bfee-54763e674e6d"
+          },
+          {
+            "name": "cacheRuleID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": "{\n    \"name\": \"Cache, No Cache\",\n    \"pattern\": \"./*\",\n    \"ttl_seconds\": 3600,\n    \"type\": \"regex\", // prefix\n    \"config\": {\n        \"ignore_origin_no_cache\": false,\n        \"ignore_client_no_cache\": true,\n        \"never_cache\": false,\n        \"ignore_query_string_in_cache_key\": true,\n        \"gzip_compression\": true\n    }\n}"
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Cache Rules"
+        ],
+        "summary": "Cache Rules Delete",
+        "description": "",
+        "parameters": [
+          {
+            "name": "distributionID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "da4caf0f-bdea-4e9e-bfee-54763e674e6d"
+          },
+          {
+            "name": "cacheRuleID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/distributions/{distributionID}/access-rules": {
+      "get": {
+        "tags": [
+          "Access Rules"
+        ],
+        "summary": "Access Rules List",
+        "description": "",
+        "parameters": [
+          {
+            "name": "distributionID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "92ac9abe-24f6-44a9-b325-2d088ba98d8d"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Access Rules"
+        ],
+        "summary": "Create New Access",
+        "description": "",
+        "parameters": [
+          {
+            "name": "distributionID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "d774626e-7ca9-4807-86b9-9c7632113d35"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/distributionID_accessrules_body"
+              },
+              "example": {
+                "name": "block country",
+                "match_type": "regex",
+                "match_pattern": "/(login|offer)",
+                "config": {
+                  "ip_access": {
+                    "enabled": true,
+                    "values": [
+                      "113.11.48.0/20"
+                    ],
+                    "action": "deny"
+                  }
+                },
+                "referrer_access": {
+                  "action": "",
+                  "enabled": true
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/distributions/{distributionID}/access-rules/{accessRuleId}": {
+      "put": {
+        "tags": [
+          "Access Rules"
+        ],
+        "summary": "Update",
+        "description": "",
+        "parameters": [
+          {
+            "name": "distributionID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "06d47d97-9189-436f-9ad3-72b404935d15"
+          },
+          {
+            "name": "accessRuleId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "ff47b1fb-10ba-4722-ae6c-b83e61f9c0df"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "name": "update",
+                "match_type": "prefix",
+                "match_pattern": "/media/api/*",
+                "config": {
+                  "country_access": {
+                    "enabled": true,
+                    "values": [
+                      "AR",
+                      "AF",
+                      "IN"
+                    ],
+                    "action": "allow"
+                  },
+                  "ip_access": {
+                    "enabled": true,
+                    "values": [
+                      "203.0.113.0/24",
+                      "198.51.100.0/24"
+                    ],
+                    "action": "deny"
+                  },
+                  "referrer_access": {
+                    "enabled": true,
+                    "values": [
+                      "mark.com",
+                      "example.com"
+                    ],
+                    "action": "allow"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/distributions/{distributionID}/access-rules/{id}": {
+      "get": {
+        "tags": [
+          "Access Rules"
+        ],
+        "summary": "Access Rules Details",
+        "description": "",
+        "parameters": [
+          {
+            "name": "distributionID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "fe0236fe-232e-4c08-aa9b-12fd7df21cf9"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "22306887-f972-4e25-a032-a0278a7c0494"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Access Rules"
+        ],
+        "summary": "Access Rules Details Copy",
+        "description": "",
+        "parameters": [
+          {
+            "name": "distributionID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "fe0236fe-232e-4c08-aa9b-12fd7df21cf9"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "22306887-f972-4e25-a032-a0278a7c0494"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/analytics": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "analytics",
+        "description": "",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "2025-07-01T00:00:00.000Z"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "2025-07-31T23:59:59.999Z"
+          },
+          {
+            "name": "metrics",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": [
+              "requests",
+              "traffic",
+              "cache_hit_traffic_ratio",
+              "upstream_origin_time_ms",
+              "responses_2xx",
+              "responses_3xx",
+              "responses_4xx",
+              "responses_5xx"
+            ]
+          },
+          {
+            "name": "granularity",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1d"
+          },
+          {
+            "name": "distribution",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "storage.apex4u.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_2"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/distributions/{id}/headers": {
+      "get": {
+        "tags": [
+          "Https Headers"
+        ],
+        "summary": "Get Headers",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "2f509a1c-fa60-4038-84b1-224ea0177ba7"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjb25zb2xlLnZpZGluZnJhLmNvbSIsImV4cCI6MTc1NjEzNzQzMywiaWF0IjoxNzU2MDk0MjMzLCJqdGkiOiI3YTc0YzlkMi1mZTllLTQ3NTQtOTVjZi03ZmE3NzA3MjVkMDQiLCJlbWFpbCI6Im9zbWFubWFzdW0uY3NAZ21haWwuY29tIiwidXNlcm5hbWUiOiJNYXN1bSBPc21hbiIsInJvbGUiOiJvd25lciIsInVzZXJfaWQiOiJkYzMwNDVkOS03MGJiLTRkNGYtYTY1MC0yMmMxMzRkYzhmMjEiLCJzZXNzaW9uX2lkIjoiZmU5YzI3NDktZjcyNy00ZDBiLWI4OGMtNDkyNDVkZWIzYjBmIiwib3JnYW5pemF0aW9uX2lkIjoiYzNhNzU5NjAtM2ZiYS00NGUwLTgyZjctZTU0ZWUyZDVhN2Y3In0.VZrOH1JJAqi_Ek9V-1GleZik19d0iwNnD7Pq8U6rGuQYGFQBtA_58Ayc7xM-NSgZ8PfLJHq3sfLeVZifnVyysAMZAwOlwP0iJZpXcArKzRx7LBheNm0FJ6u2OkNbaYSx16aqh8rbTDD-EW-BSTe_2kJqgGHJR4u6ROYHo0o3ZLJCbmlm_OgdZwDDYKXZ2mdzr-3WO7Ap7484Hsu4VbzubWev0DvaDFr0TR8v4DNbGPJL--3eILMOfJ_68JBByBpIQYzL0lsa2lLEVI4CPfbBXCeo8r4MHH_YrisZcIiQGmMucdEtglgJd_FfOaBOkd4vrxKvufci-IZyAeUMF3iDOABMZUqF_BCBa2cLCBaCTCLCPura0b0UHqTJDAlvQqe1bjSbzeOv4Hu90FIZNapo1x0HDpZV0nKdEGvGyC1tnalP5AMGn_Gzgium9cvjGU3719X4dYawckb1XrWVnHlWWPtlEXs8HmQlHrKczJDhrMqorlnvJrTLUgdqFKgVlshuO6jGDT3G-m3eWvX_BQRSbbeCjzYdLkAt4twNvlWTlA38CPYOTNMzrJUWZ1IK86CGWFFWkMcPrOMyeRD3k8TUIbmQcVexC7X4slf8zaSOdgXqYQuDAl_OE11JWhGVHOdvVIOWllIhtLA7aQ6pmkkUJXvnPEiLxJOfean6e1U2uz0"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Https Headers"
+        ],
+        "summary": "Https Headers",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "2f509a1c-fa60-4038-84b1-224ea0177ba7"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjb25zb2xlLnZpZGluZnJhLmNvbSIsImV4cCI6MTc1NjIyNjI1MiwiaWF0IjoxNzU2MTgzMDUyLCJqdGkiOiI2MGVhNzM4ZS05MjVhLTRlMTctYmE0Zi0zMDVhNWFjNDgxY2MiLCJlbWFpbCI6Im9zbWFubWFzdW0uY3NAZ21haWwuY29tIiwidXNlcm5hbWUiOiJNYXN1bSBPc21hbiIsInJvbGUiOiJvd25lciIsInVzZXJfaWQiOiJkYzMwNDVkOS03MGJiLTRkNGYtYTY1MC0yMmMxMzRkYzhmMjEiLCJzZXNzaW9uX2lkIjoiY2UwZTE4NDktZWI4YS00ODE0LTk0OTAtN2MzOTE4YzMyNDFlIiwib3JnYW5pemF0aW9uX2lkIjoiYzNhNzU5NjAtM2ZiYS00NGUwLTgyZjctZTU0ZWUyZDVhN2Y3In0.P_dVP2DNFMjjWkoIyM7eXXHmshD7UuVpBT_JMBuRE2y5yMhMTkJ-3_JnWhXIjRf-6QgmNJ5Xd3OM5lae1xGkZNab64jyd1_EVi46nsPmrWR8VncKG54uw8eFjBOeV7chm98gKIYt7-bS47QYedPeuF9rxuLTBlE4Im1UR-_tq0oOyb6LIyEKaRKebdcsb4e1Li5RuH_iFspoIJNkLR7Jje1VxuFEjiNZJJwSdz7vAgyv5-Cp_trf8rFqYF1V5DuxdNrY9ybeP2Fg2BiGIoIcbbfesn8ETR-E83827tze8vBWpu8sqBWKqi_bAJrRa5jGliul3ALsuLwTaEmF4wyJTRELfaGiyJGGloXLuZt26nBR64am5aiGjrXWzIOxNTSh3CQCXREcpZ-RBgd6s3_b6fySS-tc_JsRrbXKa4Xpl8sKuRwXVRezDuBJ5xomEhKmxxMNyITZHyJxjeJJiScOAUsKicEGxQ-AlGECdwwMVHJsLy1eJnGr5kZpbu5LWo3KxEho5CWenD6xRcRTC-BGNGGu1bZGUphlIUhGQSyXeGKszBdIXTgF8ZVytzQ2Bf-uwOragGweFA-XkZ-Mk4sGj9vCEMXQ-Qxv46wv_EZu7qOolo6v7FhygB_LoPOYuFARvbio42Wc4YXfmrYtY97YDDgii63BFkFfzV1mhiWDIMU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": [
+                {
+                  "key": "Host11",
+                  "value": "www.cdn.com",
+                  "type": "request"
+                },
+                {
+                  "key": "Host12",
+                  "value": "www.cdn.com",
+                  "type": "response",
+                  "action": "remove"
+                }
+              ]
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/distributions/{distributionID}/validate-cname": {
+      "post": {
+        "tags": [
+          "Verificatins"
+        ],
+        "summary": "Validate distribution cname endpoin",
+        "description": "",
+        "parameters": [
+          {
+            "name": "distributionID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "6e71ca9e-fe08-450a-abaf-ea2380700988"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/distributions/{distributionID}/validate-acme-challenge": {
+      "post": {
+        "tags": [
+          "Verificatins"
+        ],
+        "summary": "Validate Accme DNS challenge endpoint",
+        "description": "",
+        "parameters": [
+          {
+            "name": "distributionID",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "inline_response_200": {
+        "required": [
+          "data",
+          "message",
+          "meta",
+          "success"
+        ],
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/inline_response_200_data"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/inline_response_200_meta"
+          },
+          "message": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        }
+      },
+      "distributions_origin": {
+        "required": [
+          "name",
+          "type",
+          "url"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Identifier or label for the origin."
+          },
+          "type": {
+            "type": "string",
+            "description": "Origin type: http, s3.\n"
+          },
+          "url": {
+            "type": "string",
+            "description": "url"
+          }
+        },
+        "description": "Configuration for the origin server."
+      },
+      "distributions_body": {
+        "required": [
+          "cache_strategy",
+          "cname",
+          "domain_type",
+          "host_header",
+          "name",
+          "origin"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "A human-readable name for the CDN distribution.\n"
+          },
+          "domain_type": {
+            "type": "string",
+            "description": "The type of domain: custom (user-provided CNAME) or shared.",
+            "enum": [
+              "system",
+              "custom"
+            ]
+          },
+          "cname": {
+            "type": "string",
+            "description": "The custom domain that clients will use (e.g., cdn.example.com)."
+          },
+          "cache_strategy": {
+            "type": "string",
+            "description": "Strategy for caching: vod, live, or static.\n"
+          },
+          "host_header": {
+            "type": "string",
+            "description": "Host header to send to the origin server."
+          },
+          "origin": {
+            "$ref": "#/components/schemas/distributions_origin"
+          }
+        }
+      },
+      "distributions_distributionID_body": {
+        "required": [
+          "certificate_id",
+          "description",
+          "enable_webp",
+          "host_header",
+          "is_http2",
+          "is_http3",
+          "name",
+          "sni"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "host_header": {
+            "type": "string"
+          },
+          "is_http2": {
+            "type": "boolean"
+          },
+          "is_http3": {
+            "type": "boolean"
+          },
+          "sni": {
+            "type": "string"
+          },
+          "certificate_id": {
+            "type": "string"
+          },
+          "enable_webp": {
+            "type": "boolean"
+          }
+        }
+      },
+      "inline_response_200_1": {
+        "required": [
+          "data",
+          "message",
+          "success"
+        ],
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/inline_response_200_1_data"
+          },
+          "message": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        }
+      },
+      "inline_response_201": {
+        "required": [
+          "data",
+          "message",
+          "success"
+        ],
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/inline_response_201_data"
+          },
+          "message": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        }
+      },
+      "distributionsdistributionIDcacherules_config": {
+        "required": [
+          "gzip_compression",
+          "ignore_client_no_cache",
+          "ignore_origin_no_cache",
+          "ignore_query_string_in_cache_key",
+          "never_cache"
+        ],
+        "type": "object",
+        "properties": {
+          "ignore_origin_no_cache": {
+            "type": "boolean"
+          },
+          "ignore_client_no_cache": {
+            "type": "boolean"
+          },
+          "never_cache": {
+            "type": "boolean"
+          },
+          "ignore_query_string_in_cache_key": {
+            "type": "boolean"
+          },
+          "gzip_compression": {
+            "type": "boolean"
+          }
+        }
+      },
+      "distributionID_cacherules_body": {
+        "required": [
+          "config",
+          "name",
+          "pattern",
+          "ttl_seconds",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "pattern": {
+            "type": "string"
+          },
+          "ttl_seconds": {
+            "type": "integer"
+          },
+          "type": {
+            "type": "string",
+            "description": "prefix"
+          },
+          "config": {
+            "$ref": "#/components/schemas/distributionsdistributionIDcacherules_config"
+          }
+        }
+      },
+      "distributionsdistributionIDaccessrules_config_country_access": {
+        "required": [
+          "action",
+          "enabled",
+          "values"
+        ],
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "action": {
+            "type": "string"
+          }
+        }
+      },
+      "distributionsdistributionIDaccessrules_config_token_access": {
+        "required": [
+          "enabled",
+          "values"
+        ],
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "distributionsdistributionIDaccessrules_config": {
+        "required": [
+          "country_access",
+          "ip_access",
+          "referrer_access",
+          "token_access"
+        ],
+        "type": "object",
+        "properties": {
+          "country_access": {
+            "$ref": "#/components/schemas/distributionsdistributionIDaccessrules_config_country_access"
+          },
+          "ip_access": {
+            "$ref": "#/components/schemas/distributionsdistributionIDaccessrules_config_country_access"
+          },
+          "referrer_access": {
+            "$ref": "#/components/schemas/distributionsdistributionIDaccessrules_config_country_access"
+          },
+          "token_access": {
+            "$ref": "#/components/schemas/distributionsdistributionIDaccessrules_config_token_access"
+          }
+        }
+      },
+      "distributionID_accessrules_body": {
+        "required": [
+          "config",
+          "match_pattern",
+          "match_type",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "match_type": {
+            "type": "string"
+          },
+          "match_pattern": {
+            "type": "string"
+          },
+          "config": {
+            "$ref": "#/components/schemas/distributionsdistributionIDaccessrules_config"
+          }
+        }
+      },
+      "inline_response_200_2": {
+        "required": [
+          "Distribution",
+          "From",
+          "Granularity",
+          "Metrics",
+          "To"
+        ],
+        "type": "object",
+        "properties": {
+          "From": {
+            "type": "string"
+          },
+          "To": {
+            "type": "string"
+          },
+          "Metrics": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "Granularity": {
+            "type": "string"
+          },
+          "Distribution": {
+            "type": "string"
+          }
+        }
+      },
+      "inline_response_200_data": {
+        "required": [
+          "cache_strategy",
+          "cname",
+          "created_at",
+          "description",
+          "domain",
+          "domain_type",
+          "enable_ssl",
+          "id",
+          "is_acme_challenge_valid",
+          "is_cname_valid",
+          "is_http2",
+          "is_http3",
+          "is_redirect_http_to_https",
+          "le_issue",
+          "name",
+          "organization_id",
+          "status",
+          "updated_at"
+        ],
+        "type": "object",
+        "properties": {
+          "created_at": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "domain_type": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "cname": {
+            "type": "string"
+          },
+          "domain": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "cache_strategy": {
+            "type": "string"
+          },
+          "organization_id": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "is_acme_challenge_valid": {
+            "type": "boolean"
+          },
+          "enable_ssl": {
+            "type": "boolean"
+          },
+          "le_issue": {
+            "type": "boolean"
+          },
+          "is_redirect_http_to_https": {
+            "type": "boolean"
+          },
+          "is_http2": {
+            "type": "boolean"
+          },
+          "is_cname_valid": {
+            "type": "boolean"
+          },
+          "is_http3": {
+            "type": "boolean"
+          }
+        }
+      },
+      "inline_response_200_meta_links": {
+        "required": [
+          "first",
+          "last",
+          "next",
+          "self"
+        ],
+        "type": "object",
+        "properties": {
+          "self": {
+            "type": "string"
+          },
+          "first": {
+            "type": "string"
+          },
+          "next": {
+            "type": "string"
+          },
+          "last": {
+            "type": "string"
+          }
+        }
+      },
+      "inline_response_200_meta_pagination": {
+        "required": [
+          "page",
+          "page_size",
+          "total",
+          "total_pages"
+        ],
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "total": {
+            "type": "integer"
+          },
+          "total_pages": {
+            "type": "integer"
+          }
+        }
+      },
+      "inline_response_200_meta": {
+        "required": [
+          "links",
+          "pagination"
+        ],
+        "type": "object",
+        "properties": {
+          "links": {
+            "$ref": "#/components/schemas/inline_response_200_meta_links"
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/inline_response_200_meta_pagination"
+          }
+        }
+      },
+      "inline_response_200_1_data": {
+        "required": [
+          "active",
+          "provisioning",
+          "suspended"
+        ],
+        "type": "object",
+        "properties": {
+          "active": {
+            "type": "integer"
+          },
+          "provisioning": {
+            "type": "integer"
+          },
+          "suspended": {
+            "type": "integer"
+          }
+        }
+      },
+      "inline_response_201_data": {
+        "required": [
+          "id",
+          "paths"
+        ],
+        "type": "object",
+        "properties": {
+          "paths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "id": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}
