@@ -5,6 +5,12 @@
     "description": "",
     "version": "1.0.0"
   },
+  "servers": [
+    {
+      "url": "https://api.tenbytecdn.com/v1/stream",
+      "description": "Production server"
+    }
+  ],
   "tags": [
     {
       "name": "Library"
@@ -20535,7 +20541,6 @@
       }
     }
   },
-  "servers": [],
   "security": [
     {
       "bearer": []
