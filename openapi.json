@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://api.tenbytecdn.com/v1/stream",
+      "url": "https://api.tenbyte.io/v1/stream",
       "description": "Production server"
     }
   ],
