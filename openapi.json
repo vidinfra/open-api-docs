@@ -56,7 +56,7 @@
     }
   ],
   "paths": {
-    "/v1/libraries": {
+    "/libraries": {
       "post": {
         "summary": "Create Library",
         "deprecated": false,
@@ -682,9 +682,9 @@
                   ],
                   "meta": {
                     "links": {
-                      "self": "/v1/libraries/?limit=20&page=1",
-                      "first": "/v1/libraries/?limit=20&page=1",
-                      "last": "/v1/libraries/?limit=20&page=1"
+                      "self": "/libraries/?limit=20&page=1",
+                      "first": "/libraries/?limit=20&page=1",
+                      "last": "/libraries/?limit=20&page=1"
                     },
                     "pagination": {
                       "page": 1,
@@ -821,7 +821,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}": {
+    "/libraries/{libraryId}": {
       "get": {
         "summary": "Get Library Details",
         "deprecated": false,
@@ -1592,7 +1592,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/metrics": {
+    "/libraries/{libraryId}/metrics": {
       "get": {
         "summary": "Library Metrics",
         "deprecated": false,
@@ -1746,7 +1746,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/folders": {
+    "/libraries/{libraryId}/folders": {
       "post": {
         "summary": "Create Folder",
         "deprecated": false,
@@ -2076,9 +2076,9 @@
                   ],
                   "meta": {
                     "links": {
-                      "self": "/v1/libraries/5c59072e-2762-4ae9-889e-4ffbe32f7662/folders?limit=20&page=1",
-                      "first": "/v1/libraries/5c59072e-2762-4ae9-889e-4ffbe32f7662/folders?limit=20&page=1",
-                      "last": "/v1/libraries/5c59072e-2762-4ae9-889e-4ffbe32f7662/folders?limit=20&page=1"
+                      "self": "/libraries/5c59072e-2762-4ae9-889e-4ffbe32f7662/folders?limit=20&page=1",
+                      "first": "/libraries/5c59072e-2762-4ae9-889e-4ffbe32f7662/folders?limit=20&page=1",
+                      "last": "/libraries/5c59072e-2762-4ae9-889e-4ffbe32f7662/folders?limit=20&page=1"
                     },
                     "pagination": {
                       "page": 1,
@@ -2215,7 +2215,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/folders/{folderId}": {
+    "/libraries/{libraryId}/folders/{folderId}": {
       "get": {
         "summary": "Get Folder Details",
         "deprecated": false,
@@ -2827,7 +2827,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/folders/{folderId}/move": {
+    "/libraries/{libraryId}/folders/{folderId}/move": {
       "patch": {
         "summary": "Move Folder",
         "deprecated": false,
@@ -3081,7 +3081,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/folders/bulk/move": {
+    "/libraries/{libraryId}/folders/bulk/move": {
       "patch": {
         "summary": "Bulk Move Folder",
         "deprecated": false,
@@ -3325,7 +3325,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/folders/bulk": {
+    "/libraries/{libraryId}/folders/bulk": {
       "post": {
         "summary": "Bulk Delete Folder",
         "deprecated": false,
@@ -3512,7 +3512,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/videos": {
+    "/libraries/{libraryId}/videos": {
       "post": {
         "summary": "Create Video",
         "deprecated": false,
@@ -4246,7 +4246,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/videos/{videoId}": {
+    "/libraries/{libraryId}/videos/{videoId}": {
       "get": {
         "summary": "Get Video Details",
         "deprecated": false,
@@ -5283,7 +5283,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/videos/custom/{customFiled}/{customId}": {
+    "/libraries/{libraryId}/videos/custom/{customFiled}/{customId}": {
       "get": {
         "summary": "Get Video By Custom ID",
         "deprecated": false,
@@ -5475,7 +5475,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/videos/search": {
+    "/libraries/{libraryId}/videos/search": {
       "get": {
         "summary": "Search Videos",
         "deprecated": false,
@@ -5660,7 +5660,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/videos/bulk-move": {
+    "/libraries/{libraryId}/videos/bulk-move": {
       "patch": {
         "summary": "Bulk Move Videos to Folder",
         "deprecated": false,
@@ -5914,7 +5914,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/videos/pull": {
+    "/libraries/{libraryId}/videos/pull": {
       "post": {
         "summary": "Pull Video",
         "deprecated": false,
@@ -6419,7 +6419,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/videos/{videoId}/timelines": {
+    "/libraries/{libraryId}/videos/{videoId}/timelines": {
       "get": {
         "summary": "Video Timelines",
         "deprecated": false,
@@ -6629,7 +6629,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/videos/{videoId}/subtitles": {
+    "/libraries/{libraryId}/videos/{videoId}/subtitles": {
       "post": {
         "summary": "Create Subtitle",
         "deprecated": false,
@@ -7181,9 +7181,9 @@
                   ],
                   "meta": {
                     "links": {
-                      "self": "/v1/libraries/?limit=20&page=1",
-                      "first": "/v1/libraries/?limit=20&page=1",
-                      "last": "/v1/libraries/?limit=20&page=1"
+                      "self": "/libraries/?limit=20&page=1",
+                      "first": "/libraries/?limit=20&page=1",
+                      "last": "/libraries/?limit=20&page=1"
                     },
                     "pagination": {
                       "page": 1,
@@ -7320,7 +7320,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/videos/{videoId}/subtitles/{subtitleId}": {
+    "/libraries/{libraryId}/videos/{videoId}/subtitles/{subtitleId}": {
       "get": {
         "summary": "Get Subtitle",
         "deprecated": false,
@@ -8049,7 +8049,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/videos/{videoId}/thumbnails": {
+    "/libraries/{libraryId}/videos/{videoId}/thumbnails": {
       "post": {
         "summary": "Upload Thumbnail",
         "deprecated": false,
@@ -8301,7 +8301,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/videos/{videoId}/thumbnails/{fileName}": {
+    "/libraries/{libraryId}/videos/{videoId}/thumbnails/{fileName}": {
       "delete": {
         "summary": "Delete Thumbnail",
         "deprecated": false,
@@ -8502,7 +8502,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/videos/{videoId}/thumbnails/set": {
+    "/libraries/{libraryId}/videos/{videoId}/thumbnails/set": {
       "patch": {
         "summary": "Set Thumbnail",
         "deprecated": false,
@@ -8754,7 +8754,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/transcoding/profiles": {
+    "/libraries/{libraryId}/transcoding/profiles": {
       "post": {
         "summary": "Create Transcoding Profile",
         "deprecated": false,
@@ -9848,9 +9848,9 @@
                   ],
                   "meta": {
                     "links": {
-                      "self": "/v1/libraries/68f168f4-ccae-4c01-9e70-432604c364c4/transcoding/profiles?limit=20&page=1",
-                      "first": "/v1/libraries/68f168f4-ccae-4c01-9e70-432604c364c4/transcoding/profiles?limit=20&page=1",
-                      "last": "/v1/libraries/68f168f4-ccae-4c01-9e70-432604c364c4/transcoding/profiles?limit=20&page=1"
+                      "self": "/libraries/68f168f4-ccae-4c01-9e70-432604c364c4/transcoding/profiles?limit=20&page=1",
+                      "first": "/libraries/68f168f4-ccae-4c01-9e70-432604c364c4/transcoding/profiles?limit=20&page=1",
+                      "last": "/libraries/68f168f4-ccae-4c01-9e70-432604c364c4/transcoding/profiles?limit=20&page=1"
                     },
                     "pagination": {
                       "page": 1,
@@ -9987,7 +9987,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/transcoding/profiles/{profileId}": {
+    "/libraries/{libraryId}/transcoding/profiles/{profileId}": {
       "get": {
         "summary": "Get Transcoding Profile",
         "deprecated": false,
@@ -11418,7 +11418,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/transcoding/profiles/{profileId}/default": {
+    "/libraries/{libraryId}/transcoding/profiles/{profileId}/default": {
       "patch": {
         "summary": "Mark Default Transcoding Profile",
         "deprecated": false,
@@ -11649,7 +11649,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/players": {
+    "/libraries/{libraryId}/players": {
       "post": {
         "summary": "Create Player",
         "deprecated": false,
@@ -12669,9 +12669,9 @@
                   ],
                   "meta": {
                     "links": {
-                      "self": "/v1/libraries/b17ccdc7-eb3d-4d03-b0af-781d3c38c7e9/players?limit=20&page=1",
-                      "first": "/v1/libraries/b17ccdc7-eb3d-4d03-b0af-781d3c38c7e9/players?limit=20&page=1",
-                      "last": "/v1/libraries/b17ccdc7-eb3d-4d03-b0af-781d3c38c7e9/players?limit=20&page=1"
+                      "self": "/libraries/b17ccdc7-eb3d-4d03-b0af-781d3c38c7e9/players?limit=20&page=1",
+                      "first": "/libraries/b17ccdc7-eb3d-4d03-b0af-781d3c38c7e9/players?limit=20&page=1",
+                      "last": "/libraries/b17ccdc7-eb3d-4d03-b0af-781d3c38c7e9/players?limit=20&page=1"
                     },
                     "pagination": {
                       "page": 1,
@@ -12808,7 +12808,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/players/{playerId}": {
+    "/libraries/{libraryId}/players/{playerId}": {
       "get": {
         "summary": "Player Details",
         "deprecated": false,
@@ -13809,7 +13809,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/players/{playerId}/mark-as-default": {
+    "/libraries/{libraryId}/players/{playerId}/mark-as-default": {
       "patch": {
         "summary": "Mark Player As Default",
         "deprecated": false,
@@ -14040,7 +14040,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/videos/{videoId}/chapters": {
+    "/libraries/{libraryId}/videos/{videoId}/chapters": {
       "put": {
         "summary": "Upsert Chapter",
         "deprecated": false,
@@ -14814,7 +14814,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/webhooks/endpoints": {
+    "/libraries/{libraryId}/webhooks/endpoints": {
       "post": {
         "summary": "Create Webhook Endpoint",
         "deprecated": false,
@@ -15345,9 +15345,9 @@
                   ],
                   "meta": {
                     "links": {
-                      "self": "/v1/libraries/78542c6f-0dc1-4859-a122-35ad6f139827/webhooks/endpoints?limit=20&page=1",
-                      "first": "/v1/libraries/78542c6f-0dc1-4859-a122-35ad6f139827/webhooks/endpoints?limit=20&page=1",
-                      "last": "/v1/libraries/78542c6f-0dc1-4859-a122-35ad6f139827/webhooks/endpoints?limit=20&page=1"
+                      "self": "/libraries/78542c6f-0dc1-4859-a122-35ad6f139827/webhooks/endpoints?limit=20&page=1",
+                      "first": "/libraries/78542c6f-0dc1-4859-a122-35ad6f139827/webhooks/endpoints?limit=20&page=1",
+                      "last": "/libraries/78542c6f-0dc1-4859-a122-35ad6f139827/webhooks/endpoints?limit=20&page=1"
                     },
                     "pagination": {
                       "page": 1,
@@ -15484,7 +15484,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/webhooks/endpoints/{endpointId}": {
+    "/libraries/{libraryId}/webhooks/endpoints/{endpointId}": {
       "get": {
         "summary": "Get Webhook Endpoint by ID",
         "deprecated": false,
@@ -16265,7 +16265,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/webhooks/{endpointId}/events/{deliveryId}": {
+    "/libraries/{libraryId}/webhooks/{endpointId}/events/{deliveryId}": {
       "get": {
         "summary": "Get a Single Delivery",
         "deprecated": false,
@@ -16663,7 +16663,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/webhooks/{endpointId}/events": {
+    "/libraries/{libraryId}/webhooks/{endpointId}/events": {
       "get": {
         "summary": "List Deliveries for a Specific Endpoint",
         "deprecated": false,
@@ -17992,9 +17992,9 @@
                   ],
                   "meta": {
                     "links": {
-                      "self": "/v1/libraries/314221a1-3cbf-4d3c-846e-f6c22bc43064/webhooks/b3dd230a-3627-433a-b440-1a5aa00ecd3e/events?limit=20&page=1",
-                      "first": "/v1/libraries/314221a1-3cbf-4d3c-846e-f6c22bc43064/webhooks/b3dd230a-3627-433a-b440-1a5aa00ecd3e/events?limit=20&page=1",
-                      "last": "/v1/libraries/314221a1-3cbf-4d3c-846e-f6c22bc43064/webhooks/b3dd230a-3627-433a-b440-1a5aa00ecd3e/events?limit=20&page=1"
+                      "self": "/libraries/314221a1-3cbf-4d3c-846e-f6c22bc43064/webhooks/b3dd230a-3627-433a-b440-1a5aa00ecd3e/events?limit=20&page=1",
+                      "first": "/libraries/314221a1-3cbf-4d3c-846e-f6c22bc43064/webhooks/b3dd230a-3627-433a-b440-1a5aa00ecd3e/events?limit=20&page=1",
+                      "last": "/libraries/314221a1-3cbf-4d3c-846e-f6c22bc43064/webhooks/b3dd230a-3627-433a-b440-1a5aa00ecd3e/events?limit=20&page=1"
                     },
                     "pagination": {
                       "page": 1,
@@ -18131,7 +18131,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/security": {
+    "/libraries/{libraryId}/security": {
       "get": {
         "summary": "Get Security Settings",
         "deprecated": false,
@@ -18763,7 +18763,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/uploads/s3/multipart": {
+    "/libraries/{libraryId}/uploads/s3/multipart": {
       "post": {
         "summary": "Initialize Multipart Upload",
         "deprecated": false,
@@ -19037,7 +19037,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/uploads/s3/multipart/{uploadId}/{partNumber}": {
+    "/libraries/{libraryId}/uploads/s3/multipart/{uploadId}/{partNumber}": {
       "get": {
         "summary": "Get Part Upload URL",
         "deprecated": false,
@@ -19211,7 +19211,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/uploads/s3/multipart/{uploadId}": {
+    "/libraries/{libraryId}/uploads/s3/multipart/{uploadId}": {
       "get": {
         "summary": "List Uploaded Parts",
         "deprecated": false,
@@ -19537,7 +19537,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/uploads/s3/multipart/{uploadId}/complete": {
+    "/libraries/{libraryId}/uploads/s3/multipart/{uploadId}/complete": {
       "post": {
         "summary": "Complete Multipart Upload",
         "deprecated": false,
@@ -20001,7 +20001,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/migration-jobs": {
+    "/libraries/{libraryId}/migration-jobs": {
       "post": {
         "summary": "Create Migrations",
         "deprecated": false,
@@ -20260,7 +20260,7 @@
         ]
       }
     },
-    "/v1/libraries/{libraryId}/migration-jobs/validate": {
+    "/libraries/{libraryId}/migration-jobs/validate": {
       "post": {
         "summary": "Validate Credentials",
         "deprecated": false,
