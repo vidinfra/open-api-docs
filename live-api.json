@@ -1,0 +1,3038 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "VidInfra Live API",
+    "description": "Livestreaming API server with hybrid architecture combining LiveKit (WebRTC) for interactive features and MediaMTX for RTMP/HLS streaming.\n\n## Authentication\nMost endpoints require a Bearer token in the `Authorization` header.\n- **Host users**: Login with email/password via `/auth/login`\n- **Viewers**: Register with device token via `/auth/viewer/register`, then login via `/auth/viewer/device-login`\n- **Auth code flow**: Generate short-lived codes for cross-device auth\n\n## Response Format\nAll responses follow a standard envelope:\n```json\n{\n  \"success\": true,\n  \"data\": { ... },\n  \"timestamp\": 1700000000\n}\n```\nError responses:\n```json\n{\n  \"success\": false,\n  \"error\": \"Error message\",\n  \"timestamp\": 1700000000\n}\n```\n",
+    "version": "1.0.0",
+    "contact": {
+      "name": "VidInfra Team"
+    }
+  },
+  "tags": [
+    {
+      "name": "Rooms"
+    },
+    {
+      "name": "Sessions"
+    }
+  ],
+  "paths": {
+    "/rooms": {
+      "get": {
+        "summary": "List all rooms (public)",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "Rooms"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of rooms",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/RoomListResponse"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "post": {
+        "summary": "Create a new room",
+        "deprecated": false,
+        "description": "Host only",
+        "tags": [
+          "Rooms"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRoomRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Room created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "room": {
+                              "$ref": "#/components/schemas/RoomResponse"
+                            }
+                          }
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/rooms/my": {
+      "get": {
+        "summary": "List my rooms",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "Rooms"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "My rooms",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/RoomListResponse"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/rooms/{id}": {
+      "get": {
+        "summary": "Get room by ID (public)",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "Rooms"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Room details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/RoomResponse"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "patch": {
+        "summary": "Update a room",
+        "deprecated": false,
+        "description": "Host only",
+        "tags": [
+          "Rooms"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRoomRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Room updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/RoomResponse"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete a room",
+        "deprecated": false,
+        "description": "Host only",
+        "tags": [
+          "Rooms"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Room deleted",
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/rooms/{id}/sessions": {
+      "get": {
+        "summary": "List sessions for a room",
+        "deprecated": false,
+        "description": "Host only",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sessions list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/SessionListResponse"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create a new session in a room",
+        "deprecated": false,
+        "description": "Host only",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSessionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Session created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/CreateSessionResponse"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/sessions": {
+      "get": {
+        "summary": "List all sessions (public)",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sessions list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/SessionListResponse"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/sessions/live": {
+      "get": {
+        "summary": "List currently live sessions (public)",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Live sessions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/SessionListResponse"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/sessions/stats": {
+      "get": {
+        "summary": "Get dashboard stats",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Dashboard stats",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/DashboardStatsResponse"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/sessions/{id}": {
+      "get": {
+        "summary": "Get session by ID (public)",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Session details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/SessionResponse"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "delete": {
+        "summary": "Delete a session",
+        "deprecated": false,
+        "description": "Host only",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Session deleted",
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/sessions/{id}/join": {
+      "post": {
+        "summary": "Join a session (get LiveKit token)",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Joined session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/JoinSessionResponse"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/sessions/{id}/go_live": {
+      "post": {
+        "summary": "Go live with a session",
+        "deprecated": false,
+        "description": "Host only. Starts the streaming session.",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Session is now live",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/StartSessionResponse"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/sessions/{id}/ensure_hls_egress": {
+      "post": {
+        "summary": "Ensure HLS egress is running",
+        "deprecated": false,
+        "description": "Host only",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "HLS egress ensured",
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/sessions/{id}/start": {
+      "post": {
+        "summary": "Start a session",
+        "deprecated": false,
+        "description": "Host only",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Session started",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/StartSessionResponse"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  ]
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/sessions/{id}/start_webcam_hls": {
+      "post": {
+        "summary": "Start webcam to HLS streaming",
+        "deprecated": false,
+        "description": "Host only",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Webcam HLS started",
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/sessions/{id}/end": {
+      "post": {
+        "summary": "End a session",
+        "deprecated": false,
+        "description": "Host only",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Session ended",
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/sessions/{id}/reschedule": {
+      "patch": {
+        "summary": "Reschedule a session",
+        "deprecated": false,
+        "description": "Host only",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RescheduleSessionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Session rescheduled",
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/sessions/{id}/settings": {
+      "patch": {
+        "summary": "Update session runtime settings",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSessionSettingsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Settings updated",
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/sessions/{id}/host_video_state": {
+      "post": {
+        "summary": "Broadcast host video state change",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "State broadcasted",
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/sessions/{id}/host_audio_state": {
+      "post": {
+        "summary": "Broadcast host audio state change",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "State broadcasted",
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/sessions/{id}/monitor": {
+      "get": {
+        "summary": "Get monitor token for a session",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Monitor token",
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/sessions/{id}/stream_health": {
+      "get": {
+        "summary": "Get stream health info",
+        "deprecated": false,
+        "description": "",
+        "tags": [
+          "Sessions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stream health data",
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SuccessResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "type": "object",
+            "properties": {}
+          },
+          "timestamp": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string",
+            "description": "Detailed error (dev mode only)"
+          },
+          "timestamp": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "RefreshTokenRequest": {
+        "type": "object",
+        "required": [
+          "refresh_token"
+        ],
+        "properties": {
+          "refresh_token": {
+            "type": "string"
+          }
+        }
+      },
+      "LogoutRequest": {
+        "type": "object",
+        "required": [
+          "refresh_token"
+        ],
+        "properties": {
+          "refresh_token": {
+            "type": "string"
+          }
+        }
+      },
+      "ViewerRegisterRequest": {
+        "type": "object",
+        "required": [
+          "display_name"
+        ],
+        "properties": {
+          "display_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50
+          }
+        }
+      },
+      "DeviceLoginRequest": {
+        "type": "object",
+        "required": [
+          "device_token"
+        ],
+        "properties": {
+          "device_token": {
+            "type": "string"
+          }
+        }
+      },
+      "GenerateAuthCodeRequest": {
+        "type": "object",
+        "required": [
+          "session_id"
+        ],
+        "properties": {
+          "session_id": {
+            "type": "string"
+          }
+        }
+      },
+      "ExchangeAuthCodeRequest": {
+        "type": "object",
+        "required": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          }
+        }
+      },
+      "UserResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "external_user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "organization_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "username": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "host",
+              "viewer"
+            ]
+          },
+          "is_active": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/UserResponse"
+          },
+          "access_token": {
+            "type": "string"
+          },
+          "refresh_token": {
+            "type": "string"
+          }
+        }
+      },
+      "ViewerRegisterResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/UserResponse"
+          },
+          "access_token": {
+            "type": "string"
+          },
+          "refresh_token": {
+            "type": "string"
+          },
+          "device_token": {
+            "type": "string"
+          }
+        }
+      },
+      "GenerateAuthCodeResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "expires_in": {
+            "type": "integer"
+          }
+        }
+      },
+      "CreateRoomRequest": {
+        "type": "object",
+        "required": [
+          "title"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 255
+          },
+          "description": {
+            "type": "string"
+          },
+          "analytics": {
+            "$ref": "#/components/schemas/RoomAnalytics"
+          }
+        }
+      },
+      "UpdateRoomRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 255
+          },
+          "description": {
+            "type": "string"
+          },
+          "analytics": {
+            "$ref": "#/components/schemas/RoomAnalytics"
+          }
+        }
+      },
+      "RoomAnalytics": {
+        "type": "object",
+        "properties": {
+          "google_tag_manager": {
+            "type": "object",
+            "properties": {
+              "container_id": {
+                "type": "string",
+                "example": "GTM-XXXXXX"
+              },
+              "enabled": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      },
+      "RoomResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "host_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "host": {
+            "$ref": "#/components/schemas/UserResponse"
+          },
+          "library_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "analytics": {
+            "$ref": "#/components/schemas/RoomAnalytics"
+          },
+          "active_session_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "RoomListResponse": {
+        "type": "object",
+        "properties": {
+          "rooms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RoomResponse"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          }
+        }
+      },
+      "CreateSessionRequest": {
+        "type": "object",
+        "required": [
+          "title",
+          "preset_id"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 255
+          },
+          "description": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "webcam",
+              "rtmp"
+            ]
+          },
+          "scheduled_start_time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "preset_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "RescheduleSessionRequest": {
+        "type": "object",
+        "required": [
+          "scheduled_start_time"
+        ],
+        "properties": {
+          "scheduled_start_time": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "UpdateSessionSettingsRequest": {
+        "type": "object",
+        "properties": {
+          "chat_enabled": {
+            "type": "boolean"
+          },
+          "stage_enabled": {
+            "type": "boolean"
+          },
+          "max_join_limit": {
+            "type": "integer"
+          }
+        }
+      },
+      "SessionResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "room_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "room": {
+            "$ref": "#/components/schemas/RoomResponse"
+          },
+          "preset": {
+            "$ref": "#/components/schemas/PresetResponse"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "scheduled",
+              "live",
+              "ended",
+              "expired"
+            ]
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "webcam",
+              "rtmp"
+            ]
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ended_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Duration in seconds"
+          },
+          "scheduled_start_time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "viewer_count": {
+            "type": "integer"
+          },
+          "max_viewers": {
+            "type": "integer"
+          },
+          "recording_enabled": {
+            "type": "boolean"
+          },
+          "hls_url": {
+            "type": "string"
+          },
+          "chat_enabled_override": {
+            "type": "boolean"
+          },
+          "stage_enabled_override": {
+            "type": "boolean"
+          },
+          "max_join_limit_override": {
+            "type": "integer"
+          },
+          "effective_chat_enabled": {
+            "type": "boolean"
+          },
+          "effective_stage_enabled": {
+            "type": "boolean"
+          },
+          "effective_max_join_limit": {
+            "type": "integer"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CreateSessionResponse": {
+        "type": "object",
+        "properties": {
+          "session": {
+            "$ref": "#/components/schemas/SessionResponse"
+          },
+          "rtmp_url": {
+            "type": "string"
+          },
+          "stream_key": {
+            "type": "string"
+          }
+        }
+      },
+      "StartSessionResponse": {
+        "type": "object",
+        "properties": {
+          "session": {
+            "$ref": "#/components/schemas/SessionResponse"
+          },
+          "livekit_token": {
+            "type": "string"
+          },
+          "rtmp": {
+            "type": "object",
+            "properties": {
+              "ingress_id": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "stream_key": {
+                "type": "string"
+              }
+            }
+          },
+          "rtmp_setup": {
+            "type": "object",
+            "properties": {
+              "server": {
+                "type": "string"
+              },
+              "stream_key": {
+                "type": "string"
+              },
+              "instructions": {
+                "type": "object",
+                "properties": {
+                  "step1": {
+                    "type": "string"
+                  },
+                  "step2": {
+                    "type": "string"
+                  },
+                  "step3": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "whip_url": {
+            "type": "string"
+          }
+        }
+      },
+      "JoinSessionResponse": {
+        "type": "object",
+        "properties": {
+          "livekit_token": {
+            "type": "string"
+          },
+          "room_name": {
+            "type": "string"
+          }
+        }
+      },
+      "SessionListResponse": {
+        "type": "object",
+        "properties": {
+          "sessions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SessionResponse"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          }
+        }
+      },
+      "DashboardStatsResponse": {
+        "type": "object",
+        "properties": {
+          "total_sessions": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "live_now": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "scheduled": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "ended": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "CreatePresetRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "type",
+          "primary_color"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "whip",
+              "rtmp"
+            ]
+          },
+          "stage_enabled": {
+            "type": "boolean"
+          },
+          "max_join_limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "chat_enabled": {
+            "type": "boolean"
+          },
+          "poll_enabled": {
+            "type": "boolean"
+          },
+          "viewer_count_visible": {
+            "type": "boolean"
+          },
+          "primary_color": {
+            "type": "string",
+            "pattern": "^#[0-9a-fA-F]{6}$"
+          },
+          "logo": {
+            "type": "string"
+          },
+          "logo_destination_url": {
+            "type": "string"
+          },
+          "host_add_co_host": {
+            "type": "boolean"
+          },
+          "host_camera_enabled": {
+            "type": "boolean"
+          },
+          "host_screen_share": {
+            "type": "boolean"
+          },
+          "host_chat_send_text": {
+            "type": "boolean"
+          },
+          "host_chat_send_file": {
+            "type": "boolean"
+          },
+          "host_chat_receive_message": {
+            "type": "boolean"
+          },
+          "host_poll_create": {
+            "type": "boolean"
+          },
+          "host_poll_vote": {
+            "type": "boolean"
+          },
+          "host_poll_view": {
+            "type": "boolean"
+          },
+          "onstage_camera_enabled": {
+            "type": "boolean"
+          },
+          "onstage_screen_share": {
+            "type": "boolean"
+          },
+          "onstage_viewer_view": {
+            "type": "boolean"
+          },
+          "audience_stage_join_request": {
+            "type": "boolean"
+          },
+          "audience_can_see_participants": {
+            "type": "boolean"
+          },
+          "audience_chat_send_text": {
+            "type": "boolean"
+          },
+          "audience_chat_send_file": {
+            "type": "boolean"
+          },
+          "audience_chat_receive_message": {
+            "type": "boolean"
+          },
+          "audience_poll_create": {
+            "type": "boolean"
+          },
+          "audience_poll_vote": {
+            "type": "boolean"
+          },
+          "audience_poll_view": {
+            "type": "boolean"
+          },
+          "moderator_manage_stage": {
+            "type": "boolean"
+          },
+          "moderator_manage_chat": {
+            "type": "boolean"
+          },
+          "moderator_manage_poll": {
+            "type": "boolean"
+          },
+          "recording_enabled": {
+            "type": "boolean"
+          },
+          "is_default": {
+            "type": "boolean"
+          }
+        }
+      },
+      "UpdatePresetRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "whip",
+              "rtmp"
+            ]
+          },
+          "stage_enabled": {
+            "type": "boolean"
+          },
+          "max_join_limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "chat_enabled": {
+            "type": "boolean"
+          },
+          "poll_enabled": {
+            "type": "boolean"
+          },
+          "viewer_count_visible": {
+            "type": "boolean"
+          },
+          "primary_color": {
+            "type": "string",
+            "pattern": "^#[0-9a-fA-F]{6}$"
+          },
+          "logo": {
+            "type": "string"
+          },
+          "logo_destination_url": {
+            "type": "string"
+          },
+          "host_add_co_host": {
+            "type": "boolean"
+          },
+          "host_camera_enabled": {
+            "type": "boolean"
+          },
+          "host_screen_share": {
+            "type": "boolean"
+          },
+          "host_chat_send_text": {
+            "type": "boolean"
+          },
+          "host_chat_send_file": {
+            "type": "boolean"
+          },
+          "host_chat_receive_message": {
+            "type": "boolean"
+          },
+          "host_poll_create": {
+            "type": "boolean"
+          },
+          "host_poll_vote": {
+            "type": "boolean"
+          },
+          "host_poll_view": {
+            "type": "boolean"
+          },
+          "onstage_camera_enabled": {
+            "type": "boolean"
+          },
+          "onstage_screen_share": {
+            "type": "boolean"
+          },
+          "onstage_viewer_view": {
+            "type": "boolean"
+          },
+          "audience_stage_join_request": {
+            "type": "boolean"
+          },
+          "audience_can_see_participants": {
+            "type": "boolean"
+          },
+          "audience_chat_send_text": {
+            "type": "boolean"
+          },
+          "audience_chat_send_file": {
+            "type": "boolean"
+          },
+          "audience_chat_receive_message": {
+            "type": "boolean"
+          },
+          "audience_poll_create": {
+            "type": "boolean"
+          },
+          "audience_poll_vote": {
+            "type": "boolean"
+          },
+          "audience_poll_view": {
+            "type": "boolean"
+          },
+          "moderator_manage_stage": {
+            "type": "boolean"
+          },
+          "moderator_manage_chat": {
+            "type": "boolean"
+          },
+          "moderator_manage_poll": {
+            "type": "boolean"
+          },
+          "recording_enabled": {
+            "type": "boolean"
+          },
+          "is_default": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PresetResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "library_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "whip",
+              "rtmp"
+            ]
+          },
+          "stage_enabled": {
+            "type": "boolean"
+          },
+          "max_join_limit": {
+            "type": "integer"
+          },
+          "chat_enabled": {
+            "type": "boolean"
+          },
+          "poll_enabled": {
+            "type": "boolean"
+          },
+          "viewer_count_visible": {
+            "type": "boolean"
+          },
+          "primary_color": {
+            "type": "string"
+          },
+          "logo": {
+            "type": "string"
+          },
+          "logo_destination_url": {
+            "type": "string"
+          },
+          "host_add_co_host": {
+            "type": "boolean"
+          },
+          "host_camera_enabled": {
+            "type": "boolean"
+          },
+          "host_screen_share": {
+            "type": "boolean"
+          },
+          "host_chat_send_text": {
+            "type": "boolean"
+          },
+          "host_chat_send_file": {
+            "type": "boolean"
+          },
+          "host_chat_receive_message": {
+            "type": "boolean"
+          },
+          "host_poll_create": {
+            "type": "boolean"
+          },
+          "host_poll_vote": {
+            "type": "boolean"
+          },
+          "host_poll_view": {
+            "type": "boolean"
+          },
+          "onstage_camera_enabled": {
+            "type": "boolean"
+          },
+          "onstage_screen_share": {
+            "type": "boolean"
+          },
+          "onstage_viewer_view": {
+            "type": "boolean"
+          },
+          "audience_stage_join_request": {
+            "type": "boolean"
+          },
+          "audience_can_see_participants": {
+            "type": "boolean"
+          },
+          "audience_chat_send_text": {
+            "type": "boolean"
+          },
+          "audience_chat_send_file": {
+            "type": "boolean"
+          },
+          "audience_chat_receive_message": {
+            "type": "boolean"
+          },
+          "audience_poll_create": {
+            "type": "boolean"
+          },
+          "audience_poll_vote": {
+            "type": "boolean"
+          },
+          "audience_poll_view": {
+            "type": "boolean"
+          },
+          "moderator_manage_stage": {
+            "type": "boolean"
+          },
+          "moderator_manage_chat": {
+            "type": "boolean"
+          },
+          "moderator_manage_poll": {
+            "type": "boolean"
+          },
+          "recording_enabled": {
+            "type": "boolean"
+          },
+          "is_default": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CreatePollRequest": {
+        "type": "object",
+        "required": [
+          "question",
+          "options"
+        ],
+        "properties": {
+          "question": {
+            "type": "string",
+            "minLength": 3
+          },
+          "options": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "string"
+            }
+          },
+          "allow_multiple_votes": {
+            "type": "boolean"
+          }
+        }
+      },
+      "VoteRequest": {
+        "type": "object",
+        "required": [
+          "option_id"
+        ],
+        "properties": {
+          "option_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "PollOptionResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "text": {
+            "type": "string"
+          },
+          "vote_count": {
+            "type": "integer"
+          }
+        }
+      },
+      "PollResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "session_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "question": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "closed"
+            ]
+          },
+          "allow_multiple_votes": {
+            "type": "boolean"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PollOptionResponse"
+            }
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "closed_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "PollListResponse": {
+        "type": "object",
+        "properties": {
+          "polls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PollResponse"
+            }
+          },
+          "total": {
+            "type": "integer"
+          }
+        }
+      },
+      "CreateChatMessageRequest": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "recipient_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Optional target user UUID for direct message"
+          }
+        }
+      },
+      "ChatMessageResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "session_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "username": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "recipient_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "recipient_username": {
+            "type": "string"
+          },
+          "is_direct": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ChatMessagesResponse": {
+        "type": "object",
+        "properties": {
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatMessageResponse"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "offset": {
+            "type": "integer"
+          }
+        }
+      },
+      "RaiseHandRequest": {
+        "type": "object",
+        "properties": {
+          "participant_identity": {
+            "type": "string"
+          },
+          "participant_name": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "HandRaiseResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "session_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "participant_identity": {
+            "type": "string"
+          },
+          "participant_name": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "approved",
+              "rejected"
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "responded_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "JoinRequestResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "session_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "username": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "approved",
+              "rejected"
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "responded_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AddToStageRequest": {
+        "type": "object",
+        "required": [
+          "participant_identity"
+        ],
+        "properties": {
+          "participant_identity": {
+            "type": "string"
+          },
+          "participant_name": {
+            "type": "string"
+          },
+          "can_publish_audio": {
+            "type": "boolean"
+          },
+          "can_publish_video": {
+            "type": "boolean"
+          }
+        }
+      },
+      "StageParticipantResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "session_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "participant_identity": {
+            "type": "string"
+          },
+          "participant_name": {
+            "type": "string"
+          },
+          "can_publish_audio": {
+            "type": "boolean"
+          },
+          "can_publish_video": {
+            "type": "boolean"
+          },
+          "joined_stage_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "left_stage_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "UpdateStagePermissionsRequest": {
+        "type": "object",
+        "properties": {
+          "can_publish_audio": {
+            "type": "boolean"
+          },
+          "can_publish_video": {
+            "type": "boolean"
+          }
+        }
+      },
+      "RemoveFromStageRequest": {
+        "type": "object",
+        "required": [
+          "participant_identity"
+        ],
+        "properties": {
+          "participant_identity": {
+            "type": "string"
+          }
+        }
+      },
+      "UpdateRecordingRequest": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 255
+          }
+        }
+      },
+      "RecordingResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "session_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "egress_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "file_path": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "file_size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "recording",
+              "completed",
+              "failed"
+            ]
+          },
+          "storage_type": {
+            "type": "string"
+          },
+          "retry_count": {
+            "type": "integer"
+          },
+          "error_message": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "RecordingListResponse": {
+        "type": "object",
+        "properties": {
+          "recordings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RecordingResponse"
+            }
+          },
+          "total": {
+            "type": "integer"
+          }
+        }
+      },
+      "RecordingDownloadResponse": {
+        "type": "object",
+        "properties": {
+          "download_url": {
+            "type": "string"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AttendanceResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "session_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "is_guest": {
+            "type": "boolean"
+          },
+          "joined_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "left_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "last_seen_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "watch_duration": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Total duration in seconds"
+          },
+          "join_count": {
+            "type": "integer"
+          }
+        }
+      },
+      "AttendanceListResponse": {
+        "type": "object",
+        "properties": {
+          "attendance": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AttendanceResponse"
+            }
+          },
+          "total": {
+            "type": "integer"
+          },
+          "currently_watching": {
+            "type": "integer"
+          }
+        }
+      },
+      "AttendanceStatsResponse": {
+        "type": "object",
+        "properties": {
+          "total_attendees": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "currently_watching": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "peak_viewers": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "average_watch_duration": {
+            "type": "integer",
+            "format": "int64",
+            "description": "In seconds"
+          }
+        }
+      },
+      "ActiveViewerResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "username": {
+            "type": "string"
+          },
+          "joined_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "role": {
+            "type": "string"
+          }
+        }
+      },
+      "ActiveViewersResponse": {
+        "type": "object",
+        "properties": {
+          "viewers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ActiveViewerResponse"
+            }
+          },
+          "total": {
+            "type": "integer"
+          }
+        }
+      },
+      "BanParticipantRequest": {
+        "type": "object",
+        "required": [
+          "user_id"
+        ],
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      },
+      "BannedParticipantResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "session_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "username": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              }
+            }
+          },
+          "banned_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "banned_by_user": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "username": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              }
+            }
+          },
+          "reason": {
+            "type": "string"
+          },
+          "banned_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "BannedParticipantsListResponse": {
+        "type": "object",
+        "properties": {
+          "banned_participants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BannedParticipantResponse"
+            }
+          },
+          "total": {
+            "type": "integer"
+          }
+        }
+      },
+      "AddParticipantRoleRequest": {
+        "type": "object",
+        "required": [
+          "user_id"
+        ],
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "SessionParticipantResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "session_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "username": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserResponse"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "co_host",
+              "moderator"
+            ]
+          },
+          "is_active": {
+            "type": "boolean"
+          },
+          "assigned_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "joined_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "assigned_by": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "assigned_by_user": {
+            "$ref": "#/components/schemas/UserResponse"
+          },
+          "removed_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "left_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SessionParticipantsListResponse": {
+        "type": "object",
+        "properties": {
+          "participants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SessionParticipantResponse"
+            }
+          },
+          "total": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "responses": {
+      "Bad Request": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "success": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "message",
+                "success"
+              ]
+            },
+            "examples": {
+              "Example 1": {
+                "summary": "Example 1",
+                "value": {
+                  "message": "Invalid Request",
+                  "success": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "success": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "code",
+                "message",
+                "success"
+              ]
+            },
+            "examples": {
+              "Example 1": {
+                "summary": "Example 1",
+                "value": {
+                  "code": "auth_type_not_found",
+                  "message": "Could not determine authentication type from request. Please provide a valid Authorization header or X-API-Key header.",
+                  "success": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "Not Found": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "success": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "message",
+                "success"
+              ]
+            },
+            "examples": {
+              "Example 1": {
+                "summary": "Example 1",
+                "value": {
+                  "message": "Resource not found",
+                  "success": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "Unprocessable Entity": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "field": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "success": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "message",
+                "errors",
+                "success"
+              ]
+            },
+            "examples": {
+              "Example 1": {
+                "summary": "Example 1",
+                "value": {
+                  "message": "Invalid Request",
+                  "errors": [
+                    {
+                      "field": "field_name",
+                      "code": "validation_required",
+                      "message": "This field is required"
+                    }
+                  ],
+                  "success": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "Internal Server Error": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "success": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "message",
+                "success"
+              ]
+            },
+            "examples": {
+              "Example 1": {
+                "summary": "Example 1",
+                "value": {
+                  "message": "Internal server error",
+                  "success": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "",
+      "description": "Vidinfra API"
+    }
+  ],
+  "security": []
+}
