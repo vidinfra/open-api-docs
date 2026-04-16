@@ -3030,8 +3030,8 @@
   },
   "servers": [
     {
-      "url": "",
-      "description": "Vidinfra API"
+      "url": "https://api.tenbyte.io/v1/webinar",
+      "description": "Vidinfra Webinar"
     }
   ],
   "security": []
