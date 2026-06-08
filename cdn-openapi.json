@@ -7,9 +7,6 @@
   },
   "tags": [
     {
-      "name": "cdn"
-    },
-    {
       "name": "Distributions"
     },
     {
@@ -47,7 +44,6 @@
         "deprecated": false,
         "description": "🔍 Filtering\n\nYou can filter by the following fields:\n\n-   `id`\n-   `name`\n-   `cname`\n-   `domain`\n-   `status`\n-   `domain_type`\n-   `cache_strategy`\n-   `organization_id`\n-   `certificate_id`\n-   `enable_ssl`\n-   `is_redirect_http_to_https`\n-   `is_http2`\n-   `is_http3`\n-   `is_cname_valid`\n-   `is_acme_challenge_valid`\n-   `le_issue`\n-   `created_at`\n-   `updated_at`\n\nOperators\n\n  Operator        Description\n  --------------- ------------------------------------------\n  `eq`            Equals\n  `ne`            Not equals\n  `like`          Contains (case insensitive)\n  `not-like`      Does not contain\n  `starts-with`   Starts with\n  `ends-with`     Ends with\n  `gt`            Greater than\n  `gte`           Greater than or equal\n  `lt`            Less than\n  `lte`           Less than or equal\n  `in`            In list (comma-separated)\n  `not-in`        Not in list\n  `null`          Is null\n  `not-null`      Is not null\n  `between`       Between two values (comma-separated)\n  `not-between`   Not between two values (comma-separated)\n\nExample Filters\n\n    filter[name][starts-with]=cdn-\n    filter[status][in]=active,disabled\n    filter[enable_ssl][eq]=true\n    filter[created_at][between]=2025-01-01,2025-08-01\n\n------------------------------------------------------------------------\n\nSorting\n\n  ---------------------------------------------------------------------------\n  Parameter   Description\n  ----------- ---------------------------------------------------------------\n  `sort`      Sort fields. Prefix with `-` for descending. Allowed:\n              `created_at`, `updated_at`, `name`, `status`, `domain_type`,\n              `cache_strategy`, `domain`, `cname`\n\n  ---------------------------------------------------------------------------\n\nExample Sorts\n\n    sort=-created_at\n    sort=name\n    sort=-created_at,name\n\n------------------------------------------------------------------------\n\n📌 Example Requests\n\n1. Prefix search + newest first\n\n    GET /v1/distributions?filter[name][starts-with]=cdn-&sort=-created_at\n\n2. Status + type + alphabetical\n\n    GET /v1/distributions?filter[status][in]=active,disabled&filter[domain_type][eq]=system&sort=name\n\n3. Created date range\n\n    GET /v1/distributions?filter[created_at][between]=2025-01-01,2025-08-01&sort=-created_at\n\n4. SSL-only\n\n    GET /v1/distributions?filter[enable_ssl][eq]=true\n\n------------------------------------------------------------------------\n\n✅ Success Response\n\n    Status: 200 OK\n    {\n      \"success\": true,\n      \"count\": 2,\n      \"data\": [\n        {\n          \"id\": \"uuid\",\n          \"name\": \"cdn-example\",\n          \"status\": \"active\",\n          \"domain_type\": \"system\",\n          \"enable_ssl\": true,\n          \"created_at\": \"2025-02-01T12:00:00Z\",\n          \"updated_at\": \"2025-02-10T12:00:00Z\"\n        }\n      ]\n    }\n\n------------------------------------------------------------------------\n\n❌ Error Response\n\n    Status: 400 Bad Request\n    {\n      \"success\": false,\n      \"message\": \"Invalid filter query\",\n      \"errors\": {\n        \"filter\": \"Unsupported field or operator\"\n      }\n    }\n",
         "tags": [
-          "cdn",
           "Distributions"
         ],
         "parameters": [
@@ -377,7 +373,6 @@
         "deprecated": false,
         "description": "Creates a new CDN distribution for a customer. This API allows configuration of caching behavior, domain mapping, and origin server settings.",
         "tags": [
-          "cdn",
           "Distributions"
         ],
         "parameters": [],
@@ -475,7 +470,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Distributions"
         ],
         "parameters": [
@@ -514,7 +508,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Distributions"
         ],
         "parameters": [
@@ -575,7 +568,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Distributions"
         ],
         "parameters": [
@@ -584,16 +576,6 @@
             "in": "path",
             "description": "",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-API-Key",
-            "in": "header",
-            "description": "",
-            "required": false,
-            "example": "{{YOUR_API_KEY}}",
             "schema": {
               "type": "string"
             }
@@ -624,7 +606,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Distributions"
         ],
         "parameters": [
@@ -678,7 +659,6 @@
         "deprecated": false,
         "description": "This API is to toggle WebP Configuration.\n\nAPI consumer must send `enable_webp`: `true` or `false`",
         "tags": [
-          "cdn",
           "Distributions"
         ],
         "parameters": [
@@ -732,7 +712,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Distributions"
         ],
         "parameters": [
@@ -784,7 +763,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Distributions"
         ],
         "parameters": [
@@ -845,7 +823,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "SSL Certificate Manage"
         ],
         "parameters": [
@@ -911,7 +888,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "SSL Certificate Manage"
         ],
         "parameters": [],
@@ -982,7 +958,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "SSL Certificate Manage"
         ],
         "parameters": [
@@ -1082,7 +1057,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "SSL Certificate Manage"
         ],
         "parameters": [],
@@ -1129,7 +1103,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "SSL Certificate Manage"
         ],
         "parameters": [
@@ -1170,7 +1143,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "SSL Certificate Manage"
         ],
         "parameters": [
@@ -1211,7 +1183,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Origins/Upstreams Manage"
         ],
         "parameters": [
@@ -1250,7 +1221,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Origins/Upstreams Manage"
         ],
         "parameters": [
@@ -1312,7 +1282,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Purge"
         ],
         "parameters": [
@@ -1371,7 +1340,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Prefetch"
         ],
         "parameters": [
@@ -1473,7 +1441,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Cache Rules"
         ],
         "parameters": [
@@ -1513,7 +1480,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Cache Rules"
         ],
         "parameters": [
@@ -1626,7 +1592,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Cache Rules"
         ],
         "parameters": [
@@ -1676,7 +1641,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Cache Rules"
         ],
         "parameters": [
@@ -1749,7 +1713,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Cache Rules"
         ],
         "parameters": [
@@ -1812,7 +1775,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Access Rules"
         ],
         "parameters": [
@@ -1851,7 +1813,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Access Rules"
         ],
         "parameters": [
@@ -2032,7 +1993,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Access Rules"
         ],
         "parameters": [
@@ -2119,7 +2079,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Access Rules"
         ],
         "parameters": [
@@ -2169,7 +2128,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Analytics"
         ],
         "parameters": [
@@ -2289,7 +2247,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Http Headers"
         ],
         "parameters": [
@@ -2351,7 +2308,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Http Headers"
         ],
         "parameters": [
@@ -2392,7 +2348,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Verifications"
         ],
         "parameters": [
@@ -2434,7 +2389,6 @@
         "deprecated": false,
         "description": "",
         "tags": [
-          "cdn",
           "Verifications"
         ],
         "parameters": [
