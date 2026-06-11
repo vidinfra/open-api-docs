@@ -1,0 +1,2559 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Tenbyte Cloud API",
+    "version": "1.0.0",
+    "description": "API for managing cloud resources like Virtual Machines, Storage, Networks, and more on tenbytecloud.com."
+  },
+  "servers": [
+    {
+      "url": "https://api.tenbytecloud.com/v1",
+      "description": "Production server"
+    }
+  ],
+  "security": [
+    { "apikey-header-apikey": [] }
+  ],
+  "components": {
+    "securitySchemes": {
+      "apikey-header-apikey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "apikey"
+      }
+    }
+  },
+  "paths": {
+    "/user-resource/user": {
+      "get": {
+        "summary": "Get User Info",
+        "description": "Authenticated user can request data-model for themselves.",
+        "operationId": "getUserInfo",
+        "tags": ["User"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "responses": {
+          "200": {
+            "description": "User info",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "cookie_id": "61b0378574974ae88dbfec0feb9917bc",
+                  "id": 8,
+                  "last_activity": "2018-02-22 14:18:47",
+                  "name": "user@example.com",
+                  "profile": null,
+                  "profile_data": {
+                    "avatar": "https://s.gravatar.com/avatar/bbb",
+                    "created_at": "2018-10-25 11:02:59",
+                    "email": "user@example.com",
+                    "first_name": "Cloudia",
+                    "id": 22,
+                    "last_name": "Iaas",
+                    "personal_id_number": "123456",
+                    "phone_number": "+111111111",
+                    "updated_at": "2021-05-18 11:07:00",
+                    "user_id": 8
+                  },
+                  "state": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user-resource/user/profile": {
+      "patch": {
+        "summary": "Modify Profile Info",
+        "description": "Authenticated user can modify their own profile data.",
+        "operationId": "modifyProfileInfo",
+        "tags": ["User"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "first_name": { "type": "string", "description": "First name" },
+                  "last_name": { "type": "string", "description": "Last name" },
+                  "phone_number": { "type": "string", "description": "Phone number in any format" },
+                  "personal_id_number": { "type": "string", "description": "Personal identity number, usually issued by the state" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated profile",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "avatar": "https://s.gravatar.com/avatar/bbb",
+                  "created_at": "2018-10-25 11:02:59",
+                  "email": "user@example.com",
+                  "first_name": "Cloudia",
+                  "id": 22,
+                  "last_name": "Iaas",
+                  "personal_id_number": "123456",
+                  "phone_number": "+98765",
+                  "updated_at": "2021-05-18 11:07:00",
+                  "user_id": 8
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user-resource/ssh_keys": {
+      "get": {
+        "summary": "List SSH Keys",
+        "description": "List all SSH public keys associated with the authenticated user.",
+        "operationId": "listSshKeys",
+        "tags": ["User"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "responses": {
+          "200": {
+            "description": "List of SSH keys",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } },
+                "example": [
+                  {
+                    "uuid": "3f8f4c5a-2c6d-4f0a-9a3a-8c9f6e3f1a2b",
+                    "name": "laptop-mbp",
+                    "public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMockPublicKeyData user@host",
+                    "user_id": 268,
+                    "created_at": "2025-01-12T09:21:33Z"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create SSH Key",
+        "description": "Create a new SSH public key. The public_key is immutable once created.",
+        "operationId": "createSshKey",
+        "tags": ["User"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "public_key"],
+                "properties": {
+                  "name": { "type": "string", "description": "A human-friendly name for the key, unique per user" },
+                  "public_key": { "type": "string", "description": "Full OpenSSH public key line" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created SSH key",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "uuid": "3f8f4c5a-2c6d-4f0a-9a3a-8c9f6e3f1a2b",
+                  "name": "laptop-mbp",
+                  "public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMockPublicKeyData user@host",
+                  "user_id": 268,
+                  "created_at": "2025-01-12T09:21:33Z"
+                }
+              }
+            }
+          },
+          "409": { "description": "Conflict - key with same name already exists" }
+        }
+      }
+    },
+    "/user-resource/ssh_keys/{uuid}": {
+      "patch": {
+        "summary": "Update SSH Key Name",
+        "description": "Rename an existing SSH key. Only metadata (name) can be changed.",
+        "operationId": "updateSshKeyName",
+        "tags": ["User"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "uuid", "in": "path", "required": true, "schema": { "type": "string" }, "example": "3f8f4c5a-2c6d-4f0a-9a3a-8c9f6e3f1a2b" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string", "description": "New human-friendly key name" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated SSH key",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "uuid": "3f8f4c5a-2c6d-4f0a-9a3a-8c9f6e3f1a2b",
+                  "name": "personal-laptop",
+                  "public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMockPublicKeyData user@host",
+                  "user_id": 268,
+                  "created_at": "2025-01-12T09:21:33Z"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete SSH Key",
+        "description": "Delete an SSH key by UUID.",
+        "operationId": "deleteSshKey",
+        "tags": ["User"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "uuid", "in": "path", "required": true, "schema": { "type": "string" }, "example": "3f8f4c5a-2c6d-4f0a-9a3a-8c9f6e3f1a2b" }
+        ],
+        "responses": {
+          "204": { "description": "No Content - SSH key deleted" }
+        }
+      }
+    },
+    "/user-resource/token": {
+      "delete": {
+        "summary": "Delete Token",
+        "description": "Delete API token.",
+        "operationId": "deleteToken",
+        "tags": ["Token"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token_id": { "type": "integer", "description": "Token ID" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "errors": { "Error": "Failed to delete kong token." } }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update Token",
+        "description": "Update API token options.",
+        "operationId": "updateToken",
+        "tags": ["Token"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "billing_account_id": { "type": "integer", "default": 0 },
+                  "description": { "type": "string" },
+                  "restricted": { "type": "boolean" },
+                  "token_id": { "type": "integer" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "errors": { "Error": "Failed to update token." } }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Token",
+        "description": "Create new token and register it at API Gateway.",
+        "operationId": "createToken",
+        "tags": ["Token"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "billing_account_id": { "type": "integer", "default": 0 },
+                  "description": { "type": "string" },
+                  "restricted": { "type": "boolean" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "List of tokens",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } },
+                "example": [
+                  {
+                    "billing_account_id": 6,
+                    "consumer_id": "9b68f9e5-34a5-41bb-8938-944c17e38723",
+                    "created_at": "2018-02-22 14:24:02",
+                    "description": "Token Description",
+                    "id": 7,
+                    "restricted": true,
+                    "token": "PS2vfOCKuU52be83QZhMMndqOusfFkHr",
+                    "user_id": 8
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user-resource/token/list": {
+      "get": {
+        "summary": "List Tokens",
+        "description": "List user API tokens.",
+        "operationId": "listTokens",
+        "tags": ["Token"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "responses": {
+          "200": {
+            "description": "List of tokens",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } },
+                "example": [
+                  {
+                    "billing_account_id": 0,
+                    "consumer_id": "9b68f9e5-34a5-41bb-8938-944c17e38723",
+                    "created_at": "2018-02-21 14:00:07",
+                    "description": "hea token",
+                    "id": 2,
+                    "restricted": false,
+                    "token": "vYNKd8VWHg583sTkAZ8vKbyVtyXWILXn",
+                    "user_id": 8
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/config/locations": {
+      "get": {
+        "summary": "List Locations",
+        "description": "Returns list of available locations (data centres). Use the location slug in the URL path after version number to target a specific location: /v1/{slug}/.",
+        "operationId": "listLocations",
+        "tags": ["Locations"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "responses": {
+          "200": {
+            "description": "List of locations",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } },
+                "example": [
+                  {
+                    "display_name": "Cycletown",
+                    "is_default": true,
+                    "is_preferred": false,
+                    "description": "The original location",
+                    "order_nr": 1,
+                    "slug": "cyc01",
+                    "country_code": "est"
+                  },
+                  {
+                    "display_name": "Busburg",
+                    "is_default": false,
+                    "is_preferred": true,
+                    "description": "Secondary location",
+                    "order_nr": 2,
+                    "slug": "bus02",
+                    "country_code": "est"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user-resource/vm": {
+      "delete": {
+        "summary": "Delete VM",
+        "description": "Delete virtual machine. Location-specific endpoint — optionally prefix path with /{slug}/.",
+        "operationId": "deleteVm",
+        "tags": ["VM"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "slug", "in": "path", "required": false, "schema": { "type": "string" }, "description": "Optional location slug (e.g. cyc01)", "example": "cyc01" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uuid": { "type": "string", "description": "UUID of the virtual machine" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "errors": { "Error": "No such virtual machine exists. aaaaaaaa-0000-bbbb-1111-cccccccccccc" } }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get VM Info",
+        "description": "Get virtual machine data. Location-specific endpoint.",
+        "operationId": "getVmInfo",
+        "tags": ["VM"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "uuid", "in": "query", "required": false, "schema": { "type": "string" }, "example": "f80b1d62-ffe4-43ef-9210-60f05445456a" }
+        ],
+        "responses": {
+          "200": {
+            "description": "VM data",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "backup": true,
+                  "billing_account": 6,
+                  "hostname": "hostname",
+                  "id": 7,
+                  "memory": 4096,
+                  "name": "Windows-2016",
+                  "os_name": "windows",
+                  "os_version": "2016",
+                  "private_ipv4": "10.123.8.223",
+                  "public_ipv6": "2a05:1cc0:10:30::80:fffe",
+                  "status": "running",
+                  "uuid": "f80b1d62-ffe4-43ef-9210-60f05445456a",
+                  "vcpu": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Modify VM",
+        "description": "Currently only name, vcpu and ram can be changed. vcpu and ram can only be changed when the machine is in stopped state. Location-specific endpoint.",
+        "operationId": "modifyVm",
+        "tags": ["VM"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uuid": { "type": "string" },
+                  "name": { "type": "string" },
+                  "ram": { "type": "integer" },
+                  "vcpu": { "type": "integer" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated VM",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "name": "web-server",
+                  "memory": 2048,
+                  "status": "stopped",
+                  "uuid": "49c039db-7bcd-4f20-9358-88c4618c547a",
+                  "vcpu": 4
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create VM",
+        "description": "Create a new virtual machine. billing_account_id is optional if using an API token restricted to one billing account. Location-specific endpoint.",
+        "operationId": "createVm",
+        "tags": ["VM"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "backup": { "type": "boolean", "default": false },
+                  "billing_account_id": { "type": "integer" },
+                  "description": { "type": "string" },
+                  "designated_pool_uuid": { "type": "string", "description": "Resource pool to allocate this VM into" },
+                  "disks": { "type": "string" },
+                  "name": { "type": "string" },
+                  "os_name": { "type": "string" },
+                  "os_version": { "type": "string" },
+                  "password": { "type": "string" },
+                  "public_key": { "type": "string", "description": "OpenSSH public key line" },
+                  "public_keys": { "type": "string", "description": "Multiple SSH public keys" },
+                  "ram": { "type": "integer" },
+                  "source_replica": { "type": "string" },
+                  "source_uuid": { "type": "string" },
+                  "username": { "type": "string" },
+                  "vcpu": { "type": "integer" },
+                  "reserve_public_ip": { "type": "boolean", "default": true },
+                  "network_uuid": { "type": "string" },
+                  "cloud_init": { "type": "string", "description": "JSON or YAML cloud-init user-data" },
+                  "disk_uuid": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created VM",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "billing_account": 6,
+                  "name": "Ubuntu-16-04",
+                  "os_name": "ubuntu",
+                  "os_version": "16.04",
+                  "status": "running",
+                  "uuid": "fc880f74-cf03-4a7a-93da-74c506157023",
+                  "vcpu": 2
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user-resource/vm/user": {
+      "patch": {
+        "summary": "Change Password",
+        "description": "Set a new password for an existing user on the virtual machine. The VM must be running. Location-specific endpoint.",
+        "operationId": "changeVmPassword",
+        "tags": ["VM"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uuid": { "type": "string" },
+                  "username": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "success": true }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user-resource/host_pool/list": {
+      "get": {
+        "summary": "List VM resource pools",
+        "description": "Get a list of pools available for running compute resources. Location-specific endpoint.",
+        "operationId": "listVmResourcePools",
+        "tags": ["VM"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "responses": {
+          "200": {
+            "description": "List of resource pools",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } },
+                "example": [
+                  {
+                    "created_at": "2022-12-28 13:50:52",
+                    "description": "A server class for a wide range of purposes",
+                    "is_default_designated": true,
+                    "name": "General",
+                    "uuid": "4820b11f-82c9-4313-a1ef-14d6039981db"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user-resource/vm/reinstall": {
+      "post": {
+        "summary": "Reinstall VM",
+        "description": "Discard virtual machine's current storage state and overwrite it with an OS base image. Location-specific endpoint.",
+        "operationId": "reinstallVm",
+        "tags": ["VM"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uuid": { "type": "string" },
+                  "os_name": { "type": "string" },
+                  "os_version": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reinstalled VM",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "name": "web-server",
+                  "os_name": "ubuntu",
+                  "os_version": "22.04-lts",
+                  "status": "running",
+                  "uuid": "5aea1842-895f-4bd3-8bd6-e37b2282fb46"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user-resource/vm/backup": {
+      "post": {
+        "summary": "Toggle Auto Backup",
+        "description": "Toggle automatic backups for virtual machine. Location-specific endpoint.",
+        "operationId": "toggleAutoBackup",
+        "tags": ["VM"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uuid": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated VM",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "backup": false,
+                  "name": "Ubuntu-16-04",
+                  "status": "running",
+                  "uuid": "f80b1d62-ffe4-43ef-9210-60f05445456a"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user-resource/vm/clone": {
+      "post": {
+        "summary": "Clone VM",
+        "description": "Clone existing virtual machine. Location-specific endpoint.",
+        "operationId": "cloneVm",
+        "tags": ["VM"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uuid": { "type": "string" },
+                  "name": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cloned VM",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "name": "Name of the Clone",
+                  "status": "running",
+                  "uuid": "d582f16a-013b-4a23-8463-c66bbbc96c43"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user-resource/vm/ip/public": {
+      "delete": {
+        "summary": "Release Public IP",
+        "description": "DEPRECATED — see Floating IP for the updated API. Release a virtual machine's public IPv4 address. Location-specific endpoint.",
+        "operationId": "releasePublicIp",
+        "deprecated": true,
+        "tags": ["VM"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uuid": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated VM",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "uuid": "fc880f74-cf03-4a7a-93da-74c506157023", "status": "running" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Reserve Public IP",
+        "description": "DEPRECATED — see Floating IP for the updated API. Reserve and assign a public IP address for a virtual machine. Location-specific endpoint.",
+        "operationId": "reservePublicIp",
+        "deprecated": true,
+        "tags": ["VM"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uuid": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated VM",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "uuid": "fc880f74-cf03-4a7a-93da-74c506157023", "status": "running" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user-resource/vm/list": {
+      "get": {
+        "summary": "List VMs",
+        "description": "Get virtual machine list. Location-specific endpoint.",
+        "operationId": "listVms",
+        "tags": ["VM"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "responses": {
+          "200": {
+            "description": "List of VMs",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } },
+                "example": [
+                  {
+                    "name": "Ubuntu-16-04",
+                    "os_name": "ubuntu",
+                    "os_version": "16.04",
+                    "status": "running",
+                    "uuid": "fc880f74-cf03-4a7a-93da-74c506157023",
+                    "vcpu": 2
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user-resource/vm/rebuild": {
+      "post": {
+        "summary": "Rebuild from Replica",
+        "description": "Discard virtual machine's current storage state and restore it from the specified replica. Location-specific endpoint.",
+        "operationId": "rebuildFromReplica",
+        "tags": ["VM"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uuid": { "type": "string" },
+                  "replica_uuid": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Rebuilt VM",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "name": "web-server", "status": "stopped", "uuid": "5aea1842-895f-4bd3-8bd6-e37b2282fb46" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user-resource/vm/replica": {
+      "delete": {
+        "summary": "Delete Replica",
+        "description": "Delete replica by uuid. Location-specific endpoint.",
+        "operationId": "deleteReplica",
+        "tags": ["VM"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "replica_uuid": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "success": true }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List Replicas",
+        "description": "Get virtual machine storage replica list. Location-specific endpoint.",
+        "operationId": "listReplicas",
+        "tags": ["VM"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "uuid", "in": "query", "required": false, "schema": { "type": "string" }, "example": "f80b1d62-ffe4-43ef-9210-60f05445456a" },
+          { "name": "r_type", "in": "query", "required": false, "schema": { "type": "string", "default": "snapshot" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of replicas",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } },
+                "example": []
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Replica",
+        "description": "Create replica from block storage. Location-specific endpoint.",
+        "operationId": "createReplica",
+        "tags": ["VM"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uuid": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created replica",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "uuid": "f80b1d62-ffe4-43ef-9210-60f05445456a", "type": "block" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user-resource/vm/start": {
+      "post": {
+        "summary": "Start VM",
+        "description": "Start virtual machine. Location-specific endpoint.",
+        "operationId": "startVm",
+        "tags": ["VM"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uuid": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "errors": { "Error": "No such virtual machine exists." } }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user-resource/vm/stop": {
+      "post": {
+        "summary": "Stop VM",
+        "description": "Stop a virtual machine. By default tries a graceful ACPI shutdown. Use force=True to immediately cut power. Location-specific endpoint.",
+        "operationId": "stopVm",
+        "tags": ["VM"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uuid": { "type": "string" },
+                  "force": { "type": "boolean", "default": false }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Stopped VM",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "status": "stopped", "uuid": "5052bf02-044a-4d35-a803-d6b156f84beb" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user-resource/vm/boot_iso_media": {
+      "post": {
+        "summary": "Boot a rescue or installation media",
+        "description": "Launches the VM with a live OS image attached as a cd-rom device for booting. Mode is enabled for a single launch only. Location-specific endpoint.",
+        "operationId": "bootIsoMedia",
+        "tags": ["VM"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uuid": { "type": "string", "description": "Unique identifier of virtual machine" },
+                  "boot_image_uuid": { "type": "string", "description": "Boot media image UUID" },
+                  "boot_image_repository": { "type": "string", "description": "One of: private, platform (default: platform)" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user-resource/vm/storage": {
+      "post": {
+        "summary": "Add Disk",
+        "description": "Create and add a disk device of specified capacity to a virtual machine. Location-specific endpoint.",
+        "operationId": "addDisk",
+        "tags": ["VM"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uuid": { "type": "string" },
+                  "size_gb": { "type": "integer" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created disk",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "size": 50, "type": "block", "uuid": "3d91aa31-16ec-44ee-b8b3-22a0bda6559e" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Modify Disk",
+        "description": "Modify virtual machine disk capacity. New disk size cannot be smaller than current size. Location-specific endpoint.",
+        "operationId": "modifyDisk",
+        "tags": ["VM"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uuid": { "type": "string", "description": "VM UUID" },
+                  "disk_uuid": { "type": "string", "description": "Storage UUID" },
+                  "size_gb": { "type": "integer" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated disk",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "size": 60, "type": "block", "uuid": "3d91aa31-16ec-44ee-b8b3-22a0bda6559e" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Attached Disk",
+        "description": "Disconnects and completely removes a disk device from a virtual machine. Data will be irrecoverably lost. Primary/boot disks cannot be deleted. Location-specific endpoint.",
+        "operationId": "deleteAttachedDisk",
+        "tags": ["VM"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uuid": { "type": "string" },
+                  "storage_uuid": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "success": true }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/storage/disks": {
+      "post": {
+        "summary": "Create Disk",
+        "description": "Creates a new block storage disk. Can be empty, a copy of an OS base image, an existing disk, or a snapshot. Location-specific endpoint.",
+        "operationId": "createDisk",
+        "tags": ["Block Storage"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "size_gb": { "type": "string", "description": "Size of disk in GiB" },
+                  "billing_account_id": { "type": "integer", "description": "Required if using a global API token" },
+                  "display_name": { "type": "string", "description": "Descriptive name for the disk" },
+                  "source_image_type": { "type": "string", "description": "One of OS_BASE, DISK, SNAPSHOT or EMPTY (default)" },
+                  "source_image": { "type": "string", "description": "Reference to an image to be copied" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created disk",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "uuid": "05a61876-86f3-4b05-b0ec-53ee6fa03ced",
+                  "status": "Active",
+                  "size_gb": 50,
+                  "source_image_type": "EMPTY",
+                  "created_at": "2022-09-01T12:03:14.355+0000"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List Disks",
+        "description": "List user's disks. Location-specific endpoint.",
+        "operationId": "listDisks",
+        "tags": ["Block Storage"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "read_only_bootable", "in": "query", "required": false, "schema": { "type": "boolean" }, "description": "If true, returns only disks marked as read-only bootable" }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of disks",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } },
+                "example": [
+                  { "uuid": "05a61876-86f3-4b05-b0ec-53ee6fa03ced", "status": "Active", "size_gb": 50 }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/storage/disks/{disk_uuid}": {
+      "get": {
+        "summary": "Get Disk",
+        "description": "Get one disk. Location-specific endpoint.",
+        "operationId": "getDisk",
+        "tags": ["Block Storage"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "disk_uuid", "in": "path", "required": true, "schema": { "type": "string" }, "description": "Defines which disk to retrieve", "example": "cef3a629-89b0-40ec-986b-4b6e831f9b64" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Disk data",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "uuid": "cef3a629-89b0-40ec-986b-4b6e831f9b64",
+                  "status": "Active",
+                  "display_name": "Web server main",
+                  "size_gb": 30
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Modify Disk Info",
+        "description": "Modify meta-data of a disk. Location-specific endpoint.",
+        "operationId": "modifyDiskInfo",
+        "tags": ["Block Storage"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "disk_uuid", "in": "path", "required": true, "schema": { "type": "string" }, "description": "Defines which disk to modify", "example": "05a61876-86f3-4b05-b0ec-53ee6fa03ced" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "billing_account_id": { "type": "integer" },
+                  "display_name": { "type": "string" },
+                  "read_only_bootable": { "type": "boolean" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated disk",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "uuid": "05a61876-86f3-4b05-b0ec-53ee6fa03ced", "display_name": "Web server backup" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Disk",
+        "description": "Delete a disk and all its snapshots. All data will be lost irrecoverably. Location-specific endpoint.",
+        "operationId": "deleteDisk",
+        "tags": ["Block Storage"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "disk_uuid", "in": "path", "required": true, "schema": { "type": "string" }, "description": "Defines which disk to delete", "example": "cef3a629-89b0-40ec-986b-4b6e831f9b64" }
+        ],
+        "responses": {
+          "204": { "description": "No Content - disk deleted" }
+        }
+      }
+    },
+    "/user-resource/vm/storage/attach": {
+      "post": {
+        "summary": "Attach Disk",
+        "description": "Attaches a disk to a virtual machine. Location-specific endpoint.",
+        "operationId": "attachDisk",
+        "tags": ["Block Storage"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uuid": { "type": "string", "description": "VM UUID" },
+                  "storage_uuid": { "type": "string", "description": "Disk UUID" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Attached disk",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "uuid": "3d91aa31-16ec-44ee-b8b3-22a0bda6559e", "size": 15 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user-resource/vm/storage/detach": {
+      "post": {
+        "summary": "Detach Disk",
+        "description": "Detaches a disk from a virtual machine. Location-specific endpoint.",
+        "operationId": "detachDisk",
+        "tags": ["Block Storage"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uuid": { "type": "string" },
+                  "storage_uuid": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "success": true }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/storage/api/s3": {
+      "get": {
+        "summary": "S3 API Info",
+        "description": "Returns S3 API URL.",
+        "operationId": "s3ApiInfo",
+        "tags": ["Object Storage"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "responses": {
+          "200": {
+            "description": "S3 API URL",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "url": "https://s3.tenbytecloud.com:8080/" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/storage/bucket": {
+      "put": {
+        "summary": "Create Bucket",
+        "description": "Create an S3 object storage bucket. Bucket names must be globally unique across all users.",
+        "operationId": "createBucket",
+        "tags": ["Object Storage"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": ["name"],
+                "properties": {
+                  "name": { "type": "string", "description": "Bucket name, must conform to S3 bucket naming rules" },
+                  "billing_account_id": { "type": "integer", "description": "Required if using a global API token" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created bucket",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "name": "pang1", "size_bytes": 0, "billing_account_id": 129093, "num_objects": 0 }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Modify Bucket",
+        "description": "Modify a bucket's billing account.",
+        "operationId": "modifyBucket",
+        "tags": ["Object Storage"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "billing_account_id"],
+                "properties": {
+                  "name": { "type": "string", "description": "Defines which bucket to modify" },
+                  "billing_account_id": { "type": "integer", "description": "ID of a billing account" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated bucket",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "name": "pang1", "billing_account_id": 129072 }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Bucket",
+        "description": "Delete an S3 object storage bucket. Only empty buckets can be deleted via this API.",
+        "operationId": "deleteBucket",
+        "tags": ["Object Storage"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "name", "in": "query", "required": true, "schema": { "type": "string" }, "description": "Defines which bucket to delete" }
+        ],
+        "responses": {
+          "204": { "description": "No Content - bucket deleted" }
+        }
+      },
+      "get": {
+        "summary": "Get Bucket",
+        "description": "Get bucket information.",
+        "operationId": "getBucket",
+        "tags": ["Object Storage"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "name", "in": "query", "required": true, "schema": { "type": "string" }, "description": "Defines which bucket to retrieve" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Bucket info",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "name": "pang1", "num_objects": 5, "size_bytes": 3189211059 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/storage/bucket/list": {
+      "get": {
+        "summary": "List Buckets",
+        "description": "List user's buckets. Optionally filter by billing account.",
+        "operationId": "listBuckets",
+        "tags": ["Object Storage"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "billing_account_id", "in": "query", "required": false, "schema": { "type": "integer" }, "description": "If specified then only buckets with this billing account are returned" }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of buckets",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } },
+                "example": [{ "name": "pang1", "num_objects": 5, "size_bytes": 3189211059 }]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/storage/user": {
+      "get": {
+        "summary": "Get S3 user",
+        "description": "Get S3 user info, including access and secret keys. User and keys will be generated if they do not exist already.",
+        "operationId": "getS3User",
+        "tags": ["Object Storage"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "responses": {
+          "200": {
+            "description": "S3 user info",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "displayName": "user+test@example.com",
+                  "email": "",
+                  "maxBuckets": 1000,
+                  "s3Credentials": [{ "accessKey": "ES1R...1N", "secretKey": "bwtl...LU", "userId": "user+test@example.com" }]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/storage/user/keys": {
+      "delete": {
+        "summary": "Delete key",
+        "description": "Delete an S3 key.",
+        "operationId": "deleteS3Key",
+        "tags": ["Object Storage"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": ["access_key"],
+                "properties": {
+                  "access_key": { "type": "string", "description": "Defines which key to delete" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Key deleted" }
+        }
+      },
+      "get": {
+        "summary": "Get keys",
+        "description": "Returns all user S3 keys.",
+        "operationId": "getS3Keys",
+        "tags": ["Object Storage"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "responses": {
+          "200": {
+            "description": "List of keys",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } },
+                "example": [{ "accessKey": "ES1R...1N", "secretKey": "bwtl...LU", "userId": "user+test@example.com" }]
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Generate key",
+        "description": "Generate a new S3 key pair. Returns the list of all keys.",
+        "operationId": "generateS3Key",
+        "tags": ["Object Storage"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "responses": {
+          "200": {
+            "description": "List of all keys",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } },
+                "example": [{ "accessKey": "44PW...BC", "secretKey": "etxH...O1", "userId": "user+test@example.com" }]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/network/network/{network_uuid}": {
+      "get": {
+        "summary": "Get network data",
+        "description": "Get network data. Location-specific endpoint.",
+        "operationId": "getNetworkData",
+        "tags": ["Private networks"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "network_uuid", "in": "path", "required": true, "schema": { "type": "string" }, "example": "50341410-9e88-4af2-a21e-b8c898e33e51" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Network data",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "vlan_id": 104,
+                  "subnet": "10.1.104.0/24",
+                  "name": "Default network",
+                  "uuid": "2e8cd389-27fe-45ce-a63d-d536068659e5",
+                  "is_default": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete network",
+        "description": "Delete network. The network can be deleted if it does not contain any resources and it is not default. Location-specific endpoint.",
+        "operationId": "deleteNetwork",
+        "tags": ["Private networks"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "network_uuid", "in": "path", "required": true, "schema": { "type": "string" }, "example": "4e5eadd3-8b11-4c34-812a-2cf97120b628" }
+        ],
+        "responses": {
+          "200": { "description": "Empty response" }
+        }
+      },
+      "patch": {
+        "summary": "Change network name",
+        "description": "Change network name. Location-specific endpoint.",
+        "operationId": "changeNetworkName",
+        "tags": ["Private networks"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "network_uuid", "in": "path", "required": true, "schema": { "type": "string" }, "example": "4e5eadd3-8b11-4c34-812a-2cf97120b628" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated network",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "name": "My new network name", "uuid": "4e5eadd3-8b11-4c34-812a-2cf97120b628", "is_default": true }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/network/networks": {
+      "get": {
+        "summary": "List Networks",
+        "description": "List user networks with resources. Location-specific endpoint.",
+        "operationId": "listNetworks",
+        "tags": ["Private networks"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "responses": {
+          "200": {
+            "description": "List of networks",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } },
+                "example": [
+                  { "name": "Private network B", "uuid": "4e5eadd3-8b11-4c34-812a-2cf97120b628", "is_default": false },
+                  { "name": "Privat network - default", "uuid": "2e8cd389-27fe-45ce-a63d-d536068659e5", "is_default": true }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/network/network": {
+      "post": {
+        "summary": "Create a private network",
+        "description": "Creates a new private network with specified descriptive name. If the first network of the user, it is set as default. Location-specific endpoint.",
+        "operationId": "createPrivateNetwork",
+        "tags": ["Private networks"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "name", "in": "query", "required": false, "schema": { "type": "string" }, "description": "Network name" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Created network",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "name": "network3", "uuid": "2e8cd389-27fe-45ce-a63d-d536068659e5", "is_default": true }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/network/network/{network_uuid}/default": {
+      "put": {
+        "summary": "Change network to default",
+        "description": "Change network to default. Other private networks will be changed to non-default. Location-specific endpoint.",
+        "operationId": "changeNetworkToDefault",
+        "tags": ["Private networks"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "network_uuid", "in": "path", "required": true, "schema": { "type": "string" }, "example": "4e5eadd3-8b11-4c34-812a-2cf97120b628" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated network",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "name": "network3", "uuid": "4e5eadd3-8b11-4c34-812a-2cf97120b628", "is_default": true }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/network/ip_addresses": {
+      "post": {
+        "summary": "Create Floating IP",
+        "description": "Create new floating IP. Location-specific endpoint.",
+        "operationId": "createFloatingIp",
+        "tags": ["Floating IP"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["billing_account_id"],
+                "properties": {
+                  "billing_account_id": { "type": "integer" },
+                  "name": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created floating IP",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "id": 1, "address": "1.1.1.1", "name": "my_ip", "enabled": true, "assigned_to": null }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List Floating IPs",
+        "description": "List floating IPs. Can be filtered by billing_account_id and vm_uuid. Location-specific endpoint.",
+        "operationId": "listFloatingIps",
+        "tags": ["Floating IP"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "billing_account_id", "in": "query", "required": false, "schema": { "type": "integer" } },
+          { "name": "vm_uuid", "in": "query", "required": false, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of floating IPs",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } },
+                "example": [
+                  { "id": 1, "address": "1.1.1.1", "name": "My First Ip", "enabled": true, "assigned_to": "88e5a11b-9c89-4986-99c7-90d43499317c" }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/network/ip_addresses/{public_ipv4_address}": {
+      "get": {
+        "summary": "Get Floating IP",
+        "description": "Get floating IP. Location-specific endpoint.",
+        "operationId": "getFloatingIp",
+        "tags": ["Floating IP"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "public_ipv4_address", "in": "path", "required": true, "schema": { "type": "string" }, "example": "1.1.1.1" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Floating IP data",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "id": 1, "address": "1.1.1.1", "name": "My First Ip", "enabled": true }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update Floating IP",
+        "description": "Update floating IP. Location-specific endpoint.",
+        "operationId": "updateFloatingIp",
+        "tags": ["Floating IP"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "public_ipv4_address", "in": "path", "required": true, "schema": { "type": "string" }, "example": "1.1.1.1" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "billing_account_id": { "type": "integer" },
+                  "name": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated floating IP",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "id": 1, "address": "1.1.1.1", "name": "my_ip", "billing_account_id": 2 }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Floating IP",
+        "description": "Delete floating IP. Location-specific endpoint.",
+        "operationId": "deleteFloatingIp",
+        "tags": ["Floating IP"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "public_ipv4_address", "in": "path", "required": true, "schema": { "type": "string" }, "example": "1.1.1.1" }
+        ],
+        "responses": {
+          "200": { "description": "Response body is empty. Response code: 200." }
+        }
+      }
+    },
+    "/network/ip_addresses/{public_ipv4_address}/assign": {
+      "post": {
+        "summary": "Assign Floating IP",
+        "description": "Assign floating IP. Accepted values of assigned_to_resource_type: virtual_machine, service, load_balancer. Location-specific endpoint.",
+        "operationId": "assignFloatingIp",
+        "tags": ["Floating IP"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "public_ipv4_address", "in": "path", "required": true, "schema": { "type": "string" }, "example": "1.1.1.1" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "assigned_to": { "type": "string", "description": "UUID of the resource to assign to" },
+                  "assigned_to_resource_type": { "type": "string", "description": "One of: virtual_machine, service, load_balancer" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated floating IP",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "id": 1, "address": "1.1.1.1", "assigned_to": "88e5a11b-9c89-4986-99c7-90d43499317c", "assigned_to_resource_type": "virtual_machine" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/network/ip_addresses/{public_ipv4_address}/unassign": {
+      "post": {
+        "summary": "Un-assign Floating IP",
+        "description": "Un-assign floating IP. Location-specific endpoint.",
+        "operationId": "unassignFloatingIp",
+        "tags": ["Floating IP"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "public_ipv4_address", "in": "path", "required": true, "schema": { "type": "string" }, "example": "1.1.1.1" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated floating IP",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "id": 1,
+                  "address": "1.1.1.1",
+                  "unassigned_at": "2021-12-06 13:03:33",
+                  "uuid": "e44f151c-3916-4bd8-ab6e-592ca982dc63",
+                  "assigned_to": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/network/firewalls": {
+      "get": {
+        "summary": "List Firewalls",
+        "description": "Retrieves a list of firewalls for the current user. Location-specific endpoint.",
+        "operationId": "listFirewalls",
+        "tags": ["Firewall"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "responses": {
+          "200": {
+            "description": "List of Firewall objects",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } },
+                "example": [
+                  {
+                    "uuid": "550e8400-e29b-41d4-a716-446655440000",
+                    "name": "Web Server Firewall",
+                    "description": "Firewall for web server instances",
+                    "billing_account_id": 123,
+                    "rules": [
+                      { "uuid": "7b3ec3c8-9c7e-4bcb-a1b9-2c8ad37a82c9", "protocol": "tcp", "direction": "inbound", "port_start": 80, "port_end": 80, "endpoint_spec_type": "ip_prefixes", "endpoint_spec": ["10.22.33.0/24", "10.12.34.5"] }
+                    ],
+                    "resources_assigned": [],
+                    "created_at": "2025-05-15 10:30:45"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Firewall",
+        "description": "Creates a new firewall with a given set of rules. See Representation and validation for FirewallRule object structure. Location-specific endpoint.",
+        "operationId": "createFirewall",
+        "tags": ["Firewall"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "display_name": { "type": "string" },
+                  "billing_account_id": { "type": "integer" },
+                  "rules": { "type": "array", "items": { "type": "object" }, "description": "Array of FirewallRule objects" }
+                }
+              },
+              "example": {
+                "display_name": "Database Firewall",
+                "billing_account_id": 123,
+                "rules": [
+                  { "protocol": "tcp", "direction": "inbound", "port_start": 3306, "port_end": 3306, "endpoint_spec_type": "ip_prefixes", "endpoint_spec": ["10.0.0.0/24"] }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created firewall",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "uuid": "2a874f44-310f-4df8-9340-1dc274c2bd51",
+                  "display_name": "Database Firewall",
+                  "billing_account_id": 123,
+                  "rules": [
+                    { "uuid": "db9acadc-91e1-4225-b934-7f264f9f75a2", "direction": "inbound", "protocol": "tcp", "port_start": 3306, "port_end": 3306, "endpoint_spec_type": "ip_prefixes", "endpoint_spec": ["10.0.0.0/24"] }
+                  ],
+                  "resources_assigned": []
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/network/firewalls/{firewallUuid}": {
+      "put": {
+        "summary": "Update Firewall",
+        "description": "Updates an existing firewall configuration. Location-specific endpoint.",
+        "operationId": "updateFirewall",
+        "tags": ["Firewall"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "firewallUuid", "in": "path", "required": true, "schema": { "type": "string" }, "description": "UUID of the firewall to update", "example": "2a874f44-310f-4df8-9340-1dc274c2bd51" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "description": { "type": "string" },
+                  "rules": { "type": "array", "items": { "type": "object" }, "description": "Array of FirewallRule objects with updated fields" }
+                }
+              },
+              "example": {
+                "name": "Updated Database Firewall",
+                "description": "Updated firewall for database servers",
+                "rules": [
+                  { "uuid": "db9acadc-91e1-4225-b934-7f264f9f75a2", "direction": "inbound", "protocol": "tcp", "port_start": 3306, "port_end": 3306, "endpoint_spec_type": "ip_prefixes", "endpoint_spec": ["10.0.0.0/24", "192.168.5.0/24"] }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated Firewall object",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "uuid": "2a874f44-310f-4df8-9340-1dc274c2bd51",
+                  "display_name": "Database Firewall",
+                  "rules": [
+                    { "uuid": "db9acadc-91e1-4225-b934-7f264f9f75a2", "direction": "inbound", "protocol": "tcp", "port_start": 3306, "port_end": 3306, "endpoint_spec_type": "ip_prefixes", "endpoint_spec": ["10.0.0.0/24", "192.168.5.0/24"] }
+                  ],
+                  "resources_assigned": []
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Firewall",
+        "description": "Deletes a specified firewall. Location-specific endpoint.",
+        "operationId": "deleteFirewall",
+        "tags": ["Firewall"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "firewallUuid", "in": "path", "required": true, "schema": { "type": "string" }, "description": "UUID of the firewall to delete", "example": "2a874f44-310f-4df8-9340-1dc274c2bd51" }
+        ],
+        "responses": {
+          "204": { "description": "HTTP 204 No Content" }
+        }
+      }
+    },
+    "/network/firewalls/{firewallUuid}/vms": {
+      "post": {
+        "summary": "Assign Firewall to VM",
+        "description": "Associates a firewall with a specific virtual machine. Location-specific endpoint.",
+        "operationId": "assignFirewallToVm",
+        "tags": ["Firewall"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "firewallUuid", "in": "path", "required": true, "schema": { "type": "string" }, "description": "UUID of the firewall", "example": "2a874f44-310f-4df8-9340-1dc274c2bd51" },
+          { "name": "vm_uuid", "in": "query", "required": false, "schema": { "type": "string" }, "description": "UUID of the virtual machine", "example": "ff4b3c1b-998a-48a5-9bf4-5777ee2ae9db" }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of current assignments",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } },
+                "example": [{ "resource_type": "vm", "resource_uuid": "ff4b3c1b-998a-48a5-9bf4-5777ee2ae9db" }]
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Unassign Firewall from VM",
+        "description": "Removes the association between a firewall and a virtual machine. Location-specific endpoint.",
+        "operationId": "unassignFirewallFromVm",
+        "tags": ["Firewall"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "firewallUuid", "in": "path", "required": true, "schema": { "type": "string" }, "description": "UUID of the firewall", "example": "2a874f44-310f-4df8-9340-1dc274c2bd51" },
+          { "name": "vm_uuid", "in": "query", "required": false, "schema": { "type": "string" }, "description": "UUID of the virtual machine", "example": "ff4b3c1b-998a-48a5-9bf4-5777ee2ae9db" }
+        ],
+        "responses": {
+          "200": { "description": "No content" }
+        }
+      }
+    },
+    "/network/load_balancers": {
+      "get": {
+        "summary": "List user load balancers",
+        "description": "Get list of load balancers owned by user. Location-specific endpoint.",
+        "operationId": "listLoadBalancers",
+        "tags": ["Network Load Balancer"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "responses": {
+          "200": {
+            "description": "List of load balancers",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } },
+                "example": [
+                  {
+                    "uuid": "438ac62f-e97b-4ef0-8940-507b9e94af43",
+                    "network_uuid": "438ac62f-e97b-4ef0-8940-507b9e94af43",
+                    "billing_account_id": 130157,
+                    "private_address": "10.112.231.192",
+                    "forwarding_rules": [{ "uuid": "b3f28feb-c91e-4601-a6b6-267fa98dc121", "protocol": "TCP", "source_port": 8080, "target_port": 8080 }],
+                    "targets": [{ "target_uuid": "145cc106-e067-419a-85fd-333ded30f169", "target_type": "vm", "target_ip_address": "10.61.10.2" }]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create load balancer",
+        "description": "Create new load balancer. Location-specific endpoint.",
+        "operationId": "createLoadBalancer",
+        "tags": ["Network Load Balancer"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "display_name": { "type": "string" },
+                  "billing_account_id": { "type": "integer" },
+                  "network_uuid": { "type": "string" },
+                  "reserve_public_ip": { "type": "boolean" },
+                  "rules": { "type": "array", "items": { "type": "object" }, "description": "JSON" },
+                  "targets": { "type": "array", "items": { "type": "object" }, "description": "JSON" }
+                }
+              },
+              "example": {
+                "display_name": "my LB",
+                "billing_account_id": 130157,
+                "network_uuid": "438ac62f-e97b-4ef0-8940-507b9e94af43",
+                "reserve_public_ip": true,
+                "rules": [{ "source_port": 8080, "target_port": 80 }],
+                "targets": [
+                  { "target_uuid": "145cc106-e067-419a-85fd-333ded30f169", "target_type": "vm" },
+                  { "target_uuid": "e9717243-59df-4847-bd50-dca5b090432b", "target_type": "vm" }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created load balancer",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "uuid": "438ac62f-e97b-4ef0-8940-507b9e94af43",
+                  "display_name": "my LB",
+                  "billing_account_id": 130157,
+                  "private_address": "10.112.231.192"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/network/load_balancers/{load_balancer_uuid}": {
+      "get": {
+        "summary": "Get user load balancer by UUID",
+        "description": "Get user load balancer by UUID. Location-specific endpoint.",
+        "operationId": "getLoadBalancer",
+        "tags": ["Network Load Balancer"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "load_balancer_uuid", "in": "path", "required": true, "schema": { "type": "string" }, "example": "438ac62f-e97b-4ef0-8940-507b9e94af43" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Load balancer data",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": {
+                  "uuid": "438ac62f-e97b-4ef0-8940-507b9e94af43",
+                  "display_name": "my LB",
+                  "billing_account_id": 130157,
+                  "private_address": "10.112.231.192",
+                  "forwarding_rules": [{ "uuid": "b3f28feb-c91e-4601-a6b6-267fa98dc121", "protocol": "TCP", "source_port": 8080, "target_port": 8080 }],
+                  "targets": [{ "target_uuid": "145cc106-e067-419a-85fd-333ded30f169", "target_type": "vm", "target_ip_address": "10.61.10.2" }]
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Rename load balancer",
+        "description": "Rename load balancer. Location-specific endpoint.",
+        "operationId": "renameLoadBalancer",
+        "tags": ["Network Load Balancer"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "load_balancer_uuid", "in": "path", "required": true, "schema": { "type": "string" }, "example": "438ac62f-e97b-4ef0-8940-507b9e94af43" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["display_name"],
+                "properties": {
+                  "display_name": { "type": "string" }
+                }
+              },
+              "example": { "display_name": "my new LB Name" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated load balancer",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "uuid": "438ac62f-e97b-4ef0-8940-507b9e94af43", "display_name": "my new LB Name" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete load balancer",
+        "description": "Delete load balancer. Location-specific endpoint.",
+        "operationId": "deleteLoadBalancer",
+        "tags": ["Network Load Balancer"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "load_balancer_uuid", "in": "path", "required": true, "schema": { "type": "string" }, "example": "438ac62f-e97b-4ef0-8940-507b9e94af43" }
+        ],
+        "responses": {
+          "200": { "description": "Response body is empty. Response code: 200." }
+        }
+      }
+    },
+    "/network/load_balancers/{load_balancer_uuid}/targets": {
+      "post": {
+        "summary": "Add load balancer target",
+        "description": "Add new target to load balancer. Location-specific endpoint.",
+        "operationId": "addLoadBalancerTarget",
+        "tags": ["Network Load Balancer"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "load_balancer_uuid", "in": "path", "required": true, "schema": { "type": "string" }, "example": "438ac62f-e97b-4ef0-8940-507b9e94af43" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["target_uuid", "target_type"],
+                "properties": {
+                  "target_uuid": { "type": "string" },
+                  "target_type": { "type": "string" }
+                }
+              },
+              "example": { "target_uuid": "145cc106-e067-419a-85fd-333ded30f169", "target_type": "vm" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Added target",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "created_at": "2022-07-12 14:21:06", "target_uuid": "145cc106-e067-419a-85fd-333ded30f169", "target_type": "vm", "target_ip_address": "10.61.10.2" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/network/load_balancers/{LB_UUID}/targets/{TARGET_UUID}": {
+      "delete": {
+        "summary": "Unlink load balancer target",
+        "description": "Unlink target from load balancer. Location-specific endpoint.",
+        "operationId": "unlinkLoadBalancerTarget",
+        "tags": ["Network Load Balancer"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "LB_UUID", "in": "path", "required": true, "schema": { "type": "string" }, "example": "438ac62f-e97b-4ef0-8940-507b9e94af43" },
+          { "name": "TARGET_UUID", "in": "path", "required": true, "schema": { "type": "string" }, "example": "145cc106-e067-419a-85fd-333ded30f169" }
+        ],
+        "responses": {
+          "200": { "description": "Response body is empty. Response code: 200." }
+        }
+      }
+    },
+    "/network/load_balancers/{load_balancer_uuid}/forwarding_rules": {
+      "post": {
+        "summary": "Add load balancer forwarding rule",
+        "description": "Add new port forwarding rule to load balancer. Location-specific endpoint.",
+        "operationId": "addLoadBalancerForwardingRule",
+        "tags": ["Network Load Balancer"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "load_balancer_uuid", "in": "path", "required": true, "schema": { "type": "string" }, "example": "438ac62f-e97b-4ef0-8940-507b9e94af43" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["source_port", "target_port"],
+                "properties": {
+                  "source_port": { "type": "string" },
+                  "target_port": { "type": "string" }
+                }
+              },
+              "example": { "source_port": 8080, "target_port": 80 }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Added forwarding rule",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "source_port": 8080, "target_port": 80 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/network/load_balancers/{LB_UUID}/forwarding_rules/{RULE_UUID}": {
+      "delete": {
+        "summary": "Drop load balancer rule",
+        "description": "Drop port rule from load balancer. Location-specific endpoint.",
+        "operationId": "dropLoadBalancerRule",
+        "tags": ["Network Load Balancer"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "LB_UUID", "in": "path", "required": true, "schema": { "type": "string" }, "example": "438ac62f-e97b-4ef0-8940-507b9e94af43" },
+          { "name": "RULE_UUID", "in": "path", "required": true, "schema": { "type": "string" }, "example": "145cc106-e067-419a-85fd-333ded30f169" }
+        ],
+        "responses": {
+          "200": { "description": "Response body is empty. Response code: 200." }
+        }
+      }
+    },
+    "/network/load_balancers/{load_balancer_uuid}/billing_account": {
+      "put": {
+        "summary": "Change billing account on load balancer",
+        "description": "Change Billing Account that load balancer is assigned to. Location-specific endpoint.",
+        "operationId": "changeLoadBalancerBillingAccount",
+        "tags": ["Network Load Balancer"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "parameters": [
+          { "name": "load_balancer_uuid", "in": "path", "required": true, "schema": { "type": "string" }, "description": "lb_uuid", "example": "438ac62f-e97b-4ef0-8940-507b9e94af43" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["set_id"],
+                "properties": {
+                  "set_id": { "type": "integer" }
+                }
+              },
+              "example": { "set_id": 123456 }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated load balancer",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" },
+                "example": { "uuid": "438ac62f-e97b-4ef0-8940-507b9e94af43", "display_name": "my new LB Name", "billing_account_id": 123456 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/parameters/vm": {
+      "get": {
+        "summary": "VM parameters",
+        "description": "Describes VM creation parameters and their expected and allowed values.",
+        "operationId": "getVmParameters",
+        "tags": ["Parameters"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "responses": {
+          "200": {
+            "description": "List of VM parameter constraints",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } },
+                "example": [
+                  { "constraint": "range", "description": "Size of main storage in gigabytes.", "mandatory": true, "max": 240, "min": 20, "parameter": "disks", "type": "integer" },
+                  { "constraint": "regexp", "description": "Name of the VM", "expression": "^[0-9a-zA-Z][-0-9a-zA-Z]{2,}[0-9a-zA-Z]$", "mandatory": true, "parameter": "name", "type": "string" },
+                  { "constraint": "enum", "description": "OS name of VM base image.", "mandatory": true, "parameter": "os_name", "type": "string", "values": ["centos", "ubuntu", "windows", "debian"] },
+                  { "constraint": "enum", "description": "OS version of VM base image.", "limited_by": "os_name", "mandatory": true, "parameter": "os_version", "type": "string" },
+                  { "constraint": "regexp", "description": "Password for logging in to the VM.", "expression": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$", "mandatory": true, "parameter": "password", "type": "string" },
+                  { "constraint": "range", "description": "Amount of RAM.", "mandatory": true, "max": 65536, "min": 512, "parameter": "ram", "type": "integer" },
+                  { "constraint": "regexp", "description": "Username for logging in to the VM.", "mandatory": true, "parameter": "username", "type": "string" },
+                  { "constraint": "range", "description": "Number of CPUs.", "mandatory": true, "max": 16, "min": 1, "parameter": "vcpu", "type": "integer" }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/config/vm_images": {
+      "get": {
+        "summary": "VM images list",
+        "description": "Returns list of VM images and corresponding versions for the platform Compute section.",
+        "operationId": "listVmImages",
+        "tags": ["Parameters"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "responses": {
+          "200": {
+            "description": "List of VM images",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } },
+                "example": [
+                  { "os_name": "almalinux", "display_name": "Almalinux", "ui_position": 1, "is_default": true, "is_app_catalog": false, "versions": [{ "os_version": "8", "display_name": "8", "published": true }] },
+                  { "os_name": "centos", "display_name": "Centos", "ui_position": 2, "is_default": false, "is_app_catalog": true, "versions": [{ "os_version": "7.3.1611", "display_name": "7.3.1611", "published": true }] }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/config/vm_images/plain_os": {
+      "get": {
+        "summary": "Get Plain OS images",
+        "description": "Returns list of plain Virtual Machines images and corresponding versions for the platform Compute section.",
+        "operationId": "getPlainOsImages",
+        "tags": ["Parameters"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "responses": {
+          "200": {
+            "description": "List of plain OS images",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } },
+                "example": [
+                  { "os_name": "almalinux", "display_name": "Almalinux", "is_app_catalog": false, "versions": [{ "os_version": "8", "display_name": "8", "published": true }] }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/config/vm_images/app_catalog": {
+      "get": {
+        "summary": "Get App Catalog images",
+        "description": "Returns list of App Catalog images and corresponding versions for the platform Compute section.",
+        "operationId": "getAppCatalogImages",
+        "tags": ["Parameters"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "responses": {
+          "200": {
+            "description": "List of App Catalog images",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } },
+                "example": [
+                  { "os_name": "centos", "display_name": "Centos", "is_app_catalog": true, "versions": [{ "os_version": "7.3.1611", "display_name": "7.3.1611", "published": true }] }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/config/boot_images": {
+      "get": {
+        "summary": "List bootable media images",
+        "description": "Returns list of available bootable ISO images.",
+        "operationId": "listBootableMediaImages",
+        "tags": ["Parameters"],
+        "security": [{ "apikey-header-apikey": [] }],
+        "responses": {
+          "200": {
+            "description": "List of bootable media images",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "object" } },
+                "example": [
+                  { "uuid": "e3a5f2d6-7d15-11f0-85ba-047bcbc1cb26", "image_name": "systemrescue-12.x-amd64.iso", "is_installation_media": false, "description": "SystemRescue 12", "is_published": true }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    { "name": "User", "description": "User profile and SSH key management" },
+    { "name": "Token", "description": "API token management" },
+    { "name": "Locations", "description": "Available data centre locations" },
+    { "name": "VM", "description": "Virtual machine management" },
+    { "name": "Block Storage", "description": "Block storage disk management" },
+    { "name": "Object Storage", "description": "S3-compatible object storage management" },
+    { "name": "Private networks", "description": "Private network management" },
+    { "name": "Floating IP", "description": "Floating IP address management" },
+    { "name": "Firewall", "description": "Firewall management" },
+    { "name": "Network Load Balancer", "description": "Network load balancer management" },
+    { "name": "Parameters", "description": "VM creation parameters and image lists" }
+  ]
+}
