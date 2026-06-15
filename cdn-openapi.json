@@ -35,6 +35,9 @@
     },
     {
       "name": "Verifications"
+    },
+    {
+      "name": "IP Addresses List"
     }
   ],
   "paths": {
@@ -2422,6 +2425,86 @@
             "apikey-header-X-API-Key": []
           }
         ]
+      }
+    },
+    "/cdn/public-ip-list": {
+      "servers": [
+        {
+          "url": "https://api.tenbyte.com",
+          "description": "Public endpoint (no version prefix)"
+        }
+      ],
+      "get": {
+        "summary": "Get CDN servers IP addresses",
+        "deprecated": false,
+        "description": "Retrieves all IP addresses of CDN servers that can be used to pull content from your origin.\n\nThe list is updated periodically. We recommend monitoring its relevance automatically — for example, with a script that keeps your IP ACLs up to date — rather than tracking changes manually.\n\nThe response format can be controlled with the `format` query parameter or the `Accept` header. By default the response is returned as JSON.\n\n------------------------------------------------------------------------\n\n✅ Success Response (application/json)\n\n    Status: 200 OK\n    {\n      \"addresses\": [\n        \"92.223.74.19/32\"\n      ],\n      \"addresses_v6\": [\n        \"2a03:90c0:191:2801::8/128\"\n      ]\n    }\n\n------------------------------------------------------------------------\n\n✅ Success Response (text/plain)\n\n    Status: 200 OK\n    92.223.74.19/32\n    2a03:90c0:191:2801::8/128\n",
+        "tags": [
+          "IP Addresses List"
+        ],
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Overrides the Accept header to set the response format. Allowed values: `json`, `plain`.",
+            "required": false,
+            "example": "json",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "Content negotiation. Allowed values: `application/json`, `text/plain`. Defaults to `application/json` if not specified.",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "addresses": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "addresses_v6": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "addresses": [
+                    "92.223.74.19/32"
+                  ],
+                  "addresses_v6": [
+                    "2a03:90c0:191:2801::8/128"
+                  ]
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "92.223.74.19/32\n2a03:90c0:191:2801::8/128"
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
       }
     }
   },
