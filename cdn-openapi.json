@@ -2430,7 +2430,7 @@
     "/cdn/public-ip-list": {
       "servers": [
         {
-          "url": "https://api.tenbyte.com",
+          "url": "https://api.tenbyte.io/v1",
           "description": "Public endpoint (no version prefix)"
         }
       ],
@@ -2521,7 +2521,7 @@
   },
   "servers": [
     {
-      "url": "https://api.tenbyte.com/v1",
+      "url": "https://api.tenbyte.io/v1",
       "description": "Production server"
     }
   ],
