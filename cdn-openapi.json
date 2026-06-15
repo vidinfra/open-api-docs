@@ -2437,7 +2437,7 @@
       "get": {
         "summary": "Get CDN servers IP addresses",
         "deprecated": false,
-        "description": "Retrieves all IP addresses of CDN servers that can be used to pull content from your origin.\n\nThe list is updated periodically. We recommend monitoring its relevance automatically — for example, with a script that keeps your IP ACLs up to date — rather than tracking changes manually.\n\nThe response format can be controlled with the `format` query parameter or the `Accept` header. By default the response is returned as JSON.\n\n------------------------------------------------------------------------\n\n✅ Success Response (application/json)\n\n    Status: 200 OK\n    {\n      \"addresses\": [\n        \"92.223.74.19/32\"\n      ],\n      \"addresses_v6\": [\n        \"2a03:90c0:191:2801::8/128\"\n      ]\n    }\n\n------------------------------------------------------------------------\n\n✅ Success Response (text/plain)\n\n    Status: 200 OK\n    92.223.74.19/32\n    2a03:90c0:191:2801::8/128\n",
+        "description": "Retrieves all IP addresses of CDN servers that can be used to pull content from your origin.\n\nThe list is updated periodically. We recommend monitoring its relevance automatically — for example, with a script that keeps your IP ACLs up to date — rather than tracking changes manually.\n\nThe response format can be controlled with the `format` query parameter or the `Accept` header. By default the response is returned as JSON.",
         "tags": [
           "IP Addresses List"
         ],
