@@ -125,6 +125,9 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "XApiKey": []
           }
         ]
       }
@@ -166,6 +169,9 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "XApiKey": []
           }
         ]
       }
@@ -276,6 +282,9 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "XApiKey": []
           }
         ]
       },
@@ -308,6 +317,9 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "XApiKey": []
           }
         ]
       }
@@ -361,6 +373,9 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "XApiKey": []
           }
         ]
       },
@@ -422,6 +437,9 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "XApiKey": []
           }
         ]
       }
@@ -558,6 +576,9 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "XApiKey": []
           }
         ]
       }
@@ -639,6 +660,9 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "XApiKey": []
           }
         ]
       }
@@ -692,6 +716,9 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "XApiKey": []
           }
         ]
       }
@@ -745,6 +772,9 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "XApiKey": []
           }
         ]
       }
@@ -779,6 +809,9 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "XApiKey": []
           }
         ]
       }
@@ -832,6 +865,9 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "XApiKey": []
           }
         ]
       }
@@ -866,6 +902,9 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "XApiKey": []
           }
         ]
       }
@@ -900,6 +939,9 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "XApiKey": []
           }
         ]
       }
@@ -944,6 +986,9 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "XApiKey": []
           }
         ]
       }
@@ -988,6 +1033,9 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "XApiKey": []
           }
         ]
       }
@@ -1022,6 +1070,9 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "XApiKey": []
           }
         ]
       }
@@ -1056,6 +1107,9 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "XApiKey": []
           }
         ]
       }
@@ -1090,6 +1144,9 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "XApiKey": []
           }
         ]
       }
@@ -1124,6 +1181,9 @@
         "security": [
           {
             "BearerAuth": []
+          },
+          {
+            "XApiKey": []
           }
         ]
       }
@@ -3025,6 +3085,11 @@
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT"
+      },
+      "XApiKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key"
       }
     }
   },
